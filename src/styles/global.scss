@@ -1,13 +1,124 @@
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+$bs-primary: #ff4545;
+
+.logo-main {
+    // Đảm bảo phần chứa logo có kích thước và định vị tốt
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+
+    .logo-img {
+        max-width: 100%;
+        /* Đảm bảo logo co giãn theo chiều rộng của parent */
+        height: auto;
+        /* Tự động điều chỉnh chiều cao */
+        width: 150px;
+        /* Hoặc thiết lập kích thước tùy ý cho logo */
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.1);
+            /* Phóng to logo khi hover */
+        }
+    }
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+.sidebar {
+    display: block;
+    position: fixed;
+    width: 100%;
+    max-width: 16.2rem;
+    top: 0;
+    bottom: 0;
+    z-index: 910;
+    background-color: #fff;
+
+    .sidebar-header {
+        border-bottom: 1px solid #e0e1e1;
+        margin-bottom: .5rem;
+
+        .navbar-brand {
+            padding: 20px;
+        }
+    }
+
+    .sidebar-body {
+        overflow: hidden;
+        outline: none;
+
+        .scroll-content {
+            transform: translate3d(0px, 0px, 0px);
+
+            .nav-link {
+                line-height: 1.125;
+                padding: .75rem;
+                display: flex;
+                color: inherit;
+                align-items: center;
+                white-space: nowrap;
+                text-transform: capitalize;
+
+                .item-link {
+                    flex: 1;
+                    margin-left: 1rem;
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+
+            }
+
+            .nav-link.static-item {
+                margin-bottom: .5rem;
+
+                .default-icon {
+                    font-size: calc(1rem - 2px);
+                    letter-spacing: .18rem;
+                    color: var(--bs-gray-900);
+                }
+            }
+
+            .nav-item:not(.static-item) {
+                padding-left: 1rem;
+            }
+
+            .nav-item {
+                position: relative;
+                margin-top: 2px;
+                color: gray;
+
+                .item-name {
+                    background-color: transparent;
+                    padding-left: 5px;
+                }
+            }
+
+            .nav-link:not(.static-item).active {
+                border-radius: .5rem 0rem 0rem .5rem;
+                border-right: 1.5px solid var(--bs-red);
+                background: linear-gradient(90deg, #FFF2F2 0.07%, rgba(255, 255, 255, 0) 99.91%);
+                color: var(--bs-red);
+                box-shadow: unset;
+            }
+
+            .nav-link.active {
+                .collapse:not(.show) {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .sub-nav {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        transition: var(--sidebar-transition);
+        transition-duration: var(--sidebar-transition-duration);
+        transition-timing-function: var(--sidebar-transition-function-ease-in-out);
+    }
+
+    .collapse:not(.show) {
+        display: none;
+    }
 }
