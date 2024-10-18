@@ -48,7 +48,6 @@
         .scroll-content {
             transform: translate3d(0px, 0px, 0px);
             height: 100%;
-            overflow-y: auto;
 
             .sidebar-list {
                 height: 100%;
@@ -266,8 +265,4 @@
             width: 300px;
         }
     }
-}
-
-.footer-top {
-    max-width: fit-content;
 }
