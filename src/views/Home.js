@@ -7,7 +7,7 @@ import guma from "../assets/images/artists/gumayusi.jpg";
 
 const Home = () => {
     return (
-        <div>
+        <div id="header">
             <Header />
             <div className="content-inner pb-0 container-fluid" id="page_layout">
                 <div className="row mb-5">
