@@ -1,25 +1,20 @@
-$bs-primary: #ff4545;
-
 .logo-main {
-    // Đảm bảo phần chứa logo có kích thước và định vị tốt
+    height: auto;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
     text-align: center;
 
     .logo-img {
         max-width: 100%;
-        /* Đảm bảo logo co giãn theo chiều rộng của parent */
-        height: auto;
-        /* Tự động điều chỉnh chiều cao */
+        max-height: 100%;
+        height: 100px;
         width: 150px;
-        /* Hoặc thiết lập kích thước tùy ý cho logo */
         transition: transform 0.3s ease;
 
         &:hover {
-            transform: scale(1.1);
-            /* Phóng to logo khi hover */
+            transform: scale(1.3);
         }
     }
 }
@@ -36,7 +31,8 @@ $bs-primary: #ff4545;
 
     .sidebar-header {
         border-bottom: 1px solid #e0e1e1;
-        margin-bottom: .5rem;
+        padding: 0;
+        height: auto;
 
         .navbar-brand {
             padding: 20px;
@@ -104,7 +100,7 @@ $bs-primary: #ff4545;
             .nav-item {
                 position: relative;
                 margin-top: 2px;
-                color: gray;
+                color: #14161A;
                 height: auto;
 
                 .item-name {
@@ -115,9 +111,9 @@ $bs-primary: #ff4545;
 
             .nav-link:not(.static-item).active {
                 border-radius: .5rem 0rem 0rem .5rem;
-                border-right: 1.5px solid var(--bs-red);
+                border-right: 1.5px solid #F05A22;
                 background: linear-gradient(90deg, #FFF2F2 0.07%, rgba(255, 255, 255, 0) 99.91%);
-                color: var(--bs-red);
+                color: #F05A22;
                 box-shadow: unset;
             }
 
@@ -127,5 +123,98 @@ $bs-primary: #ff4545;
                 }
             }
         }
+    }
+}
+
+.main-content {
+    margin-left: 16.2rem;
+
+    .nav {
+        .navbar-inner {
+            padding: 0 calc(var(.75rem, 1rem)* 2);
+        }
+
+        .list-unstyled {
+            padding-left: 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .iq-nav-menu {
+            display: flex;
+
+            .item-name {
+                color: #14161A;
+                cursor: pointer;
+            }
+
+            a.active {
+                .item-name {
+                    color: #F05A22;
+                }
+            }
+        }
+
+        .search-box {
+            width: 400px;
+            margin-left: 126px;
+            margin-right: 16px;
+
+            .dropdown {
+                position: relative;
+
+                .search-box-drop {
+                    padding: 10px 14px;
+                    border: .2px solid var(--bs-border-color);
+                    -webkit-border-radius: 5px;
+                    border-radius: 5px;
+
+                    .search-box-drop-submit {
+                        padding-left: 15px;
+                        background: rgba(0, 0, 0, 0);
+                        border: none;
+                        outline: none;
+                        color: var(--bs-body-color);
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        -webkit-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                    }
+
+                    #search-field {
+                        padding: 0 0 0 30px;
+                        color: var(--bs-body-color);
+                        background: rgba(0, 0, 0, 0);
+                        font-size: 12px;
+                        -webkit-box-shadow: none;
+                        box-shadow: none;
+                        border: none;
+                        width: 100%;
+                    }
+
+                    #search-field:focus {
+                        outline: none;
+                    }
+
+                    .search-box-drop-submit svg {
+                        height: 18px;
+                        width: 18px;
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
+    }
+
+    .iq-navbar {
+        z-index: 889;
+        padding: 40px 0;
+    }
+
+    #avatar {
+        width: 40px;
+        height: 40px;
     }
 }
