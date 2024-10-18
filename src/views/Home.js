@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import peanut from "../assets/images/artists/peanut.jpg";
 import faker from "../assets/images/artists/faker.jpg";
 import bin from "../assets/images/artists/bin.jpg";
