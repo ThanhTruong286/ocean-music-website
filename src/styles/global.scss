@@ -46,9 +46,20 @@ $bs-primary: #ff4545;
     .sidebar-body {
         overflow: hidden;
         outline: none;
+        width: 100%;
+        height: 100%;
 
         .scroll-content {
             transform: translate3d(0px, 0px, 0px);
+            height: 100%;
+
+            .sidebar-list {
+                height: 100%;
+
+                #sidebar-menu {
+                    height: auto;
+                }
+            }
 
             .nav-link {
                 line-height: 1.125;
@@ -66,6 +77,14 @@ $bs-primary: #ff4545;
                     opacity: 1;
                 }
 
+                i {
+                    background-color: transparent;
+                }
+            }
+
+            .nav-link:hover {
+                transform: scale(1.1);
+                transition: transform 0.3s ease;
             }
 
             .nav-link.static-item {
@@ -86,10 +105,11 @@ $bs-primary: #ff4545;
                 position: relative;
                 margin-top: 2px;
                 color: gray;
+                height: auto;
 
                 .item-name {
                     background-color: transparent;
-                    padding-left: 5px;
+                    padding-left: 1rem;
                 }
             }
 
@@ -107,18 +127,5 @@ $bs-primary: #ff4545;
                 }
             }
         }
-    }
-
-    .sub-nav {
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-        transition: var(--sidebar-transition);
-        transition-duration: var(--sidebar-transition-duration);
-        transition-timing-function: var(--sidebar-transition-function-ease-in-out);
-    }
-
-    .collapse:not(.show) {
-        display: none;
     }
 }
