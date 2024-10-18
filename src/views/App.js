@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 
 const App = () => {
   return (
-    <div>
+    <div id='main'>
       <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
         <Sidebar />
       </aside>
