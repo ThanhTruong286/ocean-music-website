@@ -78,7 +78,7 @@
                 }
             }
 
-            .nav-link:hover {
+            .nav-link:not(.active):hover {
                 transform: scale(1.1);
                 transition: transform 0.3s ease;
             }
@@ -117,11 +117,6 @@
                 box-shadow: unset;
             }
 
-            .nav-link.active {
-                .collapse:not(.show) {
-                    display: block;
-                }
-            }
         }
     }
 }
@@ -142,6 +137,10 @@
 
         .iq-nav-menu {
             display: flex;
+
+            .nav-link:not(.active):hover {
+                transform: scale(1.2);
+            }
 
             .item-name {
                 color: #14161A;
@@ -216,5 +215,54 @@
     #avatar {
         width: 40px;
         height: 40px;
+    }
+
+
+    #page_layout {
+        a {
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        a:hover {
+            color: #F05A22;
+            transition-duration: .3s;
+        }
+
+        small {
+            font-size: 14px;
+            color: grey;
+        }
+
+        .card-header {
+            padding: 20px 20px;
+            margin-bottom: 0;
+
+            .card-title {
+                text-transform: capitalize !important;
+                font-weight: 400;
+                font-size: 20px;
+            }
+        }
+
+        .text-capitalize {
+            text-transform: capitalize !important;
+        }
+
+        .line-count-1 {
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+
+        .artist-list img {
+            margin: 0 !important;
+            border-radius: 10px;
+            height: 200px;
+            width: 300px;
+        }
     }
 }
