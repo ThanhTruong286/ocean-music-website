@@ -1,10 +1,9 @@
 import "../styles/global.scss";
-import logo from '../assets/images/logo.png'; // Import hình ảnh
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import logo from '../assets/images/logo.png';
 
 const Sidebar = () => {
     return (
-        <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
+        <div>
             <div className="sidebar-header d-flex align-items-center justify-content-center">
                 <a href="#" className="navbar-brand">
                     {/* LOGO */}
@@ -89,7 +88,7 @@ const Sidebar = () => {
                     </div>
                 </div>
             </div>
-        </aside>
+        </div>
     )
 }
 

@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar";
 const Home = () => {
     return (
         <div>
-            <Sidebar />
         </div>
     )
 }
