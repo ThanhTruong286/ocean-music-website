@@ -1,0 +1,236 @@
+// src/styles/Album.scss
+
+.album-container {
+    padding: 20px;
+  }
+  
+  .album-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .album-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .album-item {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  
+  .album-item img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .album-item:hover {
+    transform: scale(1.05);
+  }
+  
+  .button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  #avatar {
+    width: 40px;
+    height: 40px;
+}
+.logo-main {
+    height: auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .logo-img {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100px;
+        width: 150px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.3);
+        }
+    }
+}
+
+.sidebar {
+    display: block;
+    position: fixed;
+    width: 100%;
+    max-width: 16.2rem;
+    top: 0;
+    bottom: 0;
+    z-index: 910;
+    background-color: #fff;
+}
+
+.main-content {
+    margin-left: 16.2rem;
+
+    .nav {
+        .navbar-inner {
+            padding: 0 calc(var(.75rem, 1rem) * 2);
+            display: flex;
+            justify-content: space-between; /* Dùng để cân đối các phần tử */
+            align-items: center;
+        }
+
+        .iq-nav-menu {
+            display: flex;
+            gap: 20px; /* Tạo khoảng cách giữa các mục menu */
+
+            .nav-link {
+                padding: 0 15px;
+                color: #14161A;
+                cursor: pointer;
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+
+            .item-name {
+                color: #14161A;
+            }
+
+            a.active {
+                .item-name {
+                    color: #F05A22;
+                }
+            }
+        }
+
+        .search-box {
+            flex-grow: 1; /* Cho phép thanh tìm kiếm mở rộng */
+            display: flex;
+            justify-content: center; /* Căn giữa thanh tìm kiếm */
+            margin-left: 0; /* Bỏ margin cũ */
+            margin-right: 0;
+            width: 100%;
+
+            .dropdown {
+                position: relative;
+                width: 100%;
+                max-width: 400px; /* Giới hạn độ rộng của thanh tìm kiếm */
+
+                .search-box-drop {
+                    padding: 10px 14px;
+                    border: 0.2px solid var(--bs-border-color);
+                    border-radius: 5px;
+
+                    .search-box-drop-submit {
+                        padding-left: 15px;
+                        background: rgba(0, 0, 0, 0);
+                        border: none;
+                        outline: none;
+                        color: var(--bs-body-color);
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
+                    }
+
+                    #search-field {
+                        padding: 0 0 0 30px;
+                        color: var(--bs-body-color);
+                        background: rgba(0, 0, 0, 0);
+                        font-size: 12px;
+                        border: none;
+                        width: 100%;
+                    }
+
+                    #search-field:focus {
+                        outline: none;
+                    }
+
+                    .search-box-drop-submit svg {
+                        height: 18px;
+                        width: 18px;
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
+
+        .iq-navbar {
+            z-index: 889;
+            padding: 40px 0;
+        }
+
+        #avatar {
+            width: 40px;
+            height: 40px;
+        }
+    }
+    .album-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .album-title {
+        font-size: 2rem;
+        text-align: left;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      
+      .album-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      
+      .album-item {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-5px);
+        }
+      }
+      
+      .album-image {
+        width: auto;
+        max-width: 300px;
+        height: 200px;
+        object-fit: cover; /* Ensures the image fits within the height/width without stretching */
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+      
+      .album-name {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 5px;
+      }
+      
+      .album-artist {
+        font-size: 1rem;
+        color: #888;
+      }
+      
+      
+}

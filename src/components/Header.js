@@ -11,7 +11,7 @@ const Header = () => {
                             <div className="offcanvas-body">
                                 <ul className="iq-nav-menu list-unstyled">
                                     <li className="nav-item">
-                                        <a className="nav-link active">
+                                        <a className="nav-link ">
                                             <span className="item-name">
                                                 Trang Chủ
                                             </span>
@@ -25,7 +25,7 @@ const Header = () => {
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link">
+                                        <a className="nav-link active">
                                             <span className="item-name">
                                                 Albums
                                             </span>

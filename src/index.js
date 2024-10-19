@@ -4,6 +4,7 @@ import App from './views/App';
 import reportWebVitals from './reportWebVitals';
 import './styles/global.scss';
 import 'bootstrap/dist/css/bootstrap.css';
+import Album from './views/Album app';
 
 import {
   createBrowserRouter,
@@ -14,7 +15,7 @@ import {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Album app/>
   </React.StrictMode>
 );
 
