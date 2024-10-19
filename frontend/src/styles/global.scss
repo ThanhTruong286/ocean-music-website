@@ -11,7 +11,9 @@
         /* Điều chỉnh lại phần nội dung */
     }
 }
-html, body {
+
+html,
+body {
     background-color: #fff;
     font-family: 'Poppins', sans-serif;
     height: 100%;
@@ -19,27 +21,32 @@ html, body {
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
-  }
-  
-  *::selection {
+}
+
+*::selection {
     background-color: #F05A22;
     color: #fff;
-  }
-  #header {
+}
+
+#header {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Chiều cao tối thiểu 100% viewport height */
-  }
-  
-  #page_layout {
-    flex: 1; /* Đảm bảo phần nội dung chiếm phần còn lại của trang */
-    overflow-y: auto; /* Cho phép cuộn dọc khi nội dung dài hơn chiều cao trang */
-  }
-  
-  /* Đảm bảo card chứa playlist không quá dài và cuộn được */
-  .content-inner {
-    padding-bottom: 60px; /* Dành không gian cho footer */
-  }
+    min-height: 100vh;
+    /* Chiều cao tối thiểu 100% viewport height */
+}
+
+#page_layout {
+    flex: 1;
+    /* Đảm bảo phần nội dung chiếm phần còn lại của trang */
+    overflow-y: auto;
+    /* Cho phép cuộn dọc khi nội dung dài hơn chiều cao trang */
+}
+
+/* Đảm bảo card chứa playlist không quá dài và cuộn được */
+.content-inner {
+    padding-bottom: 60px;
+    /* Dành không gian cho footer */
+}
 
 .logo-main {
     height: auto;
@@ -174,8 +181,10 @@ html, body {
     margin-left: 16.2rem;
 
     .nav {
-        .navbar{
-            position: fixed;        }
+        .navbar {
+            position: fixed;
+        }
+
         .navbar-inner {
             padding: 0 calc(var(.75rem, 1rem)* 2);
         }
@@ -272,6 +281,7 @@ html, body {
     #page_layout {
         flex-grow: 1;
         overflow-y: auto;
+
         a {
             text-decoration: none;
             font-size: 18px;
@@ -318,28 +328,31 @@ html, body {
             width: 300px;
         }
     }
-<<<<<<< HEAD:src/styles/global.scss
+
 }
-=======
-    .text-body{
-        font-size: 14px !important;
-    }
-    .swiper-wrapper{
+
+.text-body {
+    font-size: 14px !important;
+}
+
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+
+    .swiper-slide {
+        width: 269.75px;
+        margin-right: 20px;
+        flex-shrink: 0;
         position: relative;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        display: flex;
         transition-property: transform;
-        box-sizing: content-box;
-        .swiper-slide{
-            width: 269.75px; margin-right: 20px;
-            flex-shrink: 0;
-            position: relative;
-            transition-property: transform;
-        }
     }
 }
+
 
 .footer {
     position: fixed;
@@ -410,4 +423,3 @@ html, body {
         }
     }
 }
->>>>>>> dev:frontend/src/styles/global.scss
