@@ -180,7 +180,7 @@
             height: 40px;
         }
     }
-    .album-container {
+    .album-container,.songs-container {
         padding: 20px;
         max-width: 1200px;
         margin: 0 auto;
@@ -231,6 +231,45 @@
         font-size: 1rem;
         color: #888;
       }
+      .song-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
       
+      .song-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 8px;
+      }
+      
+      .song-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      
+      .song-details {
+        flex-grow: 1;
+        margin-left: 15px;
+      }
+      
+      .song-title {
+        font-size: 16px;
+        font-weight: bold;
+      }
+      
+      .song-artist {
+        color: #666;
+      }
+      
+      .song-plays {
+        font-size: 14px;
+        color: #333;
+      }
       
 }

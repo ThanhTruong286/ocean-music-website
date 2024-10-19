@@ -2,6 +2,7 @@ import './App.scss';
 import { Home } from './Home';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
+import Album from './Album';
 
 
 const App = () => {
@@ -11,7 +12,7 @@ const App = () => {
         <Sidebar />
       </aside>
       <main class="main-content">
-        <Home />
+        <Album />
       </main>
       <Footer />
   
