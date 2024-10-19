@@ -1,4 +1,3 @@
-// src/views/Login.js
 import React from 'react';
 import '../styles/Login.scss';
 
@@ -7,7 +6,7 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-left">
-        <img src={require('../assets/images/')} alt="Logo" className="logo" />
+          <img src={require('../assets/images/logo.png')} alt="Logo" className="logo" />
           <h2>Sign In</h2>
           <p>Login to stay connected.</p>
           <form>
@@ -30,10 +29,18 @@ const Login = () => {
           </form>
           <p className="or-sign-in">or sign in with other accounts?</p>
           <div className="social-login">
-            <button className="social-button google">G</button>
-            <button className="social-button facebook">F</button>
-            <button className="social-button instagram">I</button>
-            <button className="social-button linkedin">L</button>
+            <button className="social-button google">
+              <i className="fab fa-google"></i>
+            </button>
+            <button className="social-button facebook">
+              <i className="fab fa-facebook-f"></i>
+            </button>
+            <button className="social-button instagram">
+              <i className="fab fa-instagram"></i>
+            </button>
+            <button className="social-button linkedin">
+              <i className="fab fa-linkedin-in"></i>
+            </button>
           </div>
           <p className="signup-text">
             Don’t have an account? <a href="#">Click here to sign up.</a>
@@ -41,8 +48,6 @@ const Login = () => {
         </div>
         <div className="login-right">
           <div className="login-info">
-            <h3>Log In And Explore The Immersive World Of Music!</h3>
-            <img src="/path-to-your-image/music.jpg" alt="Music" />
           </div>
         </div>
       </div>

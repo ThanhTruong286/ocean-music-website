@@ -1,147 +1,161 @@
-// src/styles/Login.scss
 .login-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #f9f9f9;
-  
+
     .login-container {
-      display: flex;
-      width: 70%;
-      background-color: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  
-      .login-left {
-        flex: 1;
-        padding: 40px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-  
-        .logo {
-          margin-bottom: 20px;
-        }
-  
-        h2 {
-          margin-bottom: 10px;
-          font-size: 24px;
-        }
-  
-        p {
-          margin-bottom: 20px;
-          color: #777;
-        }
-  
-        .form-group {
-          margin-bottom: 15px;
-          width: 100%;
-          text-align: left;
-  
-          label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-          }
-  
-          input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-          }
-        }
-  
-        .form-options {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 20px;
-  
-          .forgot-password {
-            color: #e74c3c;
-            text-decoration: none;
-          }
-        }
-  
-        .login-button {
-          background-color: #e74c3c;
-          color: #fff;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 4px;
-          cursor: pointer;
-          width: 100%;
-          margin-bottom: 20px;
-        }
-  
-        .or-sign-in {
-          margin: 20px 0;
-        }
-  
-        .social-login {
-          display: flex;
-          gap: 10px;
-  
-          .social-button {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-  
-            &.google {
-              background-color: #db4437;
-              color: #fff;
+        width: 70%;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+        .login-left {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            .logo {
+                width: 150px;
+                height: auto;
+                margin-bottom: 20px;
+                transition: transform 0.2s, opacity 0.5s;
+
+                &:hover {
+                    transform: scale(1.1);
+                    animation: flash 0.5s infinite alternate;
+                }
             }
-  
-            &.facebook {
-              background-color: #4267b2;
-              color: #fff;
+
+            h2 {
+                margin-bottom: 10px;
+                font-size: 24px;
             }
-  
-            &.instagram {
-              background-color: #e1306c;
-              color: #fff;
+
+            p {
+                margin-bottom: 20px;
+                color: #777;
             }
-  
-            &.linkedin {
-              background-color: #0077b5;
-              color: #fff;
+
+            .form-group {
+                margin-bottom: 15px;
+                width: 100%;
+                text-align: left;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-size: 14px;
+                }
+
+                input {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
             }
-          }
+
+            .form-options {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+
+                .forgot-password {
+                    color: #e74c3c;
+                    text-decoration: none;
+                }
+            }
+
+            .login-button {
+                background-color: #e74c3c;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .or-sign-in {
+                margin: 20px 0;
+            }
+
+            .social-login {
+                display: flex;
+                gap: 10px;
+            
+                .social-button {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #fff; /* Đặt màu sắc cho biểu tượng */
+            
+                    &.google {
+                        background-color: #db4437;
+                    }
+            
+                    &.facebook {
+                        background-color: #4267b2;
+                    }
+            
+                    &.instagram {
+                        background-color: #e1306c;
+                    }
+            
+                    &.linkedin {
+                        background-color: #0077b5;
+                    }
+            
+                    i {
+                        font-size: 20px; /* Kích thước biểu tượng */
+                    }
+                }
+            }
+            
+            .signup-text {
+                margin-top: 20px;
+
+                a {
+                    color: #e74c3c;
+                }
+            }
         }
-  
-        .signup-text {
-          margin-top: 20px;
-  
-          a {
-            color: #e74c3c;
-          }
+
+        .login-right {
+            flex: 1;
+            background: url('../assets/images/tải\ xuống.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+
+            .login-info {
+                text-align: center;
+
+                h3 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+            }
+
         }
-      }
-  
-      .login-right {
-        flex: 1;
-        background: url('../assets/images/tải\ xuống.jpg') no-repeat center center;
-        background-size: cover;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        padding: 20px;
-        
-        .login-info {
-          text-align: center;
-          
-          h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-          }
-        }
-      }
     }
-  }
-  
+}
+.forgot-password{
+    padding-left: 50px;
+}
