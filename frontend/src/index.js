@@ -4,6 +4,7 @@ import App from './views/App';
 import reportWebVitals from './reportWebVitals';
 import './styles/global.scss';
 import 'bootstrap/dist/css/bootstrap.css';
+import Login from "../src/views/Login";
 
 import {
   createBrowserRouter,
