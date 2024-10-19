@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './views/App';
 import reportWebVitals from './reportWebVitals';
 import './styles/global.scss'
+import Login from './views/Login';
 
 import {
   createBrowserRouter,
@@ -15,7 +16,7 @@ import {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Login />
   </React.StrictMode>
 );
 
