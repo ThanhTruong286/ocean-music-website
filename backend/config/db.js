@@ -1,17 +1,34 @@
-// config/db.js
-const mongoose = require('mongoose');
+// db.js
+const mysql = require('mysql');
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1); // Dừng server nếu không kết nối được
-  }
-};
+let connection;
 
-module.exports = connectDB;
+function handleDisconnect() {
+  connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'ocean'
+  });
+
+  connection.connect(function (err) {
+    if (err) {
+      console.error('Error connecting to the database: ' + err);
+      setTimeout(handleDisconnect, 2000); // Thử lại kết nối sau 2 giây
+    }
+  });
+
+  connection.on('error', function (err) {
+    console.error('Database error: ' + err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect(); // Nếu kết nối bị mất, thử kết nối lại
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
+
+// Xuất đối tượng connection
+module.exports = connection; // Thay đổi ở đây
