@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 import Album from './Album';
 import Library from './Library';
+import Artist from './Artist';
 
 
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
       </aside>
 
       <main className="main-content">
-        <Library />
+        <Artist/>
       </main>
       {/* <Footer /> */}
     </div>
