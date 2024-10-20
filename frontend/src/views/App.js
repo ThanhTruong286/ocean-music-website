@@ -3,6 +3,7 @@ import { Home } from './Home';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 import Album from './Album';
+import Library from './Library';
 
 
 const App = () => {
@@ -14,7 +15,7 @@ const App = () => {
       </aside>
 
       <main className="main-content">
-        <Album />
+        <Library />
       </main>
       {/* <Footer /> */}
     </div>
