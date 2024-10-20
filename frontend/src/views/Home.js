@@ -2,9 +2,16 @@ import Header from "../components/Header";
 import peanut from "../assets/images/artists/peanut.jpg";
 import faker from "../assets/images/artists/faker.jpg";
 import ArtistList from "../components/ArtistList";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
 
 const Home = () => {
+
     return (
+
         <div id="header">
             <Header />
             <div className="content-inner pb-0 container-fluid" id="page_layout">
@@ -33,67 +40,122 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <ul className="row row-cols-lg-6 row-cols-md-4  row-cols-2 list-unstyled mb-0">
-                        <li className="col">
-                            <div className="card">
-                                <div className="card-body">
-                                    <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                    <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
-                                    <small className="fw-normal text-capitalize line-count-1">by
-                                        snoods smith Jonas </small>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="col">
-                            <div className="card">
-                                <div className="card-body">
-                                    <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                    <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
-                                    <small className="fw-normal text-capitalize line-count-1">by
-                                        snoods smith Jonas </small>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="col">
-                            <div className="card">
-                                <div className="card-body">
-                                    <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                    <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
-                                    <small className="fw-normal text-capitalize line-count-1">by
-                                        snoods smith Jonas </small>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="col">
-                            <div className="card">
-                                <div className="card-body">
-                                    <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                    <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
-                                    <small className="fw-normal text-capitalize line-count-1">by
-                                        snoods smith Jonas </small>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="col">
-                            <div className="card">
-                                <div className="card-body">
-                                    <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                    <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
-                                    <small className="fw-normal text-capitalize line-count-1">by
-                                        snoods smith Jonas </small>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="col">
-                            <div className="card">
-                                <div className="card-body">
-                                    <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                    <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
-                                    <small className="fw-normal text-capitalize line-count-1">by
-                                        snoods smith Jonas </small>
-                                </div>
-                            </div>
-                        </li>
+                    <ul className="list-unstyled mb-0">
+                        <Swiper
+                            spaceBetween={50}
+                            slidesPerView={6}
+                            onSlideChange={() => console.log('slide change')}
+                            onSwiper={(swiper) => console.log(swiper)}
+                        >
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <li className="col">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <img src={faker} id="05" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                            <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">the girl</a>
+                                            <small className="fw-normal text-capitalize line-count-1">by
+                                                snoods smith Jonas </small>
+                                        </div>
+                                    </div>
+                                </li>
+                            </SwiperSlide>
+                        </Swiper>
                     </ul>
                 </div>
                 <div className="row">
@@ -103,24 +165,66 @@ const Home = () => {
                                 <h4 className="card-title text-capitalize">recently played</h4>
                             </div>
                         </div>
+
                         <div className="swiper overflow-hidden swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
                             <ul className="swiper-wrapper p-0 list-unstyled mb-0 ">
-                                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
-                                    <div className="card-body">
+                                <Swiper
+                                    spaceBetween={10}
+                                    slidesPerView={5}
+                                    onSlideChange={() => console.log('slide change')}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                    <SwiperSlide>
+                                        <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
+                                            <div className="card-body">
 
-                                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                                    </div>
-                                </li>
-                                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="5">
-                                    <div className="card-body">
+                                                <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                                <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
+                                                <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
+                                            </div>
+                                        </li>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
+                                            <div className="card-body">
 
-                                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                                    </div>
-                                </li>
+                                                <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                                <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
+                                                <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
+                                            </div>
+                                        </li>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
+                                            <div className="card-body">
+
+                                                <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                                <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
+                                                <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
+                                            </div>
+                                        </li>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
+                                            <div className="card-body">
+
+                                                <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                                <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
+                                                <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
+                                            </div>
+                                        </li>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
+                                            <div className="card-body">
+
+                                                <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                                                <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
+                                                <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
+                                            </div>
+                                        </li>
+                                    </SwiperSlide>
+                                </Swiper>
                             </ul>
                         </div>
                     </div>
