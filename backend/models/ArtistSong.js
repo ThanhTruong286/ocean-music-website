@@ -1,37 +1,19 @@
-// backend/models/ArtistSong.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// ArtistSongModel.js
+const db = require('../config/db');
 
-const artistSongSchema = new Schema({
-    artist_song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    artist_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi cập nhật
+class ArtistSongModel {
+    static getAllArtistSongs(callback) {
+        db.query('SELECT * FROM artist_songs', callback);
     }
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
 
-// Thiết lập artist_song_id là khóa chính
-artistSongSchema.index({ artist_song_id: 1 }, { unique: true });
+    static createArtistSong(artistSongData, callback) {
+        db.query('INSERT INTO artist_songs (artist_id, song_id) VALUES (?, ?)',
+            [artistSongData.artist_id, artistSongData.song_id], callback);
+    }
 
-const ArtistSong = mongoose.model('ArtistSong', artistSongSchema);
+    static deleteArtistSong(artistSongId, callback) {
+        db.query('DELETE FROM artist_songs WHERE artist_song_id = ?', [artistSongId], callback);
+    }
+}
 
-module.exports = ArtistSong;
+module.exports = ArtistSongModel;

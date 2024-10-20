@@ -1,37 +1,19 @@
-// backend/models/AlbumSong.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// AlbumSongModel.js
+const db = require('../config/db');
 
-const albumSongSchema = new Schema({
-    album_song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    album_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi cập nhật
+class AlbumSongModel {
+    static getAllAlbumSongs(callback) {
+        db.query('SELECT * FROM album_songs', callback);
     }
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
 
-// Thiết lập album_song_id là khóa chính
-albumSongSchema.index({ album_song_id: 1 }, { unique: true });
+    static createAlbumSong(albumSongData, callback) {
+        db.query('INSERT INTO album_songs (album_id, song_id) VALUES (?, ?)',
+            [albumSongData.album_id, albumSongData.song_id], callback);
+    }
 
-const AlbumSong = mongoose.model('AlbumSong', albumSongSchema);
+    static deleteAlbumSong(albumSongId, callback) {
+        db.query('DELETE FROM album_songs WHERE album_song_id = ?', [albumSongId], callback);
+    }
+}
 
-module.exports = AlbumSong;
+module.exports = AlbumSongModel;

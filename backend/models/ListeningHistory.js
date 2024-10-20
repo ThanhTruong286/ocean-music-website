@@ -1,37 +1,19 @@
-// backend/models/ListeningHistory.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// ListeningHistoryModel.js
+const db = require('../config/db');
 
-const listeningHistorySchema = new Schema({
-    listening_history_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    user_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    listening_time: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-    duration_time: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại
-    },
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
+class ListeningHistoryModel {
+    static getAllListeningHistories(callback) {
+        db.query('SELECT * FROM listening_history', callback);
+    }
 
-// Thiết lập listening_history_id là khóa chính
-listeningHistorySchema.index({ listening_history_id: 1 }, { unique: true });
+    static createListeningHistory(historyData, callback) {
+        db.query('INSERT INTO listening_history (user_id, song_id, listening_time, duration_time) VALUES (?, ?, ?, ?)',
+            [historyData.user_id, historyData.song_id, historyData.listening_time, historyData.duration_time], callback);
+    }
 
-const ListeningHistory = mongoose.model('ListeningHistory', listeningHistorySchema);
+    static deleteListeningHistory(historyId, callback) {
+        db.query('DELETE FROM listening_history WHERE listening_history_id = ?', [historyId], callback);
+    }
+}
 
-module.exports = ListeningHistory;
+module.exports = ListeningHistoryModel;

@@ -1,46 +1,24 @@
-// backend/models/Album.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// AlbumModel.js
+const db = require('../config/db');
 
-const albumSchema = new Schema({
-    album_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    title: {
-        type: String, // Varchar 50
-        maxlength: 50,
-        required: true,
-    },
-    cover_image_url: {
-        type: String, // Text, có thể sử dụng String cho URL
-        required: true,
-    },
-    artist_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    release_date: {
-        type: Date, // Sử dụng kiểu Date cho Datetime
-        default: Date.now, // Sử dụng timestamp hiện tại nếu không được chỉ định
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi cập nhật
+class AlbumModel {
+    static getAllAlbums(callback) {
+        db.query('SELECT * FROM albums', callback);
     }
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
 
-// Thiết lập album_id là khóa chính
-albumSchema.index({ album_id: 1 }, { unique: true });
+    static createAlbum(albumData, callback) {
+        db.query('INSERT INTO albums (title, cover_image_url, artist_id, release_date) VALUES (?, ?, ?, ?)',
+            [albumData.title, albumData.cover_image_url, albumData.artist_id, albumData.release_date], callback);
+    }
 
-const Album = mongoose.model('Album', albumSchema);
+    static updateAlbum(albumId, albumData, callback) {
+        db.query('UPDATE albums SET title = ?, cover_image_url = ?, artist_id = ?, release_date = ? WHERE album_id = ?',
+            [albumData.title, albumData.cover_image_url, albumData.artist_id, albumData.release_date, albumId], callback);
+    }
 
-module.exports = Album;
+    static deleteAlbum(albumId, callback) {
+        db.query('DELETE FROM albums WHERE album_id = ?', [albumId], callback);
+    }
+}
+
+module.exports = AlbumModel;

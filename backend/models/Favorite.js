@@ -1,33 +1,19 @@
-// backend/models/Favorite.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// FavoriteModel.js
+const db = require('../config/db');
 
-const favoriteSchema = new Schema({
-    favorite_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    user_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
+class FavoriteModel {
+    static getAllFavorites(callback) {
+        db.query('SELECT * FROM favorites', callback);
+    }
 
-// Thiết lập favorite_id là khóa chính
-favoriteSchema.index({ favorite_id: 1 }, { unique: true });
+    static createFavorite(favoriteData, callback) {
+        db.query('INSERT INTO favorites (user_id, song_id) VALUES (?, ?)',
+            [favoriteData.user_id, favoriteData.song_id], callback);
+    }
 
-const Favorite = mongoose.model('Favorite', favoriteSchema);
+    static deleteFavorite(favoriteId, callback) {
+        db.query('DELETE FROM favorites WHERE favorite_id = ?', [favoriteId], callback);
+    }
+}
 
-module.exports = Favorite;
+module.exports = FavoriteModel;

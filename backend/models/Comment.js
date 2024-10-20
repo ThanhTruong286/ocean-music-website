@@ -1,38 +1,19 @@
-// backend/models/Comment.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// CommentModel.js
+const db = require('../config/db');
 
-const commentSchema = new Schema({
-    comment_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    user_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    comment: {
-        type: String, // Tương ứng với kiểu Varchar
-        required: true,
-        maxlength: 255, // Giới hạn độ dài tối đa là 255 ký tự
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
+class CommentModel {
+    static getAllComments(callback) {
+        db.query('SELECT * FROM comments', callback);
+    }
 
-// Thiết lập comment_id là khóa chính
-commentSchema.index({ comment_id: 1 }, { unique: true });
+    static createComment(commentData, callback) {
+        db.query('INSERT INTO comments (user_id, song_id, comment) VALUES (?, ?, ?)',
+            [commentData.user_id, commentData.song_id, commentData.comment], callback);
+    }
 
-const Comment = mongoose.model('Comment', commentSchema);
+    static deleteComment(commentId, callback) {
+        db.query('DELETE FROM comments WHERE comment_id = ?', [commentId], callback);
+    }
+}
 
-module.exports = Comment;
+module.exports = CommentModel;

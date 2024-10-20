@@ -1,33 +1,22 @@
-// backend/models/Role.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// RoleModel.js
+const db = require('../config/db');
 
-const roleSchema = new Schema({
-    role_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    role_name: {
-        type: String, // Tương ứng với kiểu Varchar trong SQL
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi cập nhật
+class RoleModel {
+    static getAllRoles(callback) {
+        db.query('SELECT * FROM roles', callback);
     }
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
 
-// Thiết lập role_id là khóa chính
-roleSchema.index({ role_id: 1 }, { unique: true });
+    static createRole(roleData, callback) {
+        db.query('INSERT INTO roles (role_name) VALUES (?)', [roleData.role_name], callback);
+    }
 
-const Role = mongoose.model('Role', roleSchema);
+    static updateRole(roleId, roleData, callback) {
+        db.query('UPDATE roles SET role_name = ? WHERE role_id = ?', [roleData.role_name, roleId], callback);
+    }
 
-module.exports = Role;
+    static deleteRole(roleId, callback) {
+        db.query('DELETE FROM roles WHERE role_id = ?', [roleId], callback);
+    }
+}
+
+module.exports = RoleModel;

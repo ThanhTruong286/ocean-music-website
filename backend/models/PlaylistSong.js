@@ -1,37 +1,19 @@
-// backend/models/PlaylistSong.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// PlaylistSongModel.js
+const db = require('../config/db');
 
-const playlistSongSchema = new Schema({
-    playlist_song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-        unique: true,
-    },
-    playlist_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    song_id: {
-        type: Number, // Tương ứng với kiểu Integer trong SQL
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi tạo
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now, // Sử dụng timestamp hiện tại khi cập nhật
+class PlaylistSongModel {
+    static getAllPlaylistSongs(callback) {
+        db.query('SELECT * FROM playlist_songs', callback);
     }
-}, {
-    // Tắt sinh trường _id
-    _id: false,
-});
 
-// Thiết lập playlist_song_id là khóa chính
-playlistSongSchema.index({ playlist_song_id: 1 }, { unique: true });
+    static createPlaylistSong(playlistSongData, callback) {
+        db.query('INSERT INTO playlist_songs (playlist_id, song_id) VALUES (?, ?)',
+            [playlistSongData.playlist_id, playlistSongData.song_id], callback);
+    }
 
-const PlaylistSong = mongoose.model('PlaylistSong', playlistSongSchema);
+    static deletePlaylistSong(playlistSongId, callback) {
+        db.query('DELETE FROM playlist_songs WHERE playlist_song_id = ?', [playlistSongId], callback);
+    }
+}
 
-module.exports = PlaylistSong;
+module.exports = PlaylistSongModel;
