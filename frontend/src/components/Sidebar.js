@@ -32,35 +32,35 @@ const Sidebar = () => {
                             {/* Khám Phá */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-earth-americas"></i>
+                                    <i className="fa-solid fa-earth-americas"></i>
                                     <span className="item-name">Khám Phá</span>
                                 </a>
                             </li>
                             {/* Nghệ Sĩ */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-user"></i>
+                                    <i className="fa-solid fa-user"></i>
                                     <span className="item-name">Nghệ Sĩ</span>
                                 </a>
                             </li>
                             {/* Thư Viện */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-music"></i>
+                                    <i className="fa-solid fa-music"></i>
                                     <span className="item-name">Thư Viện</span>
                                 </a>
                             </li>
                             {/* Charts */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-chart-line"></i>
+                                    <i className="fa-solid fa-chart-line"></i>
                                     <span className="item-name">Biểu Đồ</span>
                                 </a>
                             </li>
                             {/* Lịch Sử */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-rotate"></i>
+                                    <i className="fa-solid fa-rotate"></i>
                                     <span className="item-name">Lịch Sử</span>
                                 </a>
                             </li>
@@ -73,14 +73,14 @@ const Sidebar = () => {
                             {/* Cài đặt chung */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-gear"></i>
+                                    <i className="fa-solid fa-gear"></i>
                                     <span className="item-name">Cài Đặt Chung</span>
                                 </a>
                             </li>
                             {/* Cài đặt tài khoản */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
-                                    <i class="fa-solid fa-user"></i>
+                                    <i className="fa-solid fa-user"></i>
                                     <span className="item-name">Cài Đặt Tài Khoản</span>
                                 </a>
                             </li>

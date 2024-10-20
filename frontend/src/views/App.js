@@ -12,7 +12,8 @@ const App = () => {
       <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
         <Sidebar />
       </aside>
-      <main class="main-content">
+
+      <main className="main-content">
         <Album />
       </main>
       {/* <Footer /> */}
