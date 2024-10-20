@@ -5,7 +5,7 @@ import faker from "../assets/images/artists/faker.jpg";
 const artistsData = {
   favoriteArtists: [
     { name: 'HIEUTHUHAI', role: 'Artist', imgSrc: faker },
-    { name: 'Sơn Tùng M-TP', role: 'Artist', imgSrc: 'path-to-image2' },
+    { name: 'Sơn Tùng M-TP', role: 'Artist', imgSrc: faker },
     { name: 'RPT MCK', role: 'Artist', imgSrc: 'path-to-image3' },
     { name: 'Low G', role: 'Artist', imgSrc: 'path-to-image4' }
   ],
