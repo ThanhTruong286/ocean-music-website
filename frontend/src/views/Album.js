@@ -35,7 +35,7 @@ const Album = () => {
       <Header />
 
       <div className="album-container">
-        <h1 className="album-title">Albums</h1>
+        
         {/** Album LIST */}
         <AlbumList />
         {/** END album LIST */}

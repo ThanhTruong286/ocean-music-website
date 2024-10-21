@@ -1,7 +1,8 @@
-//import defaultAlbumCover from "../assets/images/albums/default.jpg";
+// AlbumList.js
 import faker from "../assets/images/artists/faker.jpg";
 import React, { useEffect, useState } from 'react';
-import { fetchAlbums } from '../api/api'; // Gọi API để lấy albums
+import { fetchAlbums } from '../api/api'; // Assuming API call for albums
+import '../styles/album.scss'; // Link SCSS
 
 const AlbumList = () => {
     const [albums, setAlbums] = useState([]);
@@ -11,10 +12,10 @@ const AlbumList = () => {
     useEffect(() => {
         const loadAlbums = async () => {
             try {
-                const data = await fetchAlbums(); // Gọi hàm fetchAlbums
-                setAlbums(data); // Cập nhật danh sách albums
+                const data = await fetchAlbums(); // Assuming API call
+                setAlbums(data);
             } catch (err) {
-                setError('Không thể tải danh sách albums');
+                setError('Unable to load albums.');
             } finally {
                 setLoading(false);
             }
@@ -23,34 +24,27 @@ const AlbumList = () => {
         loadAlbums();
     }, []);
 
-    if (loading) {
-        return <div>Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div>Lỗi: {error}</div>;
-    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="row album-list">
-            {albums.map((album) => (
-                <div className="col-xl-3 col-md-6 mb-3" key={album.album_id}> {/* Sử dụng album.album_id làm key */}
-                    <div className="bg-soft-primary position-relative rounded-3 card-box mb-3">
+        <div>
+            <h1 className="album-title">Albums</h1>
+            <div className="album-list">
+                {albums.map(album => (
+                    <div key={album.album_id} className="album-item">
                         <img
-                            src={album.image|| faker} // Dùng ảnh cover của album hoặc ảnh mặc định
-                            id="album-cover"
-                            className="img-fluid mx-auto d-block"
-                            alt="album-cover"
+                            src={album.image || faker} 
+                            alt={album.title}
+                            className="album-image"
                         />
+                        <h2 className="album-title">{album.title}</h2>
+                        <p className="album-artist">By {album.artist}</p>
                     </div>
-                    <a href="../dashboard/music-player.html" className="text-capitalize h5">{album.title}</a>
-                    <small className="fw-normal line-count-1 text-capitalize">
-                        <b>Released: {new Date(album.release_date).toLocaleDateString() || 'Unknown'}</b> 
-                    </small>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
-}
+};
 
 export default AlbumList;
