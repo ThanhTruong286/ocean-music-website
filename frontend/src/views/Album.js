@@ -2,6 +2,7 @@
 import Header from "../components/Header";
 import '../styles/album.scss'; // Import SCSS file
 
+import AlbumList from "../components/AlbumList";
 const Album = () => {
   const albums = [
     { id: 1, title: "Way Of Right", artist: "By King Sing", image: "https://via.placeholder.com/300" },
@@ -35,17 +36,11 @@ const Album = () => {
 
       <div className="album-container">
         <h1 className="album-title">Albums</h1>
-        <div className="album-list">
-          {albums.map(album => (
-            <div key={album.id} className="album-item">
-              <img src={album.image} alt={album.title} className="album-image" />
-              <h2 className="album-name">{album.title}</h2>
-              <p className="album-artist">{album.artist}</p>
-            </div>
-          ))}
-        </div>
+        {/** ARTIST LIST */}
+        <AlbumList />
+                    {/** END ARTIST LIST */}
       </div>
-
+          
       {/* New Section for Top Releasing Songs */}
       <div className="songs-container">
         <h2 className="songs-title">Our Top Releasing Listening Songs</h2>

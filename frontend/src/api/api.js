@@ -2,12 +2,27 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+// Fetch all artists
 export const fetchArtists = async () => {
     try {
         const response = await axios.get(`${API_URL}/artist`);
-        return response.data; // Trả về dữ liệu từ server
+        return response.data;
     } catch (error) {
         console.error('Error fetching artists:', error);
-        throw error; // Ném lỗi lên để xử lý sau này
+        throw error;
     }
 };
+
+// Fetch all albums
+export const fetchAlbums = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/album`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching albums:', error);
+        throw error;
+    }
+};
+
+
+
