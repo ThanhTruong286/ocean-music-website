@@ -6,8 +6,8 @@ import Footer from '../components/Footer';
 const App = () => {
   return (
     <div id='main'>
-        <Home />
-      { <Footer />}
+      <Home />
+      {<Footer />}
     </div>
   )
 }
