@@ -13,11 +13,20 @@ export const fetchArtists = async () => {
 };
 
 export const fetchGenres = async () => {
-    try{
+    try {
         const response = await axios.get(`${API_URL}/genres`);
         return response.data;
-    } catch (e){
+    } catch (e) {
         console.error('Error fetching genres: ', e);
         throw e;
     }
 };
+
+export const fetchPlaylists = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/playlist`);
+        return response.data;
+    } catch (e) {
+        throw e;
+    }
+}
