@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      <Login />  {/* Render App bên trong Router */}
+      <Register />  {/* Render App bên trong Router */}
     </Router>
   </React.StrictMode>
 );

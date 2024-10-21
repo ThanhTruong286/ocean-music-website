@@ -30,6 +30,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+
 // Lắng nghe sự kiện SIGINT để đóng kết nối khi tắt server
 process.on('SIGINT', () => {
   console.log('Received SIGINT. Closing database connection...');
