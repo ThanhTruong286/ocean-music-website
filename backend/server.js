@@ -1,31 +1,30 @@
-// server.js
+const cors = require('cors');
 const express = require('express');
-const connectDB = require('./config/db');
-const authMiddleware = require('./middlewares/authMiddleware');
-const errorHandler = require('./middlewares/errorHandler');
-const loggingMiddleware = require('./middlewares/loggingMiddleware');
+const bodyParser = require('body-parser');
+const userRoutes = require('./routes/userRoutes');
+const artistRoutes = require('./routes/artistRoutes');
+const db = require('./config/db'); // Kết nối DB
 
 const app = express();
-
-// Kết nối đến MongoDB
-connectDB();
+app.use(cors());
+const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(express.json()); // Xử lý JSON
-app.use(loggingMiddleware); // Ghi log các yêu cầu
+app.use(bodyParser.json()); // Để xử lý JSON
+app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệu từ form
 
-// Ví dụ sử dụng middleware xác thực cho một route
-app.use('/api/protected', authMiddleware, (req, res) => {
-  res.send('This is a protected route.');
+// Sử dụng routes
+app.use('/api/users', userRoutes); // Route cho người dùng
+app.use('/api/artist', artistRoutes);// Route cho artist
+
+// Lắng nghe trên port
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-// Route mẫu
-app.get('/api/public', (req, res) => {
-  res.send('This is a public route.');
+// Lắng nghe sự kiện SIGINT để đóng kết nối khi tắt server
+process.on('SIGINT', () => {
+  console.log('Received SIGINT. Closing database connection...');
+  db.closeConnection(); // Gọi hàm đóng kết nối
+  process.exit(); // Thoát ứng dụng
 });
-
-// Middleware xử lý lỗi
-app.use(errorHandler);
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
