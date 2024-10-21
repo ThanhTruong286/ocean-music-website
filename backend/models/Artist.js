@@ -5,7 +5,7 @@ const db = require('../config/db');
 class ArtistModel {
     static getAllArtists(callback) {
         db.query(`
-        SELECT *
+        SELECT artists.artist_id, artists.bio, artists.user_id, users.username 
         FROM artists 
         JOIN users ON artists.user_id = users.user_id
     `, callback);
