@@ -23,6 +23,16 @@ export const fetchAlbums = async () => {
         throw error;
     }
 };
+// Fetch all songs
+export const fetchSongs = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/songs`); // Update the URL to fetch songs directly
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+        throw error;
+    }
+};
 
 
 

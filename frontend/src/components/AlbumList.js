@@ -1,18 +1,18 @@
-// AlbumList.js
 import faker from "../assets/images/artists/faker.jpg";
 import React, { useEffect, useState } from 'react';
-import { fetchAlbums } from '../api/api'; // Assuming API call for albums
+import { fetchAlbums, fetchSongs } from '../api/api'; // Ensure fetchSongs is imported
 import '../styles/album.scss'; // Link SCSS
 
 const AlbumList = () => {
     const [albums, setAlbums] = useState([]);
+    const [songs, setSongs] = useState([]); // State for songs
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadAlbums = async () => {
             try {
-                const data = await fetchAlbums(); // Assuming API call
+                const data = await fetchAlbums(); // Fetch albums
                 setAlbums(data);
             } catch (err) {
                 setError('Unable to load albums.');
@@ -21,7 +21,17 @@ const AlbumList = () => {
             }
         };
 
+        const loadSongs = async () => {
+            try {
+                const data = await fetchSongs(); // Fetch songs
+                setSongs(data);
+            } catch (err) {
+                setError('Unable to load songs.');
+            }
+        };
+
         loadAlbums();
+        loadSongs(); // Call function to load songs
     }, []);
 
     if (loading) return <div>Loading...</div>;
@@ -42,6 +52,25 @@ const AlbumList = () => {
                         <p className="album-artist">By {album.artist}</p>
                     </div>
                 ))}
+            </div>
+
+            {/* Songs Section */}
+            <div className="songs-container">
+                <h2 className="songs-title">Our Top Releasing Listening Songs</h2>
+                <div className="song-list">
+                    {songs.map(song => (
+                        <div key={song.song_id} className="song-item">
+                            <img src={song.image  || faker} alt={song.title} className="song-image" />
+                            <div className="song-details">
+                                <h3 className="song-title">{song.title}</h3>
+                                <p className="song-artist">{song.artist}</p>
+                            </div>
+                            <div className="song-plays">
+                                <span role="img" aria-label="headphone">🎧</span> {song.plays}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

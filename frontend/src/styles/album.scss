@@ -64,10 +64,11 @@
   margin-top: 40px;
 
   .songs-title {
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 25px;  /* Reduced font size */
+    
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: #333;
   }
 
   .song-list {
