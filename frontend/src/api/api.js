@@ -30,3 +30,11 @@ export const fetchPlaylists = async () => {
         throw e;
     }
 }
+export const fetchingSongs = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/song`);
+        return res.data;
+    } catch (e) {
+        throw e;
+    }
+}
