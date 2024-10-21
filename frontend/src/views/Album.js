@@ -36,9 +36,9 @@ const Album = () => {
 
       <div className="album-container">
         <h1 className="album-title">Albums</h1>
-        {/** ARTIST LIST */}
+        {/** Album LIST */}
         <AlbumList />
-                    {/** END ARTIST LIST */}
+        {/** END album LIST */}
       </div>
           
       {/* New Section for Top Releasing Songs */}
