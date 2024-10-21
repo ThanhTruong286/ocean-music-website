@@ -11,8 +11,8 @@ class UserModel {
     }
 
     static createUser(userData, callback) {
-        db.query('INSERT INTO users (username, email, password, role_id, profile_url, status, phone_number, is_vip, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [userData.username, userData.email, userData.password, userData.role_id, userData.profile_url, userData.status, userData.phone_number, userData.is_vip, userData.date_of_birth],
+        db.query('INSERT INTO users (username, email, password, phone_number, role_id, status) VALUES (?, ?, ?, ?, ?, ?)',
+            [userData.username, userData.email, userData.password, userData.phone_number, userData.role_id, userData.status],
             callback);
     }
 

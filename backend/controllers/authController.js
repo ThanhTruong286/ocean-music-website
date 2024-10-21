@@ -1,54 +1,46 @@
-// controllers/authController.js
-const User = require('../models/User');
+const db = require('../config/db'); // Đảm bảo đã kết nối với MySQL
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('../config/config');
 
-// Đăng ký người dùng mới
-const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+exports.registerUser = async (req, res) => {
+  const { firstName, lastName, email, password, phone } = req.body;
 
   try {
-    // Kiểm tra xem người dùng đã tồn tại
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists.' });
-    }
+    // Kiểm tra xem người dùng đã tồn tại chưa
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+      }
 
-    // Mã hóa mật khẩu
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword });
+      if (results.length > 0) {
+        return res.status(400).json({ message: 'User already exists' });
+      }
 
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
+      // Nếu người dùng không tồn tại, tiến hành thêm người dùng mới
+      const hashedPassword = await bcrypt.hash(password, 10); // Băm mật khẩu
+      const newUser = {
+        username: `${firstName} ${lastName}`,
+        email,
+        password: hashedPassword,
+        phone_number: phone,
+        role_id: 1, // Giả sử role_id mặc định là 1
+        profile_url: '', // Giả định không có profile URL ban đầu
+        status: 'active',
+        is_vip: false
+      };
+
+      const query = 'INSERT INTO users (username, email, password, phone_number, role_id, profile_url, status, is_vip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+      db.query(query, [newUser.username, newUser.email, newUser.password, newUser.phone_number, newUser.role_id, newUser.profile_url, newUser.status, newUser.is_vip], (err, result) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: 'Error saving user to database' });
+        }
+
+        res.status(201).json({ message: 'User registered successfully.' });
+      });
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
-};
-
-// Đăng nhập người dùng
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
-    }
-
-    const token = jwt.sign({ id: user._id }, config.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ token, userId: user._id });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-module.exports = {
-  registerUser,
-  loginUser,
 };

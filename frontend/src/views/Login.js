@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../api/api'; // Đảm bảo rằng đường dẫn này chính xác
 import '../styles/Login.scss';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const userData = { email, password };
+
+    try {
+      const response = await loginUser(userData);
+      console.log('Đăng nhập thành công:', response);
+
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('userId', response.userId);
+
+      navigate('/home');
+      setErrorMessage('Đăng nhập thành công. Siuuuuuuuuuuuuu');
+    } catch (error) {
+      console.error('Lỗi khi đăng nhập:', error);
+      setErrorMessage('Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.');
+    }
+  };
+
   return (
     <div className="login-page">
       <div className="login-container">
@@ -9,15 +35,30 @@ const Login = () => {
           <img src={require('../assets/images/logo.png')} alt="Logo" className="logo" />
           <h2>Sign In</h2>
           <p>Login to stay connected.</p>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" placeholder="xyz@example.com" required />
+              <input 
+                type="email" 
+                id="email" 
+                placeholder="xyz@example.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required 
+              />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" id="password" placeholder="xxxx" required />
+              <input 
+                type="password" 
+                id="password" 
+                placeholder="xxxx" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required 
+              />
             </div>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <div className="form-options">
               <div>
                 <input type="checkbox" id="remember" />

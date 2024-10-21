@@ -1,0 +1,138 @@
+.register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+  
+    .register-container {
+      display: flex;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 1000px; /* Giới hạn độ rộng tối đa */
+      width: 100%; /* Cho phép container co giãn theo chiều rộng */
+      flex-direction: row;
+      @media (max-width: 768px) {
+        flex-direction: column; /* Cho màn hình nhỏ */
+        max-width: 100%; /* Co giãn full màn hình */
+      }
+  
+      .register-left {
+        padding: 40px;
+        flex: 1; /* Co giãn theo chiều rộng */
+        .logo {
+          width: 150px;
+          margin-bottom: 20px;
+        }
+  
+        h2 {
+          margin-bottom: 10px;
+          font-size: 2rem;
+          font-weight: bold;
+        }
+  
+        p {
+          color: #777;
+          margin-bottom: 20px;
+        }
+  
+        .form-group {
+          margin-bottom: 15px;
+  
+          label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            color: #555;
+          }
+  
+          input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+  
+            &:focus {
+              border-color: #007bff;
+              outline: none;
+            }
+          }
+        }
+  
+        .register-button {
+          width: 100%;
+          padding: 10px;
+          background-color: #ff4b5c;
+          border: none;
+          color: white;
+          border-radius: 5px;
+          font-size: 1.2rem;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: #e04351;
+          }
+        }
+  
+        .or-sign-up {
+          margin: 20px 0;
+          text-align: center;
+          font-size: 1rem;
+          color: #777;
+        }
+  
+        .social-login {
+          display: flex;
+          justify-content: center;
+  
+          .social-button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            background-color: #f5f5f5;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+  
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+  
+        .login-text {
+          margin-top: 20px;
+          text-align: center;
+          font-size: 1rem;
+  
+          a {
+            color: #ff4b5c;
+            text-decoration: none;
+  
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+  
+      .register-right {
+        flex: 1; /* Co giãn theo chiều rộng */
+        background: url('../assets/images/tải\ xuống.jpg') no-repeat center center;
+        background-size: cover;
+        @media (max-width: 768px) {
+          display: none; /* Ẩn phần này trên màn hình nhỏ */
+        }
+      }
+    }
+  }
+  

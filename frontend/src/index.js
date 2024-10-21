@@ -1,15 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './views/App';
+import Home from "./views/Home";
 import reportWebVitals from './reportWebVitals';
 import './styles/global.scss';
 import 'bootstrap/dist/css/bootstrap.css';
-import Login from "../src/views/Login";
+import { BrowserRouter as Router } from 'react-router-dom';
+import Login from './views/Login';
+import Register from './views/Register';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Register />  {/* Render App bên trong Router */}
+    </Router>
   </React.StrictMode>
 );
 
+reportWebVitals();
