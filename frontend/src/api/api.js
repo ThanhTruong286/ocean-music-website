@@ -11,3 +11,13 @@ export const fetchArtists = async () => {
         throw error; // Ném lỗi lên để xử lý sau này
     }
 };
+
+export const fetchGenres = async () => {
+    try{
+        const response = await axios.get(`${API_URL}/genres`);
+        return response.data;
+    } catch (e){
+        console.error('Error fetching genres: ', e);
+        throw e;
+    }
+};

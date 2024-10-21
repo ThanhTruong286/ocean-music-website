@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const artistRoutes = require('./routes/artistRoutes');
+const genreRoutes = require('./routes/genreRoutes');
 const db = require('./config/db'); // Kết nối DB
 
 const app = express();
@@ -15,7 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệ
 
 // Sử dụng routes
 app.use('/api/users', userRoutes); // Route cho người dùng
-app.use('/api/artist', artistRoutes);// Route cho artist
+app.use('/api/artist', artistRoutes);// Route cho 
+app.use('/api/genres', genreRoutes);
+
 
 // Lắng nghe trên port
 app.listen(PORT, () => {
