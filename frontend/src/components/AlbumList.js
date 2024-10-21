@@ -4,6 +4,7 @@ import { fetchAlbums, fetchSongs } from '../api/api'; // Ensure fetchSongs is im
 import '../styles/album.scss'; // Link SCSS
 
 const AlbumList = () => {
+    
     const [albums, setAlbums] = useState([]);
     const [songs, setSongs] = useState([]); // State for songs
     const [loading, setLoading] = useState(true);
@@ -46,10 +47,9 @@ const AlbumList = () => {
                         <img
                             src={album.image || faker} 
                             alt={album.title}
-                            className="album-image"
-                        />
+                            className="album-image"/>
                         <h2 className="album-title">{album.title}</h2>
-                        <p className="album-artist">By {album.artist}</p>
+                        <p className="album-artist">Jhohn faker</p>
                     </div>
                 ))}
             </div>
@@ -63,10 +63,10 @@ const AlbumList = () => {
                             <img src={song.image  || faker} alt={song.title} className="song-image" />
                             <div className="song-details">
                                 <h3 className="song-title">{song.title}</h3>
-                                <p className="song-artist">{song.artist}</p>
+                                <p className="song-artist">Jhohn faker</p>
                             </div>
                             <div className="song-plays">
-                                <span role="img" aria-label="headphone">🎧</span> {song.plays}
+                                <span role="img" aria-label="headphone">🎧 6.2k</span> {song.plays}
                             </div>
                         </div>
                     ))}
