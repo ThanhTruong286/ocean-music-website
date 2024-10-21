@@ -15,7 +15,12 @@ const App = () => {
       <main class="main-content">
         <Album />
       </main>
+<<<<<<< HEAD:src/views/App.js
+      <Footer />
+  
+=======
       {/* <Footer /> */}
+>>>>>>> dev:frontend/src/views/App.js
     </div>
   )
 }

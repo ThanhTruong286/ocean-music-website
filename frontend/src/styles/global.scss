@@ -318,8 +318,9 @@ html, body {
             width: 300px;
         }
     }
-
+<<<<<<< HEAD:src/styles/global.scss
 }
+=======
     .text-body{
         font-size: 14px !important;
     }
@@ -338,6 +339,7 @@ html, body {
             transition-property: transform;
         }
     }
+}
 
 .footer {
     position: fixed;
@@ -408,4 +410,4 @@ html, body {
         }
     }
 }
-
+>>>>>>> dev:frontend/src/styles/global.scss
