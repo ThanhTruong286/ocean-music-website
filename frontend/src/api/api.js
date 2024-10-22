@@ -23,10 +23,11 @@ export const fetchAlbums = async () => {
         throw error;
     }
 };
+
 // Fetch all songs
 export const fetchSongs = async () => {
     try {
-        const response = await axios.get(`${API_URL}/songs`); // Update the URL to fetch songs directly
+        const response = await axios.get(`${API_URL}/songs`);
         return response.data;
     } catch (error) {
         console.error('Error fetching songs:', error);
@@ -34,5 +35,13 @@ export const fetchSongs = async () => {
     }
 };
 
-
-
+// Fetch all roles
+export const fetchRoles = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/roles`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching roles:', error);
+        throw error;
+    }
+};

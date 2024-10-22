@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import Album from './Album';
 import Library from './Library';
 import Artist from './Artist';
-
+import Roles from '../components/Roles';
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
       </aside>
 
       <main className="main-content">
-        <Album/>
+        <Roles/>
       </main>
       {/* <Footer /> */}
     </div>

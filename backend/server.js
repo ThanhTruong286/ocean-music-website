@@ -5,6 +5,7 @@ const userRoutes = require('./routes/userRoutes');
 const artistRoutes = require('./routes/artistRoutes');
 const albumRoutes = require('./routes/albumRoutes');
 const songRoutes = require('./routes/songRoutes');
+const roleRoutes = require('./routes/roleRoutes');
 const db = require('./config/db'); // Kết nối DB
 
 const app = express();
@@ -20,6 +21,7 @@ app.use('/api/users', userRoutes); // Route cho người dùng
 app.use('/api/artist', artistRoutes);// Route cho artist
 app.use('/api/album', albumRoutes);
 app.use('/api/songs', songRoutes);
+app.use('/api/role', roleRoutes);
 // Lắng nghe trên port
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
