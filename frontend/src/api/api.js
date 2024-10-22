@@ -53,3 +53,20 @@ export const fetchGenres = async () => {
         throw e;
     }
 };
+export const fetchPlaylists = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/playlist`);
+        return response.data;
+    } catch (e) {
+        throw e;
+    }
+}
+export const fetchingSongs = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/song`);
+        return res.data;
+    } catch (e) {
+        throw e;
+    }
+}
+

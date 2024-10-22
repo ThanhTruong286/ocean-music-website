@@ -1,13 +1,22 @@
 const ArtistModel = require('../models/Artist');
 
 exports.getAllArtists = (req, res) => {
-    ArtistModel.getAllArtists((err, results) => {
+    ArtistModel.getAllArtists((err, artistResults) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching artists' });
         }
-        res.json(results);
+
+        const artistsWithUsernames = artistResults.map(artist => ({
+            artist_id: artist.artist_id,
+            user_id: artist.user_id,
+            bio: artist.bio,
+            username: artist.username
+        }));
+
+        res.json(artistsWithUsernames);
     });
 };
+
 
 exports.createArtist = (req, res) => {
     const newArtist = req.body;
@@ -49,3 +58,15 @@ exports.deleteArtist = (req, res) => {
         res.json({ message: 'Artist deleted' });
     });
 };
+exports.getUsernameByArtistId = (req, res) => {
+    const artistId = req.params.id;
+    ArtistModel.getUsernameByArtistId(artistId, (err, username) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error fetching username' });
+        }
+        if (!username) {
+            return res.status(404).json({ message: 'Username not found for this artist' });
+        }
+        res.json({ username });
+    });
+}

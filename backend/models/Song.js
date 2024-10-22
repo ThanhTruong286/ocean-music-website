@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 class SongModel {
     static getAllSongs(callback) {
-        db.query('SELECT * FROM songs', callback);
+        db.query('SELECT songs.*, genres.name FROM songs JOIN genres ON songs.genre_id = genres.genre_id', callback);
     }
 
     static getSongById(songId, callback) {

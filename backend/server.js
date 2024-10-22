@@ -7,10 +7,9 @@ const artistRoutes = require('./routes/artistRoutes');
 const authRoutes = require('./routes/authRoutes'); // Thêm route cho auth
 const errorHandler = require('./middlewares/errorHandler'); // Middleware xử lý lỗi
 const authController = require('./controllers/authController');
-
-
 const genreRoutes = require('./routes/genreRoutes');
-
+const playlistRoutes = require('./routes/playlistRoutes');
+const songRoutes = require('./routes/songRoutes');
 const db = require('./config/db'); // Kết nối DB
 
 const app = express();
@@ -26,13 +25,12 @@ app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệ
 // Sử dụng routes
 app.use('/api/auth', authRoutes); // Route cho xác thực
 app.use('/api/users', userRoutes); // Route cho người dùng
-app.use('/api/artist', artistRoutes); // Route cho artist
-
 // Middleware xử lý lỗi
 app.use(errorHandler);
-
-app.use('/api/artist', artistRoutes);// Route cho 
+app.use('/api/artist', artistRoutes); // Route cho artist
 app.use('/api/genres', genreRoutes);
+app.use('/api/playlist', playlistRoutes);
+app.use('/api/song', songRoutes);
 
 
 

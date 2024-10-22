@@ -32,6 +32,9 @@ class UserModel {
     static deleteUser(userId, callback) {
         db.query('DELETE FROM users WHERE user_id = ?', [userId], callback);
     }
+    static getUsernameById(userId, callback) {
+        db.query('SELECT username FROM users WHERE user_id = ?', [userId], callback);
+    }
 }
 
 module.exports = UserModel;
