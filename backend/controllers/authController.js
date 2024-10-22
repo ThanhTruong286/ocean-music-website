@@ -56,41 +56,42 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// Hàm đăng nhập người dùng
+
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required.' });
+  }
+
   try {
-    // Tìm người dùng trong cơ sở dữ liệu theo email
     const [results] = await new Promise((resolve, reject) => {
       db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
-          console.error('Database query error during user login:', err); // Ghi lỗi vào console
+          console.error('Database query error during user login:', err);
           return reject(err);
         }
         resolve(results);
       });
     });
 
-    // Kiểm tra xem người dùng có tồn tại hay không
-    if (results.length === 0) {
+    // Kiểm tra xem có người dùng nào được tìm thấy không
+    if (!results || results.length === 0) {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
 
-    // Lấy đối tượng người dùng từ kết quả
-    const user = results[0];
-
-    // So sánh mật khẩu
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
+    // Kiểm tra xem mật khẩu có khớp không
+    if (password !== results.password) {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
 
-    // Nếu đúng, trả về thông báo thành công (hoặc token JWT nếu cần)
-    res.status(200).json({ message: 'Login successful', userId: user.user_id });
+    res.status(200).json({ message: 'Login successful',userId: results.user_id });
   } catch (err) {
-    console.error('Server error during login:', err); // Ghi lỗi vào console
-    res.status(500).json({ message: 'Server error', error: err.message }); // Gửi thêm thông tin lỗi
+    console.error('Server error during login:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
+
+
+

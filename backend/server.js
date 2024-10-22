@@ -7,7 +7,7 @@ const artistRoutes = require('./routes/artistRoutes');
 const authRoutes = require('./routes/authRoutes'); // Thêm route cho auth
 const errorHandler = require('./middlewares/errorHandler'); // Middleware xử lý lỗi
 const authController = require('./controllers/authController');
-app.post('/auth/login', authController.loginUser);
+
 
 const genreRoutes = require('./routes/genreRoutes');
 
@@ -19,13 +19,13 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 app.use(bodyParser.json()); // Để xử lý JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệu từ form
 
 // Sử dụng routes
 app.use('/api/auth', authRoutes); // Route cho xác thực
 app.use('/api/users', userRoutes); // Route cho người dùng
-
 app.use('/api/artist', artistRoutes); // Route cho artist
 
 // Middleware xử lý lỗi
