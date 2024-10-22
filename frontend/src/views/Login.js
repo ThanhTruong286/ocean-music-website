@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../api/api'; // Đảm bảo rằng đường dẫn này chính xác
+import { loginUser } from '../api/api';
 import '../styles/Login.scss';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => { 
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState(''); 
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();  
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         // Chuẩn bị dữ liệu đăng nhập
-        const userData = { email, password }; 
-
+        const userData = { email, password };
+    
         try {
             // Gửi yêu cầu đăng nhập
             const response = await loginUser(userData); 
             console.log('Login successful:', response);
-            // Điều hướng đến trang khác nếu đăng nhập thành công
+            navigate('/home'); 
         } catch (error) {
             console.error('Login failed:', error);
             setErrorMessage(error.response?.data?.message || 'Invalid email or password.'); 
         }
     };
+    
     
     return (
         <div className="login-page">

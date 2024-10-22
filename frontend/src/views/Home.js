@@ -4,6 +4,7 @@ import faker from "../assets/images/artists/faker.jpg";
 import ArtistList from "../components/ArtistList";
 import GenreList from "../components/GenreList";
 import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -250,6 +251,7 @@ const Home = () => {
             </div>
         </div >
         </main>
+        <Footer />
         </div>
     )
 }
