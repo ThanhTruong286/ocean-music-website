@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:5000/api'; // Đảm bảo rằng URL này đ�
 
 export const fetchArtists = async () => {
     try {
-        const response = await axios.post(`${API_URL}/artist`);
+        const response = await axios.get(`${API_URL}/artist`);
         return response.data; // Trả về dữ liệu từ server
     } catch (error) {
         console.error('Error fetching artists:', error);
@@ -14,14 +14,21 @@ export const fetchArtists = async () => {
 };
 
 export const loginUser = async (userData) => {
+    console.log(userData);
     try {
-        const response = await axios.post(`${API_URL}/auth/login`, userData); // Thêm API_URL vào đây
+        const response = await axios.post(`${API_URL}/auth/login`, userData, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        console.log('Response Data:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Login failed:', error);
+        console.error('Login failed:', error.response ? error.response.data : error.message);
         throw error;
     }
 };
+
 
 export const registerUser = async (userData) => {
     try {
