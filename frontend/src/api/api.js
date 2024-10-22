@@ -13,15 +13,26 @@ export const fetchArtists = async () => {
     }
 };
 
+export const profileViewData = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/profile`);
+        return response.data;
+    } catch (e) {
+        throw e;
+    }
+}
+
 export const loginUser = async (userData) => {
-    console.log(userData);
     try {
         const response = await axios.post(`${API_URL}/auth/login`, userData, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        console.log('Response Data:', response.data);
+
+        // Lưu thông tin người dùng vào localStorage (hoặc sessionStorage)
+        localStorage.setItem('user', JSON.stringify(response.data));
+
         return response.data;
     } catch (error) {
         console.error('Login failed:', error.response ? error.response.data : error.message);
@@ -29,6 +40,26 @@ export const loginUser = async (userData) => {
     }
 };
 
+export const logoutUser = async () => {
+    try {
+        // Gọi API backend để thực hiện đăng xuất (nếu cần)
+        await axios.post(`${API_URL}/auth/logout`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        // Xóa token lưu trữ trên client (localStorage/sessionStorage)
+        localStorage.removeItem('token'); // Hoặc sessionStorage
+        console.log('Logout successful');
+
+        // Chuyển hướng người dùng về trang đăng nhập hoặc trang chủ
+        window.location.href = '/login';
+    } catch (error) {
+        console.error('Logout failed:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
 
 export const registerUser = async (userData) => {
     try {

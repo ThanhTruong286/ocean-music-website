@@ -3,30 +3,30 @@ import { loginUser } from '../api/api';
 import '../styles/Login.scss';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => { 
-    const [email, setEmail] = useState(''); 
+const Login = () => {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-    
+
         // Chuẩn bị dữ liệu đăng nhập
         const userData = { email, password };
-    
+
         try {
             // Gửi yêu cầu đăng nhập
-            const response = await loginUser(userData); 
+            const response = await loginUser(userData);
             console.log('Login successful:', response);
-            navigate('/home'); 
+            navigate('/');
         } catch (error) {
             console.error('Login failed:', error);
-            setErrorMessage(error.response?.data?.message || 'Invalid email or password.'); 
+            setErrorMessage(error.response?.data?.message || 'Invalid email or password.');
         }
     };
-    
-    
+
+
     return (
         <div className="login-page">
             <div className="login-container">
@@ -37,30 +37,30 @@ const Login = () => {
                     <form onSubmit={handleLogin}>
                         <div className="form-group">
                             <label htmlFor="email">Email</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                placeholder="xyz@example.com" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                                required 
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="xyz@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                placeholder="xxxx" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                                required 
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="xxxx"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
                             />
                         </div>
-                        {errorMessage && <p className="error-message">{errorMessage}</p>} 
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="form-options">
                             <div>
-                                <input type="checkbox" id="remember"/>
+                                <input type="checkbox" id="remember" />
                                 <label htmlFor="remember" className='me-3'> Remember Me</label>
                             </div>
                             <a href="#" className="forgot-password">Forgot Password?</a>

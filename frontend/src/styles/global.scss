@@ -251,7 +251,7 @@ body {
                         -webkit-box-shadow: none;
                         box-shadow: none;
                         border: none;
-                        width: 100%;
+                        width: max-content;
                     }
 
                     #search-field:focus {
@@ -441,4 +441,29 @@ body {
 
 .list-unstyled li {
     font-size: 16px;
+}
+
+.header-btn {
+    text-decoration: none;
+    margin: 10px;
+    background-color: red;
+    color: white;
+    /* Màu chữ trắng để nổi bật trên nền cam */
+    padding: 10px 20px;
+    /* Khoảng cách trong nút */
+    border-radius: 5px;
+    /* Góc bo tròn */
+    border: none;
+    /* Xóa border mặc định */
+    cursor: pointer;
+    /* Hiển thị con trỏ khi hover */
+    font-size: 16px;
+    /* Kích thước chữ */
+    font-weight: bold;
+    /* Đậm chữ */
+}
+
+.header-btn:hover {
+    background-color: black;
+    /* Màu nền khi hover */
 }
