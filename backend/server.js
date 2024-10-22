@@ -4,9 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const artistRoutes = require('./routes/artistRoutes');
-const authRoutes = require('./routes/authRoutes'); // Thêm route cho auth
-const errorHandler = require('./middlewares/errorHandler'); // Middleware xử lý lỗi
-const authController = require('./controllers/authController');
+const authRoutes = require('./routes/authRoutes');
+const errorHandler = require('./middlewares/errorHandler'); // Middleware xử lý lỗi;
 const genreRoutes = require('./routes/genreRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
 const songRoutes = require('./routes/songRoutes');
@@ -16,21 +15,30 @@ const app = express();
 app.use(cors());
 const PORT = process.env.PORT || 5000;
 
+const session = require('express-session');
+
+app.use(session({
+  secret: 'MIKASA',  // Thay đổi thành một khóa bí mật thật sự
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Đặt thành true nếu bạn sử dụng HTTPS
+}));
+
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // Để xử lý JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệu từ form
+// Middleware xử lý lỗi
+app.use(errorHandler);
 
 // Sử dụng routes
 app.use('/api/auth', authRoutes); // Route cho xác thực
 app.use('/api/users', userRoutes); // Route cho người dùng
-// Middleware xử lý lỗi
-app.use(errorHandler);
 app.use('/api/artist', artistRoutes); // Route cho artist
-app.use('/api/genres', genreRoutes);
-app.use('/api/playlist', playlistRoutes);
-app.use('/api/song', songRoutes);
+app.use('/api/genres', genreRoutes); // thể loại
+app.use('/api/playlist', playlistRoutes); // playlist
+app.use('/api/song', songRoutes); //bài hát
 
 
 

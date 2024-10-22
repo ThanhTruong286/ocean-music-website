@@ -8,4 +8,6 @@ router.post('/register', authController.registerUser);
 // Route cho đăng nhập người dùng
 router.post('/login', authController.loginUser); // Sử dụng POST
 
+router.post('/logout', authController.logoutUser);
+
 module.exports = router;

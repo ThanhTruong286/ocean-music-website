@@ -56,7 +56,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-
+// LOGIN
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -85,13 +85,24 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
 
-    res.status(200).json({ message: 'Login successful',userId: results.user_id });
+    res.status(200).json({ message: 'Login successful', userId: results.user_id });
   } catch (err) {
     console.error('Server error during login:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
 
+// LOGOUT
+exports.logoutUser = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error during user logout:', err);
+      return res.status(500).json({ message: 'Server error during logout' });
+    }
+    res.clearCookie('connect.sid'); // Xóa cookie lưu phiên
+    return res.status(200).json({ message: 'Logout successful' });
+  });
+};
 
 
 
