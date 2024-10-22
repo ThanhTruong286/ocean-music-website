@@ -13,6 +13,7 @@ export const fetchArtists = async () => {
     }
 };
 
+<<<<<<< HEAD
 export const loginUser = async (userData) => {
     try {
         const response = await axios.post(`${API_URL}/auth/login`, userData,userData, {
@@ -39,3 +40,14 @@ export const registerUser = async (userData) => {
         throw error; // Ném lỗi lên để xử lý trong thành phần gọi hàm
     }
 };
+=======
+export const fetchGenres = async () => {
+    try{
+        const response = await axios.get(`${API_URL}/genres`);
+        return response.data;
+    } catch (e){
+        console.error('Error fetching genres: ', e);
+        throw e;
+    }
+};
+>>>>>>> 2f75cff10091de74fac9999b2ef08e59575e4417

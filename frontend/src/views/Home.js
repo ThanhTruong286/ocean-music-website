@@ -2,6 +2,8 @@ import Header from "../components/Header";
 import peanut from "../assets/images/artists/peanut.jpg";
 import faker from "../assets/images/artists/faker.jpg";
 import ArtistList from "../components/ArtistList";
+import GenreList from "../components/GenreList";
+import Sidebar from "../components/Sidebar";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -11,7 +13,11 @@ import 'swiper/css';
 const Home = () => {
 
     return (
-
+        <div>
+        <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
+        <Sidebar />
+      </aside>
+    <main className="main-content">
         <div id="header">
             <Header />
             <div className="content-inner pb-0 container-fluid" id="page_layout">
@@ -228,9 +234,23 @@ const Home = () => {
                             </ul>
                         </div>
                     </div>
+                    <div className="col-lg-12 mb-5">
+                        <div className="card-header  mb-3">
+                            <div className="header-title">
+                                <h4 className="card-title text-capitalize">top genres for you</h4>
+                            </div>
+                        </div>
+                        <div className="swiper overflow-hidden swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
+                            <ul className="swiper-wrapper   p-0 list-unstyled mb-0 ">
+                                <GenreList/>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div >
+        </main>
+        </div>
     )
 }
 export default Home
