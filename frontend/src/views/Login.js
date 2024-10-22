@@ -59,8 +59,8 @@ const Login = () => {
                         {errorMessage && <p className="error-message">{errorMessage}</p>} 
                         <div className="form-options">
                             <div>
-                                <input type="checkbox" id="remember" />
-                                <label htmlFor="remember"> Remember Me</label>
+                                <input type="checkbox" id="remember"/>
+                                <label htmlFor="remember" className='me-3'> Remember Me</label>
                             </div>
                             <a href="#" className="forgot-password">Forgot Password?</a>
                         </div>
