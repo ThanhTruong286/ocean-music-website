@@ -17,7 +17,4 @@ router.put('/:id', artistController.updateArtist);
 // Route xóa nghệ sĩ theo ID
 router.delete('/:id', artistController.deleteArtist);
 
-// Route lấy username của nghệ sĩ theo ID
-router.get('/:id/username', artistController.getUsernameByArtistId); // Thêm route này
-
 module.exports = router;

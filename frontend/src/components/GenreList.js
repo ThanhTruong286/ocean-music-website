@@ -1,5 +1,5 @@
 import faker from "../assets/images/artists/faker.jpg";
-import { fetchGenres } from '../api/api';
+import {fetchGenres} from '../api/api';
 import React, { useEffect, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -34,24 +34,13 @@ const GenreList = () => {
     if (error) {
         return <div>Lỗi: {error}</div>;
     }
-    return (
-        <Swiper
-            spaceBetween={30}  // Giảm khoảng cách giữa các slides
-            slidesPerView={5}  // Hiển thị 5 slides cùng lúc
-            onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
-        >
-            {genres.map((genre) => (
-                <SwiperSlide key={genre.genre_id}> {/* Đặt mỗi artist vào một SwiperSlide */}
-                    <li className="swiper-slide mb-3 swiper-slide-duplicate">
-                        <img src={faker} id="26" class="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" class=" text-capitalize line-count-1 h5 d-block">{genre.name}</a>
-                        <small class="fw-normal text-capitalize line-count-1">top 12
-                            songs from travels and</small>
-                    </li>
-                </SwiperSlide>
-            ))}
-        </Swiper>
+    return(
+        <li className="swiper-slide mb-3 swiper-slide-duplicate">
+        <img src={faker} id="26" class="mb-3 img-fluid rounded-3" alt="song-img"/>
+        <a href="../dashboard/music-player.html" class=" text-capitalize line-count-1 h5 d-block">party</a>
+        <small class="fw-normal text-capitalize line-count-1">top 12
+                songs from travels and</small>
+        </li>
     )
 }
 
