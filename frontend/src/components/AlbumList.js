@@ -46,7 +46,7 @@ const AlbumList = () => {
 
     return (
         <div>
-            <h1 className="album-title">Albums</h1>
+            <h2 className="songs-album">Albums</h2>
             <div className="album-list">
                 {/* Album Loading & Error State */}
                 {loadingAlbums ? (
@@ -61,7 +61,7 @@ const AlbumList = () => {
                                 alt={album.title}
                                 className="album-image"/>
                             
-                            <a href="../dashboard/music-player.html" className="album-title h2">{album.title}</a>
+                            <h2 className="album-title"> {album.title}</h2> 
                             <p className="album-artist">Jhohn faker</p>
                         </div>
                     ))
