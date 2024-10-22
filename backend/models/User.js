@@ -11,10 +11,17 @@ class UserModel {
     }
 
     static createUser(userData, callback) {
-        db.query('INSERT INTO users (username, email, password, role_id, profile_url, status, phone_number, is_vip, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [userData.username, userData.email, userData.password, userData.role_id, userData.profile_url, userData.status, userData.phone_number, userData.is_vip, userData.date_of_birth],
-            callback);
+        db.query('INSERT INTO users (username, email, password, phone_number, role_id, status) VALUES (?, ?, ?, ?, ?, ?)',
+            [userData.username, userData.email, userData.password, userData.phone_number, userData.role_id, userData.status],
+            (err, result) => {
+                if (err) {
+                    console.error('Error inserting user:', err); // Ghi lỗi vào console
+                    return callback(err); // Trả về lỗi qua callback
+                }
+                callback(null, result); // Trả kết quả thành công qua callback
+            });
     }
+    
 
     static updateUser(userId, userData, callback) {
         db.query('UPDATE users SET username = ?, email = ?, password = ?, role_id = ?, profile_url = ?, status = ?, phone_number = ?, is_vip = ?, date_of_birth = ? WHERE user_id = ?',

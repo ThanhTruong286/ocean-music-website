@@ -6,6 +6,8 @@ import Sidebar from "../components/Sidebar";
 import RadioList from "../components/RadioList";
 import TrendingList from "../components/TrendingList";
 import RecentlyPlayedList from "../components/RecentlyPlayedList";
+import Footer from "../components/Footer";
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -367,11 +369,11 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
+
                 </div >
             </main>
+        <Footer/>
         </div>
     )
 }
-export {
-    Home
-}
+export default Home
