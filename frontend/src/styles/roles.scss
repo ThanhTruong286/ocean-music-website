@@ -1,0 +1,190 @@
+.roles-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+  
+    .stats-section {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+  
+      .stat-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 18%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+        h3 {
+          font-size: 2rem;
+          margin-bottom: 10px;
+        }
+  
+        p {
+          font-size: 1rem;
+          color: #888;
+        }
+      }
+    }
+  
+    .content-section {
+      display: flex;
+      justify-content: space-between;
+  
+      .top-artist-section {
+        width: 65%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+        h2 {
+          margin-bottom: 20px;
+        }
+  
+        table {
+          width: 100%;
+          border-collapse: collapse;
+  
+          th, td {
+            padding: 10px;
+            text-align: left;
+          }
+  
+          th {
+            background-color: #f9f9f9;
+            color: #555;
+          }
+  
+          td {
+            border-bottom: 1px solid #eee;
+          }
+        }
+  
+        .pagination {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 20px;
+  
+          button {
+            padding: 10px 20px;
+            background-color: #eee;
+            border: none;
+            cursor: pointer;
+  
+            &:hover {
+              background-color: #ddd;
+            }
+          }
+  
+          span {
+            padding: 10px;
+          }
+        }
+      }
+  
+      .reviews-section {
+        width: 30%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+        h2 {
+          margin-bottom: 20px;
+        }
+  
+        .reviews-chart {
+          text-align: center;
+  
+          .donut-chart {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ff6868;
+            color: white;
+            font-size: 2rem;
+            line-height: 150px;
+            margin: 0 auto 20px;
+          }
+  
+          ul {
+            list-style: none;
+            padding: 0;
+  
+            li {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 10px;
+  
+              span {
+                color: #888;
+              }
+            }
+          }
+        }
+      }
+    }
+    .recent-reviews-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      
+        .recent-users, .total-reviews {
+          background-color: #fff;
+          width: 48%;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      
+          h2 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: #333;
+          }
+      
+          ul {
+            list-style: none;
+            padding: 0;
+      
+            li {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 20px;
+              padding-bottom: 10px;
+              border-bottom: 1px solid #f0f0f0;
+      
+              img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+              }
+      
+              div {
+                flex-grow: 1;
+      
+                p:first-of-type {
+                  font-weight: 600;
+                  margin-bottom: 5px;
+                }
+      
+                p:last-of-type {
+                  font-size: 0.9rem;
+                  color: #888;
+                }
+              }
+      
+              span {
+                font-size: 0.9rem;
+                color: #888;
+              }
+            }
+          }
+        }
+      }
+      
+  }
+  
