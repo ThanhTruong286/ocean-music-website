@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 22, 2024 at 06:58 AM
+-- Generation Time: Oct 23, 2024 at 08:57 AM
 -- Server version: 8.3.0
 -- PHP Version: 7.4.33
 
@@ -32,8 +32,8 @@ USE `ocean`;
 DROP TABLE IF EXISTS `albums`;
 CREATE TABLE IF NOT EXISTS `albums` (
   `album_id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cover_image_url` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cover_image_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `artist_id` int NOT NULL,
   `release_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -118,7 +118,7 @@ INSERT INTO `album_songs` (`album_song_id`, `album_id`, `song_id`, `created_at`,
 DROP TABLE IF EXISTS `artists`;
 CREATE TABLE IF NOT EXISTS `artists` (
   `artist_id` int NOT NULL AUTO_INCREMENT,
-  `bio` text COLLATE utf8mb4_unicode_ci,
+  `bio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `user_id` int NOT NULL,
   `debut_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `comment_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `song_id` int NOT NULL,
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`comment_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -236,7 +236,7 @@ INSERT INTO `favorites` (`favorite_id`, `user_id`, `song_id`, `created_at`) VALU
 DROP TABLE IF EXISTS `genres`;
 CREATE TABLE IF NOT EXISTS `genres` (
   `genre_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`genre_id`)
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `listening_history` (
 DROP TABLE IF EXISTS `playlists`;
 CREATE TABLE IF NOT EXISTS `playlists` (
   `playlist_id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -360,7 +360,7 @@ INSERT INTO `playlist_songs` (`playlist_song_id`, `playlist_id`, `song_id`, `cre
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` int NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`role_id`)
@@ -406,13 +406,13 @@ CREATE TABLE IF NOT EXISTS `royalties` (
 DROP TABLE IF EXISTS `songs`;
 CREATE TABLE IF NOT EXISTS `songs` (
   `song_id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `duration` int NOT NULL,
   `genre_id` int NOT NULL,
   `release_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `file_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cover_image_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lyric` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cover_image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lyric` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `play_count` int DEFAULT '0',
@@ -469,15 +469,15 @@ CREATE TABLE IF NOT EXISTS `statistics` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `role_id` int DEFAULT NULL,
   `date_registered` datetime DEFAULT CURRENT_TIMESTAMP,
-  `profile_url` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profile_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_login` datetime DEFAULT CURRENT_TIMESTAMP,
-  `subscription_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Thường',
+  `subscription_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Thường',
   `phone_number` int DEFAULT NULL,
   `is_vip` tinyint(1) DEFAULT '0',
   `vip_expiration` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -487,22 +487,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_of_birth` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `role_id`, `date_registered`, `profile_url`, `status`, `last_login`, `subscription_type`, `phone_number`, `is_vip`, `vip_expiration`, `login_attempts`, `last_login_attempt`, `gender`, `date_of_birth`, `created_at`, `updated_at`) VALUES
-(1, 'justinbieber', 'justinbieber@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/justinbieber.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567890, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1994-03-01 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(2, 'taylorswift', 'taylorswift@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/taylorswift.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567891, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1989-12-13 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(3, 'brunomars', 'brunomars@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/brunomars.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567892, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1985-10-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(4, 'edsheeran', 'edsheeran@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/edsheeran.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567893, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1991-02-17 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(5, 'arianagrande', 'arianagrande@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/arianagrande.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567894, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1993-06-26 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(6, 'theweeknd', 'theweeknd@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/theweeknd.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567895, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1990-02-16 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(7, 'john_doe', 'johndoe@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/johndoe.jpg', NULL, '2024-10-22 13:32:28', 'Thường', 1234567896, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 1, '1995-07-19 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28'),
-(8, 'jane_smith', 'janesmith@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/janesmith.jpg', NULL, '2024-10-22 13:32:28', 'Thường', 1234567897, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 0, '1997-04-14 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `role_id`, `date_registered`, `profile_url`, `status`, `last_login`, `subscription_type`, `phone_number`, `is_vip`, `vip_expiration`, `login_attempts`, `last_login_attempt`, `gender`, `date_of_birth`, `created_at`, `updated_at`, `first_name`, `last_name`) VALUES
+(1, 'justinbieber', 'a@gmail.com', '1', 2, '2024-10-22 13:32:11', '/profiles/justinbieber.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567890, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1994-03-01 00:00:00', '2024-10-23 07:17:02', '2024-10-23 07:17:02', NULL, NULL),
+(2, 'taylorswift', 'taylorswift@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/taylorswift.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567891, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1989-12-13 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(3, 'brunomars', 'brunomars@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/brunomars.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567892, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1985-10-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(4, 'edsheeran', 'edsheeran@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/edsheeran.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567893, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1991-02-17 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(5, 'arianagrande', 'arianagrande@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/arianagrande.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567894, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1993-06-26 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(6, 'theweeknd', 'theweeknd@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/theweeknd.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567895, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1990-02-16 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(7, 'john_doe', 'johndoe@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/johndoe.jpg', NULL, '2024-10-22 13:32:28', 'Thường', 1234567896, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 1, '1995-07-19 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
+(8, 'jane_smith', 'janesmith@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/janesmith.jpg', NULL, '2024-10-22 13:32:28', 'Thường', 1234567897, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 0, '1997-04-14 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
+(21, 'Admin', 'caot43069@gmail.com', '$2a$10$SI0yt9b9xeyLYcCzvH3cVeKg8e5gFltamWqngru6jhyPeLbg93.j6', 1, '2024-10-23 15:55:50', '', 'active', '2024-10-23 15:55:50', 'Thường', 123, 0, '2024-10-23 15:55:50', 0, '2024-10-23 15:55:50', 0, NULL, '2024-10-23 08:55:50', '2024-10-23 08:55:50', 'Truong', 'Thanh');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

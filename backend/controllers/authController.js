@@ -3,21 +3,22 @@ const bcrypt = require('bcryptjs');
 
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
-  const { firstName, lastName, email, password, phone } = req.body;
+  const { firstName, lastName, username, email, password, phone } = req.body;
 
   try {
     // Kiểm tra xem người dùng đã tồn tại chưa
-    const [existingUser] = await new Promise((resolve, reject) => {
+    const existingUser = await new Promise((resolve, reject) => {
       db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
           console.error('Database query error during user check:', err); // Ghi lỗi vào console
           return reject(err);
         }
-        resolve(results);
+        resolve(results); // Kết quả từ database trả về có thể là một mảng
       });
     });
 
-    if (existingUser.length > 0) {
+    // Kiểm tra nếu existingUser là một mảng và có người dùng trùng email
+    if (existingUser && existingUser.length > 0) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -26,20 +27,21 @@ exports.registerUser = async (req, res) => {
 
     // Thêm người dùng mới vào cơ sở dữ liệu
     const newUser = {
-      username: `${firstName} ${lastName}`,
+      username: username,
       email,
-      password: hashedPassword,
       phone_number: phone,
       role_id: 1,
       profile_url: '',
       status: 'active',
       is_vip: false,
+      firstName: firstName,
+      lastName: lastName
     };
 
-    const query = 'INSERT INTO users (username, email, password, phone_number, role_id, profile_url, status, is_vip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO users (username, email, password, phone_number, role_id, profile_url, status, is_vip, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     await new Promise((resolve, reject) => {
-      db.query(query, [newUser.username, newUser.email, newUser.password, newUser.phone_number, newUser.role_id, newUser.profile_url, newUser.status, newUser.is_vip], (err, result) => {
+      db.query(query, [newUser.username, newUser.email, hashedPassword, newUser.phone_number, newUser.role_id, newUser.profile_url, newUser.status, newUser.is_vip, newUser.firstName, newUser.lastName], (err, result) => {
         if (err) {
           console.error('Database query error during user registration:', err); // Ghi lỗi vào console
           return reject(err);
@@ -56,6 +58,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
+
 // LOGIN
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -65,7 +68,8 @@ exports.loginUser = async (req, res) => {
   }
 
   try {
-    const [results] = await new Promise((resolve, reject) => {
+    // Truy vấn để lấy thông tin người dùng
+    const results = await new Promise((resolve, reject) => {
       db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err) {
           console.error('Database query error during user login:', err);
@@ -80,12 +84,25 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
 
-    // Kiểm tra xem mật khẩu có khớp không
-    if (password !== results.password) {
+    const user = results[0];
+
+    // Kiểm tra mật khẩu đã băm có tồn tại không
+    if (!user.password) {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
+    // Kiểm tra mật khẩu
+    const passwordMatch = await bcrypt.compare(password, user.password)
+      .catch(err => {
+        console.error('Error during password verification:', err);
+        return false; // Nếu có lỗi, giả sử mật khẩu không khớp
+      });
 
-    res.status(200).json({ message: 'Login successful', userId: results.user_id });
+    // Phản hồi kết quả xác thực
+    if (passwordMatch) {
+      return res.status(200).json({ message: 'Login successful', userId: user.user_id });
+    } else {
+      return res.status(400).json({ message: 'Invalid email or password.' });
+    }
   } catch (err) {
     console.error('Server error during login:', err);
     res.status(500).json({ message: 'Server error', error: err.message });

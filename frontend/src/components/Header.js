@@ -169,7 +169,7 @@ const Header = () => {
                             ) : (
                                 <li className="nav-item">
                                     <a href="/login" className="header-btn">Login</a>
-                                    <a href="/signup" className="header-btn">Sign Up</a>
+                                    <a href="/register" className="header-btn">Register</a>
                                 </li>
                             )}
                         </ul>

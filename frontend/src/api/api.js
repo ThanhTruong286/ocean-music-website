@@ -63,15 +63,16 @@ export const logoutUser = async () => {
 
 export const registerUser = async (userData) => {
     try {
+        console.log(userData);
         const response = await axios.post(`${API_URL}/auth/register`, userData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        return response.data; // Trả về dữ liệu từ server
+        return response.data;
     } catch (error) {
         console.error('Error registering user:', error);
-        throw error; // Ném lỗi lên để xử lý trong thành phần gọi hàm
+        throw error;
     }
 };
 

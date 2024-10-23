@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser as apiRegisterUser } from '../api/api'; // Đổi tên ở đây
+import { Navigate, useNavigate } from 'react-router-dom';
+import { registerUser as apiRegisterUser } from '../api/api';
 import '../styles/Register.scss';
 
 const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -24,14 +26,15 @@ const Register = () => {
       firstName,
       lastName,
       email,
+      username,
       password,
       phone,
     };
 
     try {
-      const response = await apiRegisterUser(userData); // Sử dụng tên mới ở đây
+      const response = await apiRegisterUser(userData);
       console.log(response.message);
-      // Bạn có thể chuyển hướng người dùng đến trang đăng nhập hoặc trang khác ở đây
+      navigate('/login');
     } catch (error) {
       setErrorMessage('Registration failed. Please try again.');
     }
@@ -90,6 +93,17 @@ const Register = () => {
               />
             </div>
             <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                placeholder="john"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
                 type="password"
@@ -136,7 +150,7 @@ const Register = () => {
             </button>
           </div>
           <p className="login-text">
-            Already have an account? <a href="#">Sign In</a>
+            Already have an account? <a href="/login">Sign In</a>
           </p>
         </div>
         <div className="register-right">

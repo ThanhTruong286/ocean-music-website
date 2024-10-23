@@ -1,7 +1,7 @@
 import './App.scss';
 import Home from './Home';
 import Login from './Login';
-import Footer from '../components/Footer';
+import Register from "./Register";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -11,6 +11,7 @@ const App = () => {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path='/register' element={<Register />} />
         </Routes>
       </Router>
     </div>

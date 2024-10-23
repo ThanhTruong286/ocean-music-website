@@ -83,7 +83,7 @@ const Login = () => {
                         </button>
                     </div>
                     <p className="signup-text">
-                        Don’t have an account? <a href="#">Click here to sign up.</a>
+                        Don’t have an account? <a href="/register">Click here to sign up.</a>
                     </p>
                 </div>
                 <div className="login-right">
