@@ -23,7 +23,7 @@ const Home = () => {
                 <Sidebar />
             </aside>
             <main className="main-content">
-                <div id="header">
+                <div id="home">
                     <Header />
                     <div className="content-inner pb-0 container-fluid" id="page_layout">
                         <div className="row mb-5">

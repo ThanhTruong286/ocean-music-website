@@ -3,19 +3,20 @@
   max-width: 1200px;
   font-family: 'Poppins', sans-serif;
 }
+
 .songs-album {
-  font-size: 20px;  /* Reduced font size */
+  font-size: 20px;
+  /* Reduced font size */
 
-text-align: left;
+  text-align: left;
 
-color: #333;
+  color: #333;
 }
 
 
 .album-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   justify-content: flex-start;
 
   .album-item {
@@ -24,16 +25,17 @@ color: #333;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 20%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin: 10px;
 
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-      
+
       // Change color of the album title on hover
       .album-title {
         color: #f05a22; // Set your preferred hover color
@@ -67,19 +69,16 @@ color: #333;
 }
 
 
-// Other SCSS styles continue here...
-
-
-
 .songs-container {
   margin-top: 40px;
 
   .songs-title {
-    font-size: 20px;  /* Reduced font size */
-  
-  text-align: left;
-  
-  color: #333;
+    font-size: 20px;
+    /* Reduced font size */
+
+    text-align: left;
+
+    color: #333;
   }
 
   .song-list {
@@ -156,9 +155,9 @@ color: #333;
 
   .logo-img {
     max-width: 100%;
-    
+
     height: 100px;
-    
+
     transition: transform 0.3s ease;
 
     &:hover {
