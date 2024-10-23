@@ -37,7 +37,7 @@ const ArtistList = () => {
     return (
         <Swiper
             spaceBetween={30}  // Giảm khoảng cách giữa các slides
-            slidesPerView={5}  // Hiển thị 5 slides cùng lúc
+            slidesPerView={6}  // Hiển thị 5 slides cùng lúc
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
         >

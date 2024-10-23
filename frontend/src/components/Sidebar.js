@@ -38,14 +38,14 @@ const Sidebar = () => {
                             </li>
                             {/* Nghệ Sĩ */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/artist" className="nav-link collapsed">
                                     <i className="fa-solid fa-user"></i>
                                     <span className="item-name">Nghệ Sĩ</span>
                                 </a>
                             </li>
                             {/* Thư Viện */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/library" className="nav-link collapsed">
                                     <i className="fa-solid fa-music"></i>
                                     <span className="item-name">Thư Viện</span>
                                 </a>
