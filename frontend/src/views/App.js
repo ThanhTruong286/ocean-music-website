@@ -16,7 +16,7 @@ const App = () => {
       </aside>
 
       <main className="main-content">
-        <Roles/>
+        <Album/>
       </main>
       {/* <Footer /> */}
     </div>
