@@ -13,7 +13,6 @@ const Header = () => {
 
     // Hàm xử lý đăng xuất
     const handleLogout = async (e) => {
-        e.preventDefault(); // Ngăn chuyển hướng mặc định
         try {
             await logoutUser(); // Gọi API đăng xuất
             sessionStorage.removeItem('userToken'); // Xóa token khỏi sessionStorage
