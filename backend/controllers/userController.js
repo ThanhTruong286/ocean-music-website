@@ -31,13 +31,19 @@ exports.deleteUser = (req, res) => {
 };
 
 exports.getUserById = (req, res) => {
-  const { user_id, username, email, password, role_id, date_registered, profile_url, status, last_login, subscription_type, phone_number, is_vip, vip_expiration, login_attempts, last_login_attempt, gender, date_of_birth, created_at, updated_at } = req.body;
+  const userId = req.params.id; // Lấy userId từ tham số URL
 
-  UserModel.getUserById(user_id, (error, result) => {
+  UserModel.getUserById(userId, (error, result) => {
     if (error) {
-      return res.status(500).json({ message: 'Error get user by id' });
+      console.error('Error fetching user by ID:', error); // Ghi lại lỗi
+      return res.status(500).json({ message: 'Error getting user by ID' });
     }
-    res.json({ message: 'user found' });
-  })
-}
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'User not found' }); // Trả về thông báo nếu không tìm thấy người dùng
+    }
+
+    res.json(result[0]); // Trả về thông tin người dùng đầu tiên
+  });
+};
 

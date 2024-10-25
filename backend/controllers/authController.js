@@ -1,5 +1,6 @@
 const db = require('../config/db'); // Kết nối với MySQL
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
@@ -90,6 +91,7 @@ exports.loginUser = async (req, res) => {
     if (!user.password) {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
+
     // Kiểm tra mật khẩu
     const passwordMatch = await bcrypt.compare(password, user.password)
       .catch(err => {
@@ -99,7 +101,19 @@ exports.loginUser = async (req, res) => {
 
     // Phản hồi kết quả xác thực
     if (passwordMatch) {
-      return res.status(200).json({ message: 'Login successful', userId: user.user_id });
+      // Tạo token
+      const token = jwt.sign(
+        { userId: user.user_id }, // Payload
+        'MIKASA',
+        { expiresIn: '30d' } // Thời hạn token là 30 ngày
+      );
+
+      // Trả về token và thông tin người dùng
+      return res.status(200).json({
+        message: 'Login successful',
+        userId: user.user_id,
+        token: token // Gửi token về client
+      });
     } else {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
