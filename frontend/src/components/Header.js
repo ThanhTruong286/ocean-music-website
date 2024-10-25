@@ -2,7 +2,7 @@ import avatar from "../assets/images/avatar.png";
 import React, { useState, useEffect, useRef } from "react";
 import { logoutUser } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import { profileViewData } from "../api/api";
+import { getUser } from "../api/api";
 
 const Header = () => {
     const [user, setUser] = useState(null); // Trạng thái người dùng
@@ -11,24 +11,13 @@ const Header = () => {
     const popupRef = useRef(null); // Tham chiếu cho popup
     const navigate = useNavigate(); // Hook để điều hướng
 
-    const handleProfileClick = async () => {
-        try {
-            const profileData = await profileViewData(); // Lấy dữ liệu hồ sơ
-
-            // Chuyển hướng đến trang hồ sơ sau khi lấy dữ liệu
-            navigate.push('/profile'); // Điều chỉnh đường dẫn cần thiết
-        } catch (error) {
-            console.error('Lỗi khi lấy dữ liệu hồ sơ:', error);
-            // Tùy chọn: Bạn có thể hiển thị thông báo lỗi cho người dùng
-        }
-    };
-
     // Hàm xử lý đăng xuất
     const handleLogout = async (e) => {
         e.preventDefault(); // Ngăn chuyển hướng mặc định
         try {
             await logoutUser(); // Gọi API đăng xuất
-            localStorage.removeItem('user'); // Xóa thông tin người dùng khỏi localStorage
+            sessionStorage.removeItem('userToken'); // Xóa token khỏi sessionStorage
+            sessionStorage.removeItem('user'); // Xóa thông tin người dùng khỏi sessionStorage
             setUser(null); // Cập nhật trạng thái người dùng về null
             navigate('/login'); // Chuyển hướng người dùng về trang đăng nhập
         } catch (error) {
@@ -36,14 +25,26 @@ const Header = () => {
         }
     };
 
+    const handleProfileClick = async (e) => {
+        try {
+            // Gọi hàm để lấy thông tin người dùng
+            await getUser(user.userId);
+
+            // Chuyển hướng đến trang profile
+            navigate('/profile');
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            // Xử lý lỗi nếu cần
+        }
+    };
     // Lấy thông tin người dùng từ localStorage khi component được mount
     useEffect(() => {
         const storedUser = localStorage.getItem('user'); // Lấy người dùng từ localStorage
         if (storedUser) {
-            setUser(JSON.parse(storedUser)); // Nếu có, cập nhật trạng thái người dùng
+            setUser(JSON.parse(storedUser));
         }
-        setLoading(false); // Đặt trạng thái loading thành false
-    }, []);
+        setLoading(false);
+    }, []); // Thêm dependency array rỗng để chạy chỉ 1 lần
 
     // Hàm toggle khi click vào avatar
     const togglePopup = () => {
@@ -80,7 +81,7 @@ const Header = () => {
                 <div className="container-fluid navbar-inner">
                     <div className="collapse navbar-collapse">
                         <div className="d-flex align-items-center justify-content-between product-offcanvas">
-                            <div className="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabindex="-1" id="offcanvasBottom">
+                            <div className="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabIndex="-1" id="offcanvasBottom">
                                 <div className="offcanvas-body">
                                     <ul className="iq-nav-menu list-unstyled">
                                         <li className="nav-item">
@@ -157,9 +158,9 @@ const Header = () => {
                                             {isPopupVisible && ( // Hiển thị popup nếu popup đang mở
                                                 <div className="logout-popup" ref={popupRef}>
                                                     <ul>
-                                                        <li><a href="/profile" className="dropdown-item" onClick={handleProfileClick}>Profile</a></li>
+                                                        <li><a href="/profile" className="dropdown-item" onClick={(e) => { e.preventDefault(); handleProfileClick(); }}>Profile</a></li>
                                                         <li><a href="/privacy" className="dropdown-item">Privacy Setting</a></li>
-                                                        <li><a href="/logout" className="dropdown-item" onClick={handleLogout}>Logout</a></li>
+                                                        <li><a href="/logout" className="dropdown-item" onClick={(e) => { e.preventDefault(); handleLogout(); }}>Logout</a></li>
                                                     </ul>
                                                 </div>
                                             )}

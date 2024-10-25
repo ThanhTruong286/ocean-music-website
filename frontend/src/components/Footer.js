@@ -52,13 +52,13 @@ const Footer = () => {
                                 <div className="footer-track-detail d-flex align-items-center gap-3 flex-wrap justify-content-sm-start justify-content-center">
                                     <div className="track-art"></div>
                                     <div>
-                                        <h6 class="track-name text-white font-size-14 mb-1">Pop Smoke</h6>
-                                        <p class="track-artist text-white small m-0">Cascada</p>
+                                        <h6 className="track-name text-white font-size-14 mb-1">Pop Smoke</h6>
+                                        <p className="track-artist text-white small m-0">Cascada</p>
                                     </div>
-                                    <div class="like text-white flex-shrink-0 ms-2">
+                                    <div className="like text-white flex-shrink-0 ms-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                                             <g>
-                                                <path d="M9 15.1875C9 15.1875 1.6875 11.25 1.6875 6.60938C1.6875 5.60238 2.08753 4.63663 2.79958 3.92458C3.51163 3.21253 4.47738 2.8125 5.48438 2.8125C7.07273 2.8125 8.43328 3.67805 9 5.0625C9.56672 3.67805 10.9273 2.8125 12.5156 2.8125C13.5226 2.8125 14.4884 3.21253 15.2004 3.92458C15.9125 4.63663 16.3125 5.60238 16.3125 6.60938C16.3125 11.25 9 15.1875 9 15.1875Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M9 15.1875C9 15.1875 1.6875 11.25 1.6875 6.60938C1.6875 5.60238 2.08753 4.63663 2.79958 3.92458C3.51163 3.21253 4.47738 2.8125 5.48438 2.8125C7.07273 2.8125 8.43328 3.67805 9 5.0625C9.56672 3.67805 10.9273 2.8125 12.5156 2.8125C13.5226 2.8125 14.4884 3.21253 15.2004 3.92458C15.9125 4.63663 16.3125 5.60238 16.3125 6.60938C16.3125 11.25 9 15.1875 9 15.1875Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                             </g>
                                             <defs>
                                                 <clipPath>
@@ -99,7 +99,7 @@ const Footer = () => {
                                     </svg>
                                 </div>
                                 <div className="playpause-track">
-                                    <span class="d-inline-block rounded-circle p-2 text-white">
+                                    <span className="d-inline-block rounded-circle p-2 text-white">
                                         <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
                                             <path d="M16.6308 13.131C16.5743 13.189 16.3609 13.437 16.1622 13.641C14.9971 14.924 11.9576 17.024 10.3668 17.665C10.1252 17.768 9.51437 17.986 9.18802 18C8.8753 18 8.5772 17.928 8.29274 17.782C7.93814 17.578 7.65368 17.257 7.49781 16.878C7.39747 16.615 7.2416 15.828 7.2416 15.814C7.08573 14.953 7 13.554 7 12.008C7 10.535 7.08573 9.193 7.21335 8.319C7.22796 8.305 7.38383 7.327 7.55431 6.992C7.86702 6.38 8.47784 6 9.13151 6H9.18802C9.61374 6.015 10.509 6.395 10.509 6.409C12.0141 7.051 14.9834 9.048 16.1768 10.375C16.1768 10.375 16.5129 10.716 16.659 10.929C16.887 11.235 17 11.614 17 11.993C17 12.416 16.8724 12.81 16.6308 13.131Z" fill="currentColor"></path>
                                         </svg>
@@ -138,8 +138,8 @@ const Footer = () => {
                                         <div className="flex-shrink-0 text-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                 <g>
-                                                    <path d="M6.25 13.125H2.5C2.33424 13.125 2.17527 13.0592 2.05806 12.9419C1.94085 12.8247 1.875 12.6658 1.875 12.5V7.5C1.875 7.33424 1.94085 7.17527 2.05806 7.05806C2.17527 6.94085 2.33424 6.875 2.5 6.875H6.25L11.875 2.5V17.5L6.25 13.125Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M15 8.125V11.875" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M6.25 13.125H2.5C2.33424 13.125 2.17527 13.0592 2.05806 12.9419C1.94085 12.8247 1.875 12.6658 1.875 12.5V7.5C1.875 7.33424 1.94085 7.17527 2.05806 7.05806C2.17527 6.94085 2.33424 6.875 2.5 6.875H6.25L11.875 2.5V17.5L6.25 13.125Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                    <path d="M15 8.125V11.875" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 </g>
                                                 <defs>
                                                     <clipPath>
@@ -174,12 +174,12 @@ const Footer = () => {
                                 <div className="col-lg-2 col-md-2 col-sm-4 col-3">
                                     <ul className="list-unstyled m-0 p-0 d-flex align-items-center justify-content-sm-end justify-content-center">
                                         <li>
-                                            <svg class="" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <svg className="" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                 <g>
-                                                    <path d="M3.125 5H16.875" stroke="#AAAAAA" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M3.125 10H10.625" stroke="#AAAAAA" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M3.125 15H10.625" stroke="#AAAAAA" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M18.75 12.5L13.75 15.625V9.375L18.75 12.5Z" stroke="#AAAAAA" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M3.125 5H16.875" stroke="#AAAAAA" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                    <path d="M3.125 10H10.625" stroke="#AAAAAA" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                    <path d="M3.125 15H10.625" stroke="#AAAAAA" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                    <path d="M18.75 12.5L13.75 15.625V9.375L18.75 12.5Z" stroke="#AAAAAA" strokeLinecap="round" strokeLinejoin="round"></path>
                                                 </g>
                                                 <defs>
                                                     <clipPath>
@@ -191,13 +191,13 @@ const Footer = () => {
                                         <li className="nav-item iq-full-screen d-none d-xl-block ms-3" id="fullscreen-item">
                                             <a href="#" className="nav-link" id="btnFullscreen">
                                                 <span className="btn-inner">
-                                                    <svg class="normal-screen icon-24" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M18.5528 5.99656L13.8595 10.8961" stroke="#AAAAAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <svg className="normal-screen icon-24" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M18.5528 5.99656L13.8595 10.8961" stroke="#AAAAAA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                                         </path>
-                                                        <path d="M14.8016 5.97618L18.5524 5.99629L18.5176 9.96906" stroke="#AAAAAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        <path d="M5.8574 18.896L10.5507 13.9964" stroke="#AAAAAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M14.8016 5.97618L18.5524 5.99629L18.5176 9.96906" stroke="#AAAAAA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                        <path d="M5.8574 18.896L10.5507 13.9964" stroke="#AAAAAA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                                         </path>
-                                                        <path d="M9.60852 18.9164L5.85775 18.8963L5.89258 14.9235" stroke="#AAAAAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        <path d="M9.60852 18.9164L5.85775 18.8963L5.89258 14.9235" stroke="#AAAAAA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                                     </svg>
                                                 </span>
                                             </a>

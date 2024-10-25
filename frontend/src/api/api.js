@@ -1,7 +1,6 @@
-// api.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api'; // Đảm bảo rằng URL này đúng
+const API_URL = 'http://localhost:5000/api';
 
 // Fetch all artists
 export const fetchArtists = async () => {
@@ -47,16 +46,27 @@ export const fetchRoles = async () => {
     }
 };
 
-export const profileViewData = async () => {
+export const getUser = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user.userId;
     try {
-        const response = await axios.get(`${API_URL}/profile`);
-        return response.data;
-    } catch (e) {
-        throw e;
+        const response = await axios.get(`${API_URL}/users/profile/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+            }
+        });
+        return response.data; // Trả về dữ liệu từ backend
+    } catch (error) {
+        console.error('Error sending user ID:', error);
+        throw error; // Ném lại lỗi để xử lý ở nơi khác
     }
-}
+};
+
+
 
 export const loginUser = async (userData) => {
+
     try {
         const response = await axios.post(`${API_URL}/auth/login`, userData, {
             headers: {
@@ -64,8 +74,10 @@ export const loginUser = async (userData) => {
             }
         });
 
-        // Lưu thông tin người dùng vào localStorage (hoặc sessionStorage)
-        localStorage.setItem('user', JSON.stringify(response.data));
+        const { token, expiry, userId } = response.data;
+
+        localStorage.setItem('user', JSON.stringify({ userId, expiry }));
+        localStorage.setItem('userToken', JSON.stringify({ token }));
 
         return response.data;
     } catch (error) {
@@ -74,18 +86,36 @@ export const loginUser = async (userData) => {
     }
 };
 
+export const getUserData = () => {
+    const userDataWithExpiry = JSON.parse(localStorage.getItem('user'));
+
+    if (!userDataWithExpiry) {
+        return null;
+    }
+
+    const now = new Date().getTime();
+
+    // Kiểm tra thời gian hết hạn
+    if (now > userDataWithExpiry.expiry) {
+        localStorage.removeItem('user'); // Xóa dữ liệu đã hết hạn
+        return null;
+    }
+
+    return userDataWithExpiry.data;
+}
+
 export const logoutUser = async () => {
     try {
-        // Gọi API backend để thực hiện đăng xuất (nếu cần)
+        // Gọi API backend để thực hiện đăng xuất
         await axios.post(`${API_URL}/auth/logout`, {}, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
 
-        // Xóa token lưu trữ trên client (localStorage/sessionStorage)
-        localStorage.removeItem('token'); // Hoặc sessionStorage
-        console.log('Logout successful');
+        // Xóa token lưu trữ trên client
+        localStorage.removeItem('user');
+        localStorage.removeItem('userToken');
 
         // Chuyển hướng người dùng về trang đăng nhập hoặc trang chủ
         window.location.href = '/login';

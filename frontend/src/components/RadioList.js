@@ -10,7 +10,6 @@ const RadioList = () => {
             spaceBetween={50}
             slidesPerView={6}
             onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
         >
             <SwiperSlide>
                 <li className="col mb-3">

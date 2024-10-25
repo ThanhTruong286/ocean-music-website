@@ -41,10 +41,9 @@ const ArtistPLaylist = () => {
                 spaceBetween={30}  // Giảm khoảng cách giữa các slides
                 slidesPerView={5}  // Hiển thị 5 slides cùng lúc
                 onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
             >
                 {artistPlaylists.map((artist) => (
-                    <SwiperSlide key={artist.artist_id}> {/* Đặt mỗi artist vào một SwiperSlide */}
+                    <SwiperSlide key={artist.playlist_id}> {/* Đặt mỗi artist vào một SwiperSlide */}
                         <div className="artist-card"> {/* Thêm class name cho từng khối */}
                             <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
                                 <img
