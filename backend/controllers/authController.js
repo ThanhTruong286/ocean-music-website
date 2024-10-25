@@ -104,7 +104,7 @@ exports.loginUser = async (req, res) => {
       // Tạo token
       const token = jwt.sign(
         { userId: user.user_id }, // Payload
-        'MIKASA',
+        process.env.JWT_SECRET,
         { expiresIn: '30d' } // Thời hạn token là 30 ngày
       );
 
