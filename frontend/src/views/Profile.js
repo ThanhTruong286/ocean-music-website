@@ -297,6 +297,12 @@ const Profile = () => {
                                         <div className="mb-1">Email: <a href="#" className="ms-3">{user.email}</a></div>
                                         <div className="mb-1">Loại tài khoản: <a href="#" className="ms-3">{user.phone_number}</a></div>
                                         <div>Location: <span>Korea</span></div>
+                                        <hr />
+                                        <ul className="d-flex nav nav-pills mb-0 text-center profile-tab nav-slider" data-toggle="slider-tab" id="profile-pills-tab" role="tablist">
+                                            <li className="nav-item" role="presentation">
+                                                <a className="nav-link active" data-bs-toggle="tab" href="change-password" role="tab" aria-selected="true">Change Password</a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div className="card">

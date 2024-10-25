@@ -2,6 +2,44 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+//Change Password
+export const ChangePassword = async (currentPassword, newPassword) => {
+    // Kiểm tra đầu vào
+    if (!currentPassword || !newPassword) {
+        throw new Error('Mật khẩu không được để trống.');
+    }
+
+    try {
+        // Lấy token
+        const userToken = localStorage.getItem('userToken');
+
+        // Đảm bảo userToken có mặt
+        if (!userToken) {
+            throw new Error('Token không hợp lệ. Vui lòng đăng nhập lại.');
+        }
+
+        // Gửi yêu cầu PUT để thay đổi mật khẩu
+        const response = await axios.put(
+            `${API_URL}/auth/change-password`,
+            { currentPassword, newPassword }, // Không cần bao gồm userToken trong body
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userToken}` // Bao gồm token trong header
+                }
+            }
+        );
+
+        console.log('Thay đổi mật khẩu thành công:', response.data);
+        return response.data;
+    } catch (error) {
+        // Xử lý lỗi
+        const errorMessage = error.response?.data?.message || 'Thay đổi mật khẩu thất bại';
+        console.error('Thay đổi mật khẩu thất bại:', errorMessage);
+        throw new Error(errorMessage);
+    }
+};
+
 // Fetch all artists
 export const fetchArtists = async () => {
     try {

@@ -6,6 +6,7 @@ import Album from "./Album";
 import Library from './Library';
 import Artist from './Artist';
 import Profile from './Profile';
+import ChangePasswordView from './ChangePassword';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -19,7 +20,8 @@ const App = () => {
           <Route path='/albums' element={<Album />} />
           <Route path='/library' element={<Library />} />
           <Route path='/artist' element={<Artist />} />
-          <Route path='/profile' element={<Profile/>}/>
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/change-password' element={<ChangePasswordView />} />
         </Routes>
       </Router>
     </div>

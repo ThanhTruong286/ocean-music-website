@@ -1,4 +1,3 @@
-// server.js
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -9,7 +8,6 @@ const errorHandler = require('./middlewares/errorHandler'); // Middleware xử l
 const genreRoutes = require('./routes/genreRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
 const songRoutes = require('./routes/songRoutes');
-
 const albumRoutes = require('./routes/albumRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const db = require('./config/db'); // Kết nối DB
@@ -21,10 +19,10 @@ const PORT = process.env.PORT || 5000;
 const session = require('express-session');
 
 app.use(session({
-  secret: 'MIKASA',  // Thay đổi thành một khóa bí mật thật sự
+  secret: 'MIKASA',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Đặt thành true nếu bạn sử dụng HTTPS
+  cookie: { secure: false }
 }));
 
 // Middleware
