@@ -10,22 +10,20 @@ export const ChangePassword = async (currentPassword, newPassword) => {
     }
 
     try {
-        // Lấy token
-        const userToken = localStorage.getItem('userToken');
+        // Lấy user
+        const userId = localStorage.getItem('user');
 
-        // Đảm bảo userToken có mặt
-        if (!userToken) {
-            throw new Error('Token không hợp lệ. Vui lòng đăng nhập lại.');
+        if (!userId) {
+            throw new Error('User không hợp lệ. Vui lòng đăng nhập lại.');
         }
 
         // Gửi yêu cầu PUT để thay đổi mật khẩu
         const response = await axios.put(
             `${API_URL}/auth/change-password`,
-            { currentPassword, newPassword }, // Không cần bao gồm userToken trong body
+            { currentPassword, newPassword, userId }, // Không cần bao gồm userToken trong body
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${userToken}` // Bao gồm token trong header
                 }
             }
         );

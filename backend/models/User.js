@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 class User {
     constructor({
+        user_id,
         username,
         email,
         password,
@@ -22,6 +23,7 @@ class User {
         first_name,
         last_name
     }) {
+        this.user_id = user_id;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -68,9 +70,18 @@ class User {
     // Tìm người dùng theo ID
     static findById(userId, callback) {
         db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
-            if (err) return callback(err);
-            if (results.length === 0) return callback(null, null);
+            if (err) {
+                console.error('Error during database query:', err); // Ghi lỗi truy vấn
+                return callback(err);
+            }
 
+            // Nếu không tìm thấy user
+            if (!results || results.length === 0) {
+                console.log('User not found'); // Ghi log khi không tìm thấy user
+                return callback(null, null);
+            }
+
+            // Nếu tìm thấy user, tạo instance mới từ kết quả và trả về
             const user = new User(results[0]);
             callback(null, user);
         });
@@ -104,19 +115,14 @@ class User {
     }
 
     // Cập nhật người dùng
-    update(userId, callback) {
-        db.query(
-            `UPDATE users SET username = ?, email = ?, password = ?, role_id = ?, profile_url = ?, status = ?, 
-             subscription_type = ?, phone_number = ?, is_vip = ?, vip_expiration = ?, gender = ?, date_of_birth = ?, 
-             first_name = ?, last_name = ? WHERE user_id = ?`,
-            [
-                this.username, this.email, this.password, this.role_id, this.profile_url,
-                this.status, this.subscription_type, this.phone_number, this.is_vip,
-                this.vip_expiration, this.gender, this.date_of_birth, this.first_name,
-                this.last_name, userId
-            ],
-            callback
-        );
+    static update(userId, updatedData, callback) {
+        db.query('UPDATE users SET ? WHERE user_id = ?', [updatedData, userId], (err, results) => {
+            if (err) {
+                console.error('Error during update query:', err);
+                return callback(err); // Gọi callback với lỗi
+            }
+            callback(null, results); // Gọi callback với kết quả
+        });
     }
 
     // Xóa người dùng theo ID

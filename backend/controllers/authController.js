@@ -139,11 +139,55 @@ exports.logoutUser = (req, res) => {
 
 //Change Password
 exports.changePassword = async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
-  if(!currentPassword || !newPassword){
-    return res.status(500).json({message: 'Missing password'});
+  const { currentPassword, newPassword, userId } = req.body;
+
+  // Kiểm tra thông tin đầu vào
+  if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Missing password' });
   }
-  console.log(req.body);
+
+  // Parse userId từ JSON
+  let user;
+  try {
+      const userParse = JSON.parse(userId);
+      user = userParse.userId; // Lấy userId
+  } catch (error) {
+      return res.status(400).json({ message: 'Invalid userId format' });
+  }
+
+  try {
+      UserModel.findById(user, async (err, foundUser) => {
+          if (err) {
+              return res.status(500).json({ message: "Server error" });
+          }
+
+          // Kiểm tra nếu không tìm thấy user
+          if (!foundUser) {
+              return res.status(404).json({ message: "User not found" });
+          }
+
+          // Kiểm tra mật khẩu hiện tại
+          const checkPass = await bcrypt.compare(currentPassword, foundUser.password);
+
+          if (!checkPass) {
+              return res.status(401).json({ message: "Password is incorrect" });
+          }
+
+          // Băm mật khẩu mới
+          const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+          console.log(foundUser);
+          UserModel.update(foundUser.user_id, { password: hashedPassword }, (err) => {
+              if (err) {
+                  return res.status(500).json({ message: "Server error" });
+              }
+              res.status(200).json({ message: "Change successfully" });
+          });
+      });
+  } catch (error) {
+      console.error('Error in changePassword:', error); // Ghi log lỗi
+      res.status(500).json({ message: 'Server error', error });
+  }
 };
 
 
