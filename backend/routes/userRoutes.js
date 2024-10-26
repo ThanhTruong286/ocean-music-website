@@ -13,7 +13,6 @@ router.post('/', UserController.createUser);
 // Xóa người dùng
 router.delete('/:id', UserController.deleteUser);
 
-// Bạn có thể thêm các route khác cho người dùng ở đây
-router.get('/profile', UserController.getUserById);
+router.get('/profile/:id', UserController.getUserById);
 
 module.exports = router;

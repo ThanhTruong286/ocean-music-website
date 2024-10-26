@@ -1,30 +1,87 @@
-// SongModel.js
 const db = require('../config/db');
 
-class SongModel {
-    static getAllSongs(callback) {
-        db.query('SELECT songs.*, genres.name FROM songs JOIN genres ON songs.genre_id = genres.genre_id', callback);
+class Song {
+    constructor(id, title, duration, genreId, releaseDate, fileUrl, coverImageUrl, lyric, playCount = 0) {
+        this.id = id;
+        this.title = title;
+        this.duration = duration;
+        this.genreId = genreId;
+        this.releaseDate = releaseDate;
+        this.fileUrl = fileUrl;
+        this.coverImageUrl = coverImageUrl;
+        this.lyric = lyric;
+        this.playCount = playCount;
     }
 
-    static getSongById(songId, callback) {
-        db.query('SELECT * FROM songs WHERE song_id = ?', [songId], callback);
+    static getAll(callback) {
+        const query = `
+            SELECT songs.*, genres.name AS genre_name 
+            FROM songs 
+            JOIN genres ON songs.genre_id = genres.genre_id
+        `;
+        db.query(query, (err, results) => {
+            if (err) return callback(err, null);
+            const songs = results.map(row => new Song(
+                row.song_id,
+                row.title,
+                row.duration,
+                row.genre_id,
+                row.release_date,
+                row.file_url,
+                row.cover_image_url,
+                row.lyric,
+                row.play_count
+            ));
+            callback(null, songs);
+        });
     }
 
-    static createSong(songData, callback) {
-        db.query('INSERT INTO songs (title, duration, genre_id, release_date, file_url, cover_image_url, lyric) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [songData.title, songData.duration, songData.genre_id, songData.release_date, songData.file_url, songData.cover_image_url, songData.lyric],
-            callback);
+    static findById(songId, callback) {
+        const query = `SELECT * FROM songs WHERE song_id = ?`;
+        db.query(query, [songId], (err, results) => {
+            if (err) return callback(err, null);
+            if (results.length === 0) return callback(null, null);
+            const row = results[0];
+            const song = new Song(
+                row.song_id,
+                row.title,
+                row.duration,
+                row.genre_id,
+                row.release_date,
+                row.file_url,
+                row.cover_image_url,
+                row.lyric,
+                row.play_count
+            );
+            callback(null, song);
+        });
     }
 
-    static updateSong(songId, songData, callback) {
-        db.query('UPDATE songs SET title = ?, duration = ?, genre_id = ?, release_date = ?, file_url = ?, cover_image_url = ?, lyric = ? WHERE song_id = ?',
-            [songData.title, songData.duration, songData.genre_id, songData.release_date, songData.file_url, songData.cover_image_url, songData.lyric, songId],
-            callback);
+    save(callback) {
+        if (this.id) {
+            const query = `
+                UPDATE songs SET 
+                title = ?, duration = ?, genre_id = ?, release_date = ?, file_url = ?, cover_image_url = ?, lyric = ? 
+                WHERE song_id = ?
+            `;
+            db.query(query, [this.title, this.duration, this.genreId, this.releaseDate, this.fileUrl, this.coverImageUrl, this.lyric, this.id], callback);
+        } else {
+            const query = `
+                INSERT INTO songs (title, duration, genre_id, release_date, file_url, cover_image_url, lyric) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
+            db.query(query, [this.title, this.duration, this.genreId, this.releaseDate, this.fileUrl, this.coverImageUrl, this.lyric], (err, result) => {
+                if (err) return callback(err);
+                this.id = result.insertId;
+                callback(null, this);
+            });
+        }
     }
 
-    static deleteSong(songId, callback) {
-        db.query('DELETE FROM songs WHERE song_id = ?', [songId], callback);
+    delete(callback) {
+        const query = `DELETE FROM songs WHERE song_id = ?`;
+        db.query(query, [this.id], callback);
     }
 }
 
-module.exports = SongModel;
+module.exports = Song;

@@ -2,7 +2,7 @@ const GenreModel = require('../models/Genre');
 
 // Lấy tất cả các genre
 exports.getAllGenres = (req, res) => {
-    GenreModel.getAllGenres((err, results) => {
+    GenreModel.getAll((err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching genres' });
         }
@@ -12,31 +12,31 @@ exports.getAllGenres = (req, res) => {
 
 // Tạo một genre mới
 exports.createGenre = (req, res) => {
-    const newGenre = req.body;
-    GenreModel.createGenre(newGenre, (err, result) => {
+    const newGenre = new GenreModel(null, req.body.name); // Tạo đối tượng GenreModel mới
+    newGenre.save((err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Error creating genre' });
         }
-        res.status(201).json({ message: 'Genre created', genreId: result.insertId });
+        res.status(201).json({ message: 'Genre created', genreId: newGenre.genreId });
     });
 };
 
 // Lấy genre theo ID
 exports.getGenreById = (req, res) => {
     const genreId = req.params.id;
-    GenreModel.getGenreById(genreId, (err, result) => {
-        if (err || result.length === 0) {
+    GenreModel.findById(genreId, (err, result) => {
+        if (err || result === null) {
             return res.status(404).json({ message: 'Genre not found' });
         }
-        res.json(result[0]);
+        res.json(result);
     });
 };
 
 // Cập nhật genre theo ID
 exports.updateGenre = (req, res) => {
     const genreId = req.params.id;
-    const updatedGenre = req.body;
-    GenreModel.updateGenre(genreId, updatedGenre, (err, result) => {
+    const updatedGenre = new GenreModel(genreId, req.body.name); // Tạo đối tượng GenreModel mới
+    updatedGenre.save((err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Error updating genre' });
         }
@@ -47,7 +47,8 @@ exports.updateGenre = (req, res) => {
 // Xóa genre theo ID
 exports.deleteGenre = (req, res) => {
     const genreId = req.params.id;
-    GenreModel.deleteGenre(genreId, (err, result) => {
+    const genre = new GenreModel(genreId); // Tạo đối tượng GenreModel mới
+    genre.delete((err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Error deleting genre' });
         }

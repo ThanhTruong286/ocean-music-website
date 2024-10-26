@@ -35,7 +35,6 @@ const TrendingList = () => {
             spaceBetween={50}
             slidesPerView={6}
             onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
         >
             {songs.map((song) => {
                 return (

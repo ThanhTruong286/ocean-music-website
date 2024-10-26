@@ -1,5 +1,7 @@
 const db = require('../config/db'); // Kết nối với MySQL
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const UserModel = require('../models/User');
 
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
@@ -90,6 +92,7 @@ exports.loginUser = async (req, res) => {
     if (!user.password) {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
+
     // Kiểm tra mật khẩu
     const passwordMatch = await bcrypt.compare(password, user.password)
       .catch(err => {
@@ -99,7 +102,19 @@ exports.loginUser = async (req, res) => {
 
     // Phản hồi kết quả xác thực
     if (passwordMatch) {
-      return res.status(200).json({ message: 'Login successful', userId: user.user_id });
+      // Tạo token
+      const token = jwt.sign(
+        { userId: user.user_id }, // Payload
+        "MIKASA",
+        { expiresIn: '30d' } // Thời hạn token là 30 ngày
+      );
+
+      // Trả về token và thông tin người dùng
+      return res.status(200).json({
+        message: 'Login successful',
+        userId: user.user_id,
+        token: token // Gửi token về client
+      });
     } else {
       return res.status(400).json({ message: 'Invalid email or password.' });
     }
@@ -121,5 +136,58 @@ exports.logoutUser = (req, res) => {
   });
 };
 
+
+//Change Password
+exports.changePassword = async (req, res) => {
+  const { currentPassword, newPassword, userId } = req.body;
+
+  // Kiểm tra thông tin đầu vào
+  if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Missing password' });
+  }
+
+  // Parse userId từ JSON
+  let user;
+  try {
+      const userParse = JSON.parse(userId);
+      user = userParse.userId; // Lấy userId
+  } catch (error) {
+      return res.status(400).json({ message: 'Invalid userId format' });
+  }
+
+  try {
+      UserModel.findById(user, async (err, foundUser) => {
+          if (err) {
+              return res.status(500).json({ message: "Server error" });
+          }
+
+          // Kiểm tra nếu không tìm thấy user
+          if (!foundUser) {
+              return res.status(404).json({ message: "User not found" });
+          }
+
+          // Kiểm tra mật khẩu hiện tại
+          const checkPass = await bcrypt.compare(currentPassword, foundUser.password);
+
+          if (!checkPass) {
+              return res.status(401).json({ message: "Password is incorrect" });
+          }
+
+          // Băm mật khẩu mới
+          const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+          console.log(foundUser);
+          UserModel.update(foundUser.user_id, { password: hashedPassword }, (err) => {
+              if (err) {
+                  return res.status(500).json({ message: "Server error" });
+              }
+              res.status(200).json({ message: "Change successfully" });
+          });
+      });
+  } catch (error) {
+      console.error('Error in changePassword:', error); // Ghi log lỗi
+      res.status(500).json({ message: 'Server error', error });
+  }
+};
 
 

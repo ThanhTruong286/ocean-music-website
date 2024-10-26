@@ -39,14 +39,13 @@ const GenreList = () => {
             spaceBetween={30}  // Giảm khoảng cách giữa các slides
             slidesPerView={5}  // Hiển thị 5 slides cùng lúc
             onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
         >
             {genres.map((genre) => (
                 <SwiperSlide key={genre.genre_id}> {/* Đặt mỗi artist vào một SwiperSlide */}
                     <li className="swiper-slide mb-3 swiper-slide-duplicate">
-                        <img src={faker} id="26" class="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" class=" text-capitalize line-count-1 h5 d-block">{genre.name}</a>
-                        <small class="fw-normal text-capitalize line-count-1">top 12
+                        <img src={faker} id="26" className="mb-3 img-fluid rounded-3" alt="song-img" />
+                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">{genre.name}</a>
+                        <small className="fw-normal text-capitalize line-count-1">top 12
                             songs from travels and</small>
                     </li>
                 </SwiperSlide>

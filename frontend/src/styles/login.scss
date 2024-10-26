@@ -1,3 +1,55 @@
+/* Điều chỉnh bố cục cho màn hình nhỏ hơn */
+@media (max-width: 1024px) {
+    .login-container {
+        width: 90%;
+        flex-direction: column;
+    }
+
+    .login-page {
+        height: 100%;
+    }
+
+    .login-right {
+        display: none;
+        /* Ẩn phần hình ảnh nền cho màn hình nhỏ hơn */
+    }
+}
+
+@media (max-width: 768px) {
+    .login-left {
+        padding: 20px;
+
+        .logo {
+            width: 120px;
+            /* Giảm kích thước logo */
+        }
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .login-button {
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 100%;
+    }
+
+    .login-left h2 {
+        font-size: 20px;
+        /* Giảm kích thước tiêu đề */
+    }
+
+    .social-login .social-button i {
+        font-size: 16px;
+        /* Giảm kích thước biểu tượng cho các nút đăng nhập mạng xã hội */
+    }
+}
+
 body,
 html {
     padding: 0;

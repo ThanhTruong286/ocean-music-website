@@ -12,7 +12,6 @@ const RecentlyPlayedList = () => {
             spaceBetween={10}
             slidesPerView={5}
             onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
         >
             <SwiperSlide>
                 <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
