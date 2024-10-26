@@ -140,41 +140,10 @@ exports.logoutUser = (req, res) => {
 //Change Password
 exports.changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
-
-  // Kiểm tra đầu vào
-  if (!currentPassword || !newPassword) {
-    return res.status(400).json({ message: 'Mật khẩu không được để trống.' });
+  if(!currentPassword || !newPassword){
+    return res.status(500).json({message: 'Missing password'});
   }
-
-  try {
-    // Lấy thông tin người dùng từ req.user (đã được xác thực bởi middleware)
-    const userId = req.user.id; // Giả sử bạn đã lưu id của người dùng trong req.user
-    const user = await User.findById(userId); // Tìm người dùng trong cơ sở dữ liệu
-
-    // Kiểm tra xem người dùng có tồn tại không
-    if (!user) {
-      return res.status(404).json({ message: 'Người dùng không tồn tại.' });
-    }
-
-    // So sánh mật khẩu hiện tại với mật khẩu trong cơ sở dữ liệu
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) {
-      return res.status(403).json({ message: 'Mật khẩu hiện tại không chính xác.' });
-    }
-
-    // Mã hóa mật khẩu mới
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-    // Cập nhật mật khẩu mới vào cơ sở dữ liệu
-    user.password = hashedNewPassword;
-    await user.save();
-
-    // Trả về phản hồi thành công
-    return res.status(200).json({ message: 'Thay đổi mật khẩu thành công.' });
-  } catch (error) {
-    console.error('Lỗi khi thay đổi mật khẩu:', error);
-    return res.status(500).json({ message: 'Đã xảy ra lỗi khi thay đổi mật khẩu.' });
-  }
+  console.log(req.body);
 };
 
 
