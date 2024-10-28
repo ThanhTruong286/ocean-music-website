@@ -295,7 +295,7 @@ const Profile = () => {
                                     <div className="card-body">
                                         <p>I'm MidKing</p>
                                         <div className="mb-1">Email: <a href="#" className="ms-3">{user.email}</a></div>
-                                        <div className="mb-1">Loại tài khoản: <a href="#" className="ms-3">{user.phone_number}</a></div>
+                                        <div className="mb-1">Loại tài khoản: <a href="#" className="ms-3">{user.subscription_type}</a></div>
                                         <div>Location: <span>Korea</span></div>
                                         <hr />
                                         <ul className="d-flex nav nav-pills mb-0 text-center profile-tab nav-slider" data-toggle="slider-tab" id="profile-pills-tab" role="tablist">

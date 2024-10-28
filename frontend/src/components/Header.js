@@ -85,7 +85,7 @@ const Header = () => {
                                     <ul className="iq-nav-menu list-unstyled">
                                         <li className="nav-item">
                                             <a className="nav-link active" href="/">
-                                                <span className="item-name">Trang Chủ</span>
+                                                <span className="item-name">Home</span>
                                             </a>
                                         </li>
                                         <li className="nav-item">
@@ -96,6 +96,11 @@ const Header = () => {
                                         <li className="nav-item">
                                             <a className="nav-link" href="/albums">
                                                 <span className="item-name">Albums</span>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/subcribe">
+                                                <span className="item-name">Get Premium</span>
                                             </a>
                                         </li>
                                     </ul>

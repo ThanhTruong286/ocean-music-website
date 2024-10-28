@@ -22,13 +22,6 @@ const Sidebar = () => {
                                     <span className="custom-icon default-icon text-uppercase">Main</span>
                                 </a>
                             </li>
-                            {/* HOME*/}
-                            <li className="nav-item active">
-                                <a href="#" className="nav-link active collapsed">
-                                    <i className="fa-solid fa-house"></i>
-                                    <span className="item-name">Trang Chủ</span>
-                                </a>
-                            </li>
                             {/* Khám Phá */}
                             <li className="nav-item">
                                 <a href="#" className="nav-link collapsed">
