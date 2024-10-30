@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChangePassword } from '../api/api';
+import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/login.scss';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,21 +8,30 @@ const ChangePasswordView = () => {
     const [cpass, setCPass] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [captchaToken, setCaptchaToken] = useState('');
     const navigate = useNavigate();
+
+    const handleCaptchaChange = (token) => {
+        setCaptchaToken(token);
+    };
 
     const handleChangePassword = async (e) => {
         e.preventDefault();
+        if (!captchaToken) {
+            setErrorMessage('Vui lòng xác nhận CAPTCHA.');
+            return;
+        }
+        
         try {
-            // Gửi yêu cầu đăng nhập
-            const response = await ChangePassword(cpass, password);
+            // Gọi API thay đổi mật khẩu với captchaToken
+            const response = await ChangePassword(cpass, password, captchaToken);
             console.log('Change Password successful:', response);
             navigate('/login');
         } catch (error) {
             console.error('Change Password failed:', error);
-            setErrorMessage(error.response?.data?.message || 'Change Password Failed:', error);
+            setErrorMessage(error.message || 'Change Password Failed');
         }
     };
-
 
     return (
         <div className="login-page">
@@ -35,7 +45,7 @@ const ChangePasswordView = () => {
                             <label htmlFor="cpass">Current Password</label>
                             <input
                                 type="text"
-                                id="text"
+                                id="cpass"
                                 placeholder="xxxx"
                                 value={cpass}
                                 onChange={(e) => setCPass(e.target.value)}
@@ -53,6 +63,10 @@ const ChangePasswordView = () => {
                                 required
                             />
                         </div>
+                        <ReCAPTCHA
+                            sitekey="6LdsR3AqAAAAAIGtNzZDDXM7TriFXWOc1XeOlTnq" // Đã thay bằng site key của bạn
+                            onChange={handleCaptchaChange}
+                        />
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="form-options">
                             <a href="#" className="forgot-password">Forgot Password?</a>

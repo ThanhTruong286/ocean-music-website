@@ -2,25 +2,22 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
-//Change Password
+// Change Password
 export const ChangePassword = async (currentPassword, newPassword) => {
-    // Kiểm tra đầu vào
     if (!currentPassword || !newPassword) {
         throw new Error('Mật khẩu không được để trống.');
     }
 
     try {
-        // Lấy user
         const userId = localStorage.getItem('user');
 
         if (!userId) {
             throw new Error('User không hợp lệ. Vui lòng đăng nhập lại.');
         }
 
-        // Gửi yêu cầu PUT để thay đổi mật khẩu
         const response = await axios.put(
             `${API_URL}/auth/change-password`,
-            { currentPassword, newPassword, userId }, // Không cần bao gồm userToken trong body
+            { currentPassword, newPassword, userId },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,7 +28,6 @@ export const ChangePassword = async (currentPassword, newPassword) => {
         console.log('Thay đổi mật khẩu thành công:', response.data);
         return response.data;
     } catch (error) {
-        // Xử lý lỗi
         const errorMessage = error.response?.data?.message || 'Thay đổi mật khẩu thất bại';
         console.error('Thay đổi mật khẩu thất bại:', errorMessage);
         throw new Error(errorMessage);
@@ -92,17 +88,14 @@ export const getUser = async () => {
                 'Authorization': `Bearer ${localStorage.getItem('userToken')}`
             }
         });
-        return response.data; // Trả về dữ liệu từ backend
+        return response.data;
     } catch (error) {
         console.error('Error sending user ID:', error);
-        throw error; // Ném lại lỗi để xử lý ở nơi khác
+        throw error;
     }
 };
 
-
-
 export const loginUser = async (userData) => {
-
     try {
         const response = await axios.post(`${API_URL}/auth/login`, userData, {
             headers: {
@@ -131,29 +124,25 @@ export const getUserData = () => {
 
     const now = new Date().getTime();
 
-    // Kiểm tra thời gian hết hạn
     if (now > userDataWithExpiry.expiry) {
-        localStorage.removeItem('user'); // Xóa dữ liệu đã hết hạn
+        localStorage.removeItem('user');
         return null;
     }
 
     return userDataWithExpiry.data;
-}
+};
 
 export const logoutUser = async () => {
     try {
-        // Gọi API backend để thực hiện đăng xuất
         await axios.post(`${API_URL}/auth/logout`, {}, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
 
-        // Xóa token lưu trữ trên client
         localStorage.removeItem('user');
         localStorage.removeItem('userToken');
 
-        // Chuyển hướng người dùng về trang đăng nhập hoặc trang chủ
         window.location.href = '/login';
     } catch (error) {
         console.error('Logout failed:', error.response ? error.response.data : error.message);
@@ -185,6 +174,7 @@ export const fetchGenres = async () => {
         throw e;
     }
 };
+
 export const fetchPlaylists = async () => {
     try {
         const response = await axios.get(`${API_URL}/playlist`);
@@ -192,7 +182,8 @@ export const fetchPlaylists = async () => {
     } catch (e) {
         throw e;
     }
-}
+};
+
 export const fetchingSongs = async () => {
     try {
         const res = await axios.get(`${API_URL}/song`);
@@ -200,5 +191,4 @@ export const fetchingSongs = async () => {
     } catch (e) {
         throw e;
     }
-}
-
+};
