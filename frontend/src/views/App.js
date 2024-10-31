@@ -7,6 +7,8 @@ import Library from './Library';
 import Artist from './Artist';
 import Profile from './Profile';
 import ChangePasswordView from './ChangePassword';
+import Admin from '../components/Admin';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -22,6 +24,7 @@ const App = () => {
           <Route path='/artist' element={<Artist />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/change-password' element={<ChangePasswordView />} />
+          <Route path='/admin' element={<Admin />} /> {/* Add the Admin route */}
         </Routes>
       </Router>
     </div>

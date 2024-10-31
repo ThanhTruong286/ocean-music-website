@@ -1,6 +1,10 @@
 import React from 'react';
-import '../styles/roles.scss'; // SCSS file for styling
+import '../styles/admin.scss'; // SCSS file for styling
 import Header from "../components/Header";
+
+import Sidebar from "../components/Sidebar";
+
+import Footer from "../components/Footer";
 const Roles = () => {
   // Dummy data
   const artists = [
@@ -26,8 +30,13 @@ const Roles = () => {
   ];
   return (
     <div>
-      <Header />
-    <div className="roles-container">
+            <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
+                <Sidebar />
+            </aside>
+            <main className="main-content">
+                <div id="home">
+                    <Header />
+                    <div className="roles-container">
       <div className="stats-section">
         <div className="stat-card">
           <h3>352</h3>
@@ -133,6 +142,11 @@ const Roles = () => {
       </div>
     </div>
     </div>
+            </main>
+            <Footer />
+        </div>
+    
+   
 
   );
 };
