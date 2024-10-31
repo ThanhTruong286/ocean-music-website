@@ -670,6 +670,10 @@ body,
 
         span {
           padding: 8px 32px;
+          a{
+            color: #000;
+            text-decoration: none;
+          }
         }
       }
     }
@@ -874,18 +878,15 @@ body,
           }
         }
 
-        button {
+        .subcribe-btn {
           border-radius: 20px;
           background-color: red;
           color: #fff;
           border: none;
-          width: auto;
-          height: 48px;
-
-          a {
-            text-decoration: none;
-            color: #fff;
-          }
+          padding: 10px;
+          text-decoration: none;
+          color: #fff;
+          text-align: center;
         }
 
         .terms {
@@ -987,6 +988,7 @@ body,
         h1 {
           font-weight: 700;
           font-size: 20px;
+          text-transform: capitalize;
         }
 
         h3 {

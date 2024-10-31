@@ -5,8 +5,28 @@ import "../styles/global.scss";
 import momo from "../assets/images/payment/momo.svg"
 import visa from "../assets/images/payment/visa.svg"
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Payment = () => {
+    const location = useLocation();
+
+    const getQueryParam = (key) => {
+        const params = new URLSearchParams(location.search);
+        return params.get(key);
+    }
+    const userPlan = getQueryParam("type") || "Individual";
+    let price = 0;
+    if(userPlan === "mini") 
+        {
+            price = 10500;
+        };
+    if(userPlan === "individual") 
+        {
+            price = 59000;
+        };
+    if(userPlan === "student"){
+        price = 29500;
+    }
     const [activeIndex, setActiveIndex] = useState(null);
 
     const handleClick = (index) => {
@@ -37,14 +57,14 @@ const Payment = () => {
                             <article className="description">
                                 <div className="header">
                                     <div>
-                                        <h1>Premium Individual</h1>
+                                        <h1>{userPlan}</h1>
                                         <h3>1 Premium account</h3>
                                     </div>
                                 </div>
                                 <div className="body">
                                     <div className="description">
                                         <p className="encore-text">Total</p>
-                                        <p className="encore-text">One time payment of ₫65,000 for 1 month</p>
+                                        <p className="encore-text">One time payment of ₫{price.toLocaleString("vi-VN")} for 1 month</p>
                                     </div>
                                     <ul>
                                         <li>
