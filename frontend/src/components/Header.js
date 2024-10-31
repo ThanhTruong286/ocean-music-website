@@ -1,29 +1,40 @@
-import avatar from "../assets/images/avatar.png";
 import React, { useState, useEffect, useRef } from "react";
-import { logoutUser } from "../api/api";
+import { logoutUser, getUser } from "../api/api"; // Import API functions
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../api/api";
+import avatar from "../assets/images/avatar.png";
 
 const Header = () => {
-    const [user, setUser] = useState(null); // Trạng thái người dùng
-    const [loading, setLoading] = useState(true); // Trạng thái đang tải
-    const [isPopupVisible, setPopupVisible] = useState(false); // Trạng thái popup
-    const popupRef = useRef(null); // Tham chiếu cho popup
-    const navigate = useNavigate(); // Hook để điều hướng
+    const [user, setUser] = useState(null); // User state
+    const [loading, setLoading] = useState(true); // Loading state
+    const [isPopupVisible, setPopupVisible] = useState(false); // Popup visibility state
+    const popupRef = useRef(null); // Reference for the popup
+    const navigate = useNavigate(); // Hook for navigation
 
-    // Hàm xử lý đăng xuất
-    const handleLogout = async (e) => {
+    // Logout handler
+    const handleLogout = async () => {
         try {
-            await logoutUser(); // Gọi API đăng xuất
-            sessionStorage.removeItem('userToken'); // Xóa token khỏi sessionStorage
-            sessionStorage.removeItem('user'); // Xóa thông tin người dùng khỏi sessionStorage
-            setUser(null); // Cập nhật trạng thái người dùng về null
-            navigate('/login'); // Chuyển hướng người dùng về trang đăng nhập
+            await logoutUser(); // Call logout API
+            sessionStorage.removeItem('userToken'); // Remove user token from session storage
+            sessionStorage.removeItem('user'); // Remove user info from session storage
+            setUser(null); // Reset user state
+            navigate('/login'); // Redirect to login page
         } catch (error) {
             console.error('Error during logout:', error);
         }
     };
 
+    // Fetch user data
+    const fetchUserData = async () => {
+        try {
+            const userData = await getUser(); // Fetch user data
+            setUser(userData);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            setUser(null); // Set user to null if error occurs
+        } finally {
+            setLoading(false); // Set loading to false
+        }
+    };
     const handleProfileClick = async (e) => {
         try {
             // Gọi hàm để lấy thông tin người dùng
@@ -36,40 +47,37 @@ const Header = () => {
             // Xử lý lỗi nếu cần
         }
     };
-    // Lấy thông tin người dùng từ localStorage khi component được mount
-    useEffect(() => {
-        const storedUser = localStorage.getItem('user'); // Lấy người dùng từ localStorage
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
-        setLoading(false);
-    }, []); // Thêm dependency array rỗng để chạy chỉ 1 lần
 
-    // Hàm toggle khi click vào avatar
+    // Fetch user data on component mount
+    useEffect(() => {
+        fetchUserData();
+    }, []); // Runs once on mount
+
+    // Toggle popup visibility
     const togglePopup = () => {
-        setPopupVisible(!isPopupVisible); // Đổi trạng thái hiển thị popup
+        setPopupVisible(!isPopupVisible); // Toggle popup visibility
     };
 
-    // Hàm để đóng popup nếu click ra ngoài
+    // Close popup if clicking outside
     const handleClickOutside = (event) => {
         if (popupRef.current && !popupRef.current.contains(event.target)) {
-            setPopupVisible(false); // Đóng popup khi click bên ngoài
+            setPopupVisible(false); // Close popup on outside click
         }
     };
 
-    // Lắng nghe sự kiện click bên ngoài khi popup mở
+    // Listen for outside click event when popup is open
     useEffect(() => {
         if (isPopupVisible) {
-            document.addEventListener("mousedown", handleClickOutside); // Lắng nghe click bên ngoài
+            document.addEventListener("mousedown", handleClickOutside); // Add event listener
         } else {
-            document.removeEventListener("mousedown", handleClickOutside); // Ngừng lắng nghe nếu popup không mở
+            document.removeEventListener("mousedown", handleClickOutside); // Remove event listener
         }
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside); // Dọn dẹp sự kiện khi component unmount
+            document.removeEventListener("mousedown", handleClickOutside); // Cleanup on unmount
         };
     }, [isPopupVisible]);
 
-    // Nếu đang tải, hiển thị loading
+    // Show loading state if loading
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -80,31 +88,38 @@ const Header = () => {
                 <div className="container-fluid navbar-inner">
                     <div className="collapse navbar-collapse">
                         <div className="d-flex align-items-center justify-content-between product-offcanvas">
-                            <div className="offcanvas offcanvas-end shadow-none iq-product-menu-responsive" tabIndex="-1" id="offcanvasBottom">
-                                <div className="offcanvas-body">
-                                    <ul className="iq-nav-menu list-unstyled">
+                            <ul className="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
+                            
+                                
                                         <li className="nav-item">
-                                            <a className="nav-link active" href="/">
-                                                <span className="item-name">Trang Chủ</span>
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="/admin">
-                                                <span className="item-name">Admin</span>
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="/albums">
-                                                <span className="item-name">Albums</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                                    <a className="nav-link active" href="/">
+                                        <span className="item-name">Trang Chủ</span>
+                                    </a>
+                                </li>
+                                {user ? ( // Check if user is logged in
+                                    <>
+                                        {user.role_id === 1 && ( // Admin role check
+                                            <li className="nav-item">
+                                                <a className="nav-link" href="/admin">Admin</a>
+                                            </li>
+                                        )}
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/albums">
+                                        <span className="item-name">Albums</span>
+                                    </a>
+                                </li>
+                                
+                                    </>
+                                ) : (
+                                    <li className="nav-item">
+                                        <a href="/login" className="header-btn">Login</a>
+                                        <a href="/register" className="header-btn">Register</a>
+                                    </li>
+                                )}
+                            </ul>
                         </div>
-
-                        {/** Thanh tìm kiếm luôn hiển thị */}
-                        <div className="search-box d-xl-block d-none">
+                         {/** Thanh tìm kiếm luôn hiển thị */}
+                         <div className="search-box d-xl-block d-none">
                             <div className="dropdown">
                                 <div className="search-box-drop" id="search-box-drop">
                                     <div className="d-flex align-items-center justify-content-between gap-2">
@@ -124,7 +139,6 @@ const Header = () => {
                                 </div>
                             </div>
                         </div>
-
                         <ul className="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
                             {user ? ( // Kiểm tra nếu người dùng đã đăng nhập
                                 <>
@@ -181,3 +195,4 @@ const Header = () => {
 }
 
 export default Header;
+                  

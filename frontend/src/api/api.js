@@ -85,6 +85,7 @@ export const fetchRoles = async () => {
 export const getUser = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user.userId;
+
     try {
         const response = await axios.get(`${API_URL}/users/profile/${userId}`, {
             headers: {
@@ -92,7 +93,10 @@ export const getUser = async () => {
                 'Authorization': `Bearer ${localStorage.getItem('userToken')}`
             }
         });
-        return response.data; // Trả về dữ liệu từ backend
+        
+        // Giả sử dữ liệu trả về từ API chứa role_id
+        const { role_id } = response.data; // Điều chỉnh theo cấu trúc phản hồi API của bạn
+        return { ...response.data, role_id }; // Trả về role_id cùng với dữ liệu người dùng
     } catch (error) {
         console.error('Error sending user ID:', error);
         throw error; // Ném lại lỗi để xử lý ở nơi khác
@@ -109,7 +113,7 @@ export const loginUser = async (userData) => {
                 'Content-Type': 'application/json',
             }
         });
-
+        console.log(userData);
         const { token, expiry, userId } = response.data;
 
         localStorage.setItem('user', JSON.stringify({ userId, expiry }));
