@@ -69,7 +69,7 @@ const ChangePasswordView = () => {
                         />
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="form-options">
-                            <a href="#" className="forgot-password">Forgot Password?</a>
+                            <a href="/reset-password" className="forgot-password">Forgot Password?</a>
                         </div>
                         <button type="submit" className="login-button">Submit</button>
                     </form>

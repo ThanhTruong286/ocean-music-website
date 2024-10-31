@@ -8,6 +8,7 @@ import Artist from './Artist';
 import Profile from './Profile';
 import ChangePasswordView from './ChangePassword';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ResetPassword from './ResetPassword';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/artist' element={<Artist />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/change-password' element={<ChangePasswordView />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
         </Routes>
       </Router>
     </div>

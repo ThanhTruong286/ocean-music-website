@@ -192,3 +192,23 @@ export const fetchingSongs = async () => {
         throw e;
     }
 };
+
+
+// API request for password reset
+export const requestPasswordReset = async (email, captchaToken) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/auth/request-reset-password`,
+            { email, captchaToken },
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+        console.log('Password reset email sent successfully:', response.data);
+        return response.data;
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || 'Failed to send password reset email';
+        console.error('Error sending password reset email:', errorMessage);
+        throw new Error(errorMessage);
+    }
+};

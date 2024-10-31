@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/User');
 
+exports.requestPasswordReset = async(req,res) => {
+
+}
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
   const { firstName, lastName, username, email, password, phone } = req.body;
