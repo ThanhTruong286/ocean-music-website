@@ -6,6 +6,7 @@ import momo from "../assets/images/payment/momo.svg"
 import visa from "../assets/images/payment/visa.svg"
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { MoMoPayment } from "../api/api";
 
 const Payment = () => {
     const location = useLocation();
@@ -16,15 +17,13 @@ const Payment = () => {
     }
     const userPlan = getQueryParam("type") || "Individual";
     let price = 0;
-    if(userPlan === "mini") 
-        {
-            price = 10500;
-        };
-    if(userPlan === "individual") 
-        {
-            price = 59000;
-        };
-    if(userPlan === "student"){
+    if (userPlan === "mini") {
+        price = 10500;
+    };
+    if (userPlan === "individual") {
+        price = 59000;
+    };
+    if (userPlan === "student") {
         price = 29500;
     }
     const [activeIndex, setActiveIndex] = useState(null);
@@ -40,6 +39,20 @@ const Payment = () => {
         { name: "MoMo wallet" },
         { name: "Visa" },
     ];
+    const handlePaymentMomo = async () => {
+        try {
+            const response = await MoMoPayment(price);
+            if (response.ok) {
+                window.location.href = response.redirectUrl;
+            } else {
+                // Xử lý lỗi nếu thanh toán không thành công
+                console.log("Lỗi thanh toán:", response.message);
+                alert(response.message || "Thanh toán không thành công");
+            }
+        } catch (e) {
+            console.log("Lỗi thanh toán:", e);
+        }
+    };
     return (
         <div>
             <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -152,7 +165,7 @@ const Payment = () => {
                                             <img src={momo} width={24} height={24} />
                                         </div>
                                         <span>You'll be redirected to MoMo Wallet to complete your purchase.</span>
-                                        <button id="checkout_submit">
+                                        <button id="checkout_submit" onClick={handlePaymentMomo}>
                                             <span>Continue purchase</span>
                                         </button>
                                     </div>

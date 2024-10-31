@@ -2,6 +2,44 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+//Xử lý thanh toán momo
+export const MoMoPayment = async (price) => {
+    try {
+        // Lấy userId từ localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.userId;
+
+        // Kiểm tra xem userId có tồn tại không
+        if (!userId) {
+            console.log("User ID không được tìm thấy trong localStorage.");
+            return;
+        }
+
+        const response = await axios.post(`${API_URL}/payment/momo`,
+            {
+                amount: price,
+                orderInfo: "Thanh toán qua MoMo",
+                userId: userId
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+        const result = response.data;
+
+        if (result && result.payUrl) {
+            window.location.href = result.payUrl; // Chuyển hướng tới payUrl
+        } else {
+            console.log("Lỗi khi khởi tạo thanh toán.");
+        }
+    } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+    }
+}
+
+
 //Change Password
 export const ChangePassword = async (currentPassword, newPassword) => {
     // Kiểm tra đầu vào
