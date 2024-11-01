@@ -89,10 +89,8 @@ class User {
                     console.log('User not found');
                     return callback(null, null);
                 }
-
-                // Nếu tìm thấy user, tạo instance mới từ kết quả và trả về
-                const user = new User(results[0]); // Assuming User constructor handles sub_name
-                user.sub_name = results[0].sub_name; // Add subscription name to user object
+                const user = new User(results[0]);
+                user.sub_name = results[0].sub_name;
                 callback(null, user);
             }
         );
