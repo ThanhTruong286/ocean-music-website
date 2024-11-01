@@ -9,7 +9,7 @@ import { getUser } from "../api/api";
 
 const Profile = () => {
 
-    const [user, setUser] = useState(null); // Đổi thành null thay vì []
+    const [user, setUser] = useState(null);
     const [e, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -102,45 +102,6 @@ const Profile = () => {
                                                 <p className="news-detail mb-0">20% off coupon on selected items at pharmaprix </p>
                                             </li>
                                         </ul>
-                                    </div>
-                                </div>
-                                <div className="card">
-                                    <div className="card-header d-flex align-items-center justify-content-between">
-                                        <div className="header-title">
-                                            <h4 className="card-title">Gallery</h4>
-                                        </div>
-                                        <span>132 pics</span>
-                                    </div>
-                                    <div className="card-body">
-                                        <div className="d-grid gap-card grid-cols-3">
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/38.png">
-                                                <img src="../../assets/images/dashboard/38.png" className="img-fluid  rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/39.png">
-                                                <img src="../../assets/images/dashboard/39.png" className="img-fluid  rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/40.png">
-                                                <img src="../../assets/images/dashboard/40.png" className="img-fluid  rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/41.png">
-                                                <img src="../../assets/images/dashboard/41.png" className="img-fluid  rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/42.png">
-                                                <img src="../../assets/images/dashboard/42.png" className="img-fluid  rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/43.png">
-                                                <img src="../../assets/images/dashboard/43.png" className="img-fluid  rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/44.png">
-                                                <img src="../../assets/images/dashboard/44.png" className="img-fluid rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/32.png">
-                                                <img src="../../assets/images/dashboard/32.png" className="img-fluid rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                            <a data-fslightbox="gallery" href="../../assets/images/dashboard/31.png">
-                                                <img src="../../assets/images/dashboard/31.png" className="img-fluid rounded" alt="profile-image" loading="lazy" />
-                                            </a>
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="card">
@@ -295,8 +256,8 @@ const Profile = () => {
                                     <div className="card-body">
                                         <p>I'm MidKing</p>
                                         <div className="mb-1">Email: <a href="#" className="ms-3">{user.email}</a></div>
-                                        <div className="mb-1">Loại tài khoản: <a href="#" className="ms-3">{user.subscription_type}</a></div>
-                                        <div>Location: <span>Korea</span></div>
+                                        <div className="mb-1">Loại tài khoản: <a href="#" className="ms-3">{user.subscription_name || "Thường"}</a></div>
+                                        <div>Hết hạn lúc: <span>10:00</span></div>
                                         <hr />
                                         <ul className="d-flex nav nav-pills mb-0 text-center profile-tab nav-slider" data-toggle="slider-tab" id="profile-pills-tab" role="tablist">
                                             <li className="nav-item" role="presentation">

@@ -41,7 +41,7 @@ const Payment = () => {
     ];
     const handlePaymentMomo = async () => {
         try {
-            const response = await MoMoPayment(price);
+            const response = await MoMoPayment(price, userPlan);
             if (response.ok) {
                 window.location.href = response.redirectUrl;
             } else {

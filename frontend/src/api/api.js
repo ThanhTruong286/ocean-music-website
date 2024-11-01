@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost:5000/api';
 
 //Xử lý thanh toán momo
-export const MoMoPayment = async (price) => {
+export const MoMoPayment = async (price, userPlan) => {
     try {
         // Lấy userId từ localStorage
         const user = JSON.parse(localStorage.getItem('user'));
@@ -19,7 +19,8 @@ export const MoMoPayment = async (price) => {
             {
                 amount: price,
                 orderInfo: "Thanh toán qua MoMo",
-                userId: userId
+                userId: userId,
+                userPlan: userPlan
             },
             {
                 headers: {
@@ -28,7 +29,7 @@ export const MoMoPayment = async (price) => {
             });
 
         const result = response.data;
-
+        console.log(result);
         if (result && result.payUrl) {
             window.location.href = result.payUrl; // Chuyển hướng tới payUrl
         } else {

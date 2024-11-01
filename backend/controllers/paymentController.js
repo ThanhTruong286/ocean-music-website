@@ -113,4 +113,38 @@ exports.MoMoCallBack = async (req, res) => {
     }
 };
 
+exports.updateVip = async (req, res) => {
+    const { userId, userPlan } = req.body;
+    let subscription_id = 0;
+    if (userPlan === "mini") {
+        subscription_id = 1;
+    }
+    if (userPlan === "individual") {
+        subscription_id = 2;
+    }
+    if (userPlan === "student") {
+        subscription_id = 3;
+    }
+    try {
+        // Gọi phương thức update với callback
+        UserModel.update(userId, { is_vip: true, subscription_id: subscription_id }, (err, results) => {
+            if (err) {
+                return res.status(500).json({ message: "Server error", error: err });
+            }
+
+            if (results.affectedRows === 0) {
+                return res.status(200).json({ message: "No changes made to VIP status" });
+            }
+
+            res.status(200).json({ message: "UP VIP successfully" });
+        });
+    } catch (err) {
+        console.error('Error finding userId:', userId, err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+
+
+
 
