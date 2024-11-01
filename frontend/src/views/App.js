@@ -6,7 +6,9 @@ import Album from "./Album";
 import Library from './Library';
 import Artist from './Artist';
 import Profile from './Profile';
+import Subcribe from './Subcribe';
 import ChangePasswordView from './ChangePassword';
+import Payment from './Payment';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -22,6 +24,8 @@ const App = () => {
           <Route path='/artist' element={<Artist />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/change-password' element={<ChangePasswordView />} />
+          <Route path='/subcribe' element={<Subcribe />} />
+          <Route path='/payment' element={<Payment />} />
         </Routes>
       </Router>
     </div>

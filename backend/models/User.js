@@ -12,7 +12,7 @@ class User {
         profile_url,
         status,
         last_login,
-        subscription_type,
+        subscription_id,
         phone_number,
         is_vip,
         vip_expiration,
@@ -21,7 +21,8 @@ class User {
         gender,
         date_of_birth,
         first_name,
-        last_name
+        last_name,
+        subscription_name
     }) {
         this.user_id = user_id;
         this.username = username;
@@ -32,7 +33,7 @@ class User {
         this.profile_url = profile_url;
         this.status = status;
         this.last_login = last_login;
-        this.subscription_type = subscription_type;
+        this.subscription_id = subscription_id;
         this.phone_number = phone_number;
         this.is_vip = is_vip;
         this.vip_expiration = vip_expiration;
@@ -42,6 +43,7 @@ class User {
         this.date_of_birth = date_of_birth;
         this.first_name = first_name;
         this.last_name = last_name;
+        this.subscription_name = subscription_name
     }
 
     // Hash mật khẩu
@@ -56,11 +58,11 @@ class User {
 
         db.query(
             `INSERT INTO users (username, email, password, role_id, profile_url, status, 
-             subscription_type, phone_number, is_vip, vip_expiration, gender, date_of_birth, 
+             subscription_id, phone_number, is_vip, vip_expiration, gender, date_of_birth, 
              first_name, last_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 this.username, this.email, this.password, this.role_id, this.profile_url,
-                this.status, this.subscription_type, this.phone_number, this.is_vip,
+                this.status, this.subscription_id, this.phone_number, this.is_vip,
                 this.vip_expiration, this.gender, this.date_of_birth, this.first_name, this.last_name
             ],
             callback
@@ -69,23 +71,31 @@ class User {
 
     // Tìm người dùng theo ID
     static findById(userId, callback) {
-        db.query('SELECT * FROM users WHERE user_id = ?', [userId], (err, results) => {
-            if (err) {
-                console.error('Error during database query:', err); // Ghi lỗi truy vấn
-                return callback(err);
-            }
+        // Update the query to join with the subscriptions table
+        db.query(`
+        SELECT users.*, subscription.subscription_name 
+        FROM users 
+        LEFT JOIN subscription ON users.subscription_id = subscription.subscription_id 
+        WHERE users.user_id = ?`,
+            [userId],
+            (err, results) => {
+                if (err) {
+                    console.error('Error during database query:', err);
+                    return callback(err);
+                }
 
-            // Nếu không tìm thấy user
-            if (!results || results.length === 0) {
-                console.log('User not found'); // Ghi log khi không tìm thấy user
-                return callback(null, null);
+                // Nếu không tìm thấy user
+                if (!results || results.length === 0) {
+                    console.log('User not found');
+                    return callback(null, null);
+                }
+                const user = new User(results[0]);
+                user.sub_name = results[0].sub_name;
+                callback(null, user);
             }
-
-            // Nếu tìm thấy user, tạo instance mới từ kết quả và trả về
-            const user = new User(results[0]);
-            callback(null, user);
-        });
+        );
     }
+
 
     // Kiểm tra mật khẩu
     static async validatePassword(storedPassword, enteredPassword) {
