@@ -1,12 +1,12 @@
-// ResetPassword.js
 import React, { useState } from 'react';
-import { requestPasswordReset } from '../api/api';
+import { ChangePassword } from '../api/api';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/login.scss';
 import { useNavigate } from 'react-router-dom';
 
 const ResetPasswordView = () => {
-    const [email, setEmail] = useState('');
+    const [cpass, setCPass] = useState('');
+    const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [captchaToken, setCaptchaToken] = useState('');
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ResetPasswordView = () => {
         setCaptchaToken(token);
     };
 
-    const handleRequestPasswordReset = async (e) => {
+    const handleChangePassword = async (e) => {
         e.preventDefault();
         if (!captchaToken) {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
@@ -23,14 +23,13 @@ const ResetPasswordView = () => {
         }
         
         try {
-            // Call API to request password reset
-            const response = await requestPasswordReset(email, captchaToken);
-            console.log('Password reset request successful:', response);
-            alert('Kiểm tra email của bạn để đặt lại mật khẩu.');
+            // Gọi API thay đổi mật khẩu với captchaToken
+            const response = await ChangePassword(cpass, password, captchaToken);
+            console.log('Change Password successful:', response);
             navigate('/login');
         } catch (error) {
-            console.error('Password reset request failed:', error);
-            setErrorMessage(error.message || 'Yêu cầu đặt lại mật khẩu thất bại.');
+            console.error('Change Password failed:', error);
+            setErrorMessage(error.message || 'Change Password Failed');
         }
     };
 
@@ -39,33 +38,63 @@ const ResetPasswordView = () => {
             <div className="login-container">
                 <div className="login-left">
                     <img src={require('../assets/images/logo.png')} alt="Logo" className="logo" />
-                    <h2>Reset Password</h2>
-                    <p>Enter your email to receive reset link</p>
-                    <form onSubmit={handleRequestPasswordReset}>
+                    <h2>Forgot Password</h2>
+                    <p>Make Your Password Stronger</p>
+                    <form onSubmit={handleChangePassword}>
                         <div className="form-group">
-                            <label htmlFor="email">Email đăng nhập</label>
+                            <label htmlFor="cpass">New Password</label>
                             <input
-                                type="email"
-                                id="email"
-                                placeholder="Email của bạn"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="text"
+                                id="cpass"
+                                placeholder="xxxx"
+                                value={cpass}
+                                onChange={(e) => setCPass(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Confirm Password</label>
+                            <input
+                                type="text"
+                                id="password"
+                                placeholder="xxxx"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>
                         <ReCAPTCHA
-                            sitekey="6LdsR3AqAAAAAIGtNzZDDXM7TriFXWOc1XeOlTnq"
+                            sitekey="6LdsR3AqAAAAAIGtNzZDDXM7TriFXWOc1XeOlTnq" // Đã thay bằng site key của bạn
                             onChange={handleCaptchaChange}
                         />
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
-                        <button type="submit" className="login-button">Reset</button>
+                        <div className="form-options">
+                            <a href="/login" className="forgot-password">Sign in</a>
+                        </div>
+                        <button type="submit" className="login-button">Submit</button>
                     </form>
+                    <p className="or-sign-in">Sign in with other accounts?</p>
+                    <div className="social-login">
+                        <button className="social-button google">
+                            <i className="fab fa-google"></i>
+                        </button>
+                        <button className="social-button facebook">
+                            <i className="fab fa-facebook-f"></i>
+                        </button>
+                        <button className="social-button instagram">
+                            <i className="fab fa-instagram"></i>
+                        </button>
+                        <button className="social-button linkedin">
+                            <i className="fab fa-linkedin-in"></i>
+                        </button>
+                    </div>
                     <p className="signup-text">
                         Don’t have an account? <a href="/register">Click here to sign up.</a>
                     </p>
                 </div>
                 <div className="login-right">
-                    <div className="login-info"></div>
+                    <div className="login-info">
+                    </div>
                 </div>
             </div>
         </div>

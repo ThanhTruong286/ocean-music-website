@@ -8,7 +8,8 @@ import Artist from './Artist';
 import Profile from './Profile';
 import ChangePasswordView from './ChangePassword';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ResetPassword from './ResetPassword';
+import ResetPasswordView from './ResetPassword';
+import EmailBackup from "./Email";
 
 const App = () => {
   return (
@@ -23,7 +24,8 @@ const App = () => {
           <Route path='/artist' element={<Artist />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/change-password' element={<ChangePasswordView />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/reset-password' element={<ResetPasswordView />} />
+          <Route path='/email' element={<EmailBackup />} />
         </Routes>
       </Router>
     </div>

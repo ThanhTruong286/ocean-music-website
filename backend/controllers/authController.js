@@ -2,10 +2,85 @@ const db = require('../config/db'); // Kết nối với MySQL
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/User');
+const nodemailer = require('nodemailer');
 
-exports.requestPasswordReset = async(req,res) => {
+exports.sendEmail = async (req, res) => {
+  const { email } = req.body;
 
-}
+  // Tạo transporter để gửi email
+  const transporter = nodemailer.createTransport({
+      service: 'Gmail', 
+      auth: {
+          user: 'thainho24@gmail.com', 
+          pass: 'rojn bxuk lcsn gicg' 
+      }
+  });
+
+  // Thiết lập thông tin email
+  const mailOptions = {
+      from: 'thainho24@gmail.com', // Địa chỉ email của người gửi
+      to: email, // Địa chỉ email của người nhận
+      subject: 'Reset Password Request',
+      text: 'Yêu cầu lấy lại mật khẩu', // Nội dung email
+      html: `<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu Cầu Lấy Lại Mật Khẩu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+        }
+        p {
+            font-size: 16px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Yêu Cầu Lấy Lại Mật Khẩu</h1>
+        <p>Chào bạn,</p>
+        <p>Chúng tôi đã nhận được yêu cầu lấy lại mật khẩu cho tài khoản của bạn. Nếu bạn không thực hiện yêu cầu này, bạn có thể bỏ qua email này.</p>
+        <p>Để tiếp tục, hãy nhấn vào liên kết bên dưới:</p>
+        <p><a href="http://localhost:3000/reset-password">Đặt lại mật khẩu của bạn</a></p>
+        <p>Trân trọng,<br>Đội ngũ hỗ trợ của chúng tôi</p>
+        <div class="footer">
+            <p>© 2024 Công ty của bạn. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</body>
+</html>
+`
+  };
+
+  try {
+      // Gửi email
+      await transporter.sendMail(mailOptions);
+      res.status(200).json({ message: 'Email sent successfully!' });
+  } catch (error) {
+      console.log("Error sending email:", error);
+      res.status(500).json({ message: 'Failed to send email.', error: error.message });
+  }
+};
+
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
   const { firstName, lastName, username, email, password, phone } = req.body;
@@ -192,5 +267,6 @@ exports.changePassword = async (req, res) => {
       res.status(500).json({ message: 'Server error', error });
   }
 };
+
 
 
