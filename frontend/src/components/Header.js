@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { logoutUser } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../api/api";
+import AdComponent from "./AdComponent";
 
 const Header = () => {
     const [user, setUser] = useState(null); // Trạng thái người dùng
@@ -76,6 +77,7 @@ const Header = () => {
 
     return (
         <div className="position-relative">
+            <AdComponent />
             <nav className="nav navbar navbar-expand-xl navbar-light iq-navbar">
                 <div className="container-fluid navbar-inner">
                     <div className="collapse navbar-collapse">
