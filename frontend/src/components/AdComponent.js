@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-function AdComponent() {
+function AdComponent({ is_vip }) {
     const [isVisible, setIsVisible] = useState(true);
-    const [countdown, setCountdown] = useState(30);
+    const [countdown, setCountdown] = useState(1);
 
     // Đếm ngược từ 30 giây
     useEffect(() => {
@@ -14,7 +14,8 @@ function AdComponent() {
         }
     }, [countdown]);
 
-    if (!isVisible) return null;
+    // Kiểm tra co phai vip khong
+    if (!isVisible || is_vip !== 0) return null;
 
     return (
         <div style={{

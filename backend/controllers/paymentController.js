@@ -13,7 +13,7 @@ exports.MoMoPayment = async (req, res) => {
     const orderInfo = data.orderInfo;
     const partnerCode = 'MOMO';
     const redirectUrl = 'http://localhost:3000/profile';
-    const ipnUrl = 'https://1813-1-53-97-49.ngrok-free.app/api/payment/momo/callback';
+    const ipnUrl = 'https://6a9e-42-115-42-45.ngrok-free.app/api/payment/momo/callback';
     const requestType = "payWithMethod";
     const amount = data.amount;
     const orderId = partnerCode + new Date().getTime();

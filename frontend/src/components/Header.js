@@ -25,6 +25,18 @@ const Header = () => {
         }
     };
 
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const data = await getUser(); // Thêm await ở đây
+                setUser(data); // Lưu dữ liệu user vào state
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+        loadUser();
+    }, []);
     const handleProfileClick = async (e) => {
         try {
             // Gọi hàm để lấy thông tin người dùng
@@ -77,7 +89,7 @@ const Header = () => {
 
     return (
         <div className="position-relative">
-            <AdComponent />
+            <AdComponent is_vip={user.is_vip} />
             <nav className="nav navbar navbar-expand-xl navbar-light iq-navbar">
                 <div className="container-fluid navbar-inner">
                     <div className="collapse navbar-collapse">
