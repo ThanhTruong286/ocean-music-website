@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 23, 2024 at 08:57 AM
+-- Generation Time: Nov 04, 2024 at 06:32 AM
 -- Server version: 8.3.0
--- PHP Version: 7.4.33
+-- PHP Version: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -463,6 +463,29 @@ CREATE TABLE IF NOT EXISTS `statistics` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscription`
+--
+
+DROP TABLE IF EXISTS `subscription`;
+CREATE TABLE IF NOT EXISTS `subscription` (
+  `subscription_id` int NOT NULL AUTO_INCREMENT,
+  `subscription_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subscription_valid_date` int NOT NULL,
+  PRIMARY KEY (`subscription_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `subscription`
+--
+
+INSERT INTO `subscription` (`subscription_id`, `subscription_name`, `subscription_valid_date`) VALUES
+(1, 'Mini', 7),
+(2, 'Individual', 30),
+(3, 'Student', 30);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -477,7 +500,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `profile_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_login` datetime DEFAULT CURRENT_TIMESTAMP,
-  `subscription_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Thường',
+  `subscription_id` int DEFAULT '1',
   `phone_number` int DEFAULT NULL,
   `is_vip` tinyint(1) DEFAULT '0',
   `vip_expiration` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -490,22 +513,24 @@ CREATE TABLE IF NOT EXISTS `users` (
   `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `role_id`, `date_registered`, `profile_url`, `status`, `last_login`, `subscription_type`, `phone_number`, `is_vip`, `vip_expiration`, `login_attempts`, `last_login_attempt`, `gender`, `date_of_birth`, `created_at`, `updated_at`, `first_name`, `last_name`) VALUES
-(1, 'justinbieber', 'a@gmail.com', '1', 2, '2024-10-22 13:32:11', '/profiles/justinbieber.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567890, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1994-03-01 00:00:00', '2024-10-23 07:17:02', '2024-10-23 07:17:02', NULL, NULL),
-(2, 'taylorswift', 'taylorswift@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/taylorswift.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567891, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1989-12-13 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(3, 'brunomars', 'brunomars@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/brunomars.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567892, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1985-10-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(4, 'edsheeran', 'edsheeran@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/edsheeran.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567893, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1991-02-17 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(5, 'arianagrande', 'arianagrande@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/arianagrande.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567894, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1993-06-26 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(6, 'theweeknd', 'theweeknd@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/theweeknd.jpg', NULL, '2024-10-22 13:32:11', 'Thường', 1234567895, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1990-02-16 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(7, 'john_doe', 'johndoe@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/johndoe.jpg', NULL, '2024-10-22 13:32:28', 'Thường', 1234567896, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 1, '1995-07-19 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
-(8, 'jane_smith', 'janesmith@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/janesmith.jpg', NULL, '2024-10-22 13:32:28', 'Thường', 1234567897, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 0, '1997-04-14 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
-(21, 'Admin', 'caot43069@gmail.com', '$2a$10$SI0yt9b9xeyLYcCzvH3cVeKg8e5gFltamWqngru6jhyPeLbg93.j6', 1, '2024-10-23 15:55:50', '', 'active', '2024-10-23 15:55:50', 'Thường', 123, 0, '2024-10-23 15:55:50', 0, '2024-10-23 15:55:50', 0, NULL, '2024-10-23 08:55:50', '2024-10-23 08:55:50', 'Truong', 'Thanh');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `role_id`, `date_registered`, `profile_url`, `status`, `last_login`, `subscription_id`, `phone_number`, `is_vip`, `vip_expiration`, `login_attempts`, `last_login_attempt`, `gender`, `date_of_birth`, `created_at`, `updated_at`, `first_name`, `last_name`) VALUES
+(1, 'justinbieber', 'a@gmail.com', '1', 2, '2024-10-22 13:32:11', '/profiles/justinbieber.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567890, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1994-03-01 00:00:00', '2024-10-23 07:17:02', '2024-10-23 07:17:02', NULL, NULL),
+(2, 'taylorswift', 'taylorswift@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/taylorswift.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567891, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1989-12-13 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(3, 'brunomars', 'brunomars@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/brunomars.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567892, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1985-10-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(4, 'edsheeran', 'edsheeran@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/edsheeran.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567893, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1991-02-17 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(5, 'arianagrande', 'arianagrande@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/arianagrande.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567894, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1993-06-26 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(6, 'theweeknd', 'theweeknd@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/theweeknd.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567895, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1990-02-16 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
+(7, 'john_doe', 'johndoe@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/johndoe.jpg', NULL, '2024-10-22 13:32:28', 0, 1234567896, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 1, '1995-07-19 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
+(8, 'jane_smith', 'janesmith@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/janesmith.jpg', NULL, '2024-10-22 13:32:28', 0, 1234567897, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 0, '1997-04-14 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
+(21, 'Admin', 'caot43069@gmail.com', '$2a$10$LMzzzwMiPg7/eRVN8iKpbekBSG44njPgLuB431pUXoaOSYdtU3Yma', 1, '2024-10-23 15:55:50', '', 'active', '2024-10-23 15:55:50', 0, 123, 0, '2024-10-23 15:55:50', 0, '2024-10-23 15:55:50', 0, NULL, '2024-11-04 06:20:45', '2024-11-04 06:20:45', 'Truong', 'Thanh'),
+(22, 'Admin', 'thanht43069@gmail.com', '$2a$10$uhV33uEVBcC6Odd2xIr.5uINTHSRjzYj.xPFYi5d/pvXM9qOCnpKO', 1, '2024-10-23 17:01:04', '', 'active', '2024-10-23 17:01:04', 2, 123, 1, '2024-10-23 17:01:04', 0, '2024-10-23 17:01:04', 0, NULL, '2024-11-04 06:30:55', '2024-11-04 06:30:55', 'Truong', 'Thanh'),
+(23, '123', 'ab@gmail.com', '$2a$10$w7I3pMdFk9AmZSq6hRoEZu5gA9nPCPbI/AHIvJtl3RoqcXmkv/zaa', 1, '2024-10-23 17:18:32', '', 'active', '2024-10-23 17:18:32', 0, 123, 0, '2024-10-23 17:18:32', 0, '2024-10-23 17:18:32', 0, NULL, '2024-10-23 10:18:32', '2024-10-23 10:18:32', 'Truong', 'Thanh');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
