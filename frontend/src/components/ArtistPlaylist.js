@@ -1,13 +1,18 @@
-import peanut from "../assets/images/artists/peanut.jpg";
 import React, { useEffect, useState } from 'react';
 import { fetchPlaylists } from '../api/api';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
+import peanut from "../assets/images/artists/peanut.jpg";
 
-const ArtistPLaylist = () => {
+// Load all images from the playlists folder
+const images = require.context('../assets/images/playlists', false, /\.(jpg|jpeg|png|gif)$/);
+
+const getArtistImage = (imageName) => {
+    // Check if the image exists in the context keys, else use peanut as default
+    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : peanut;
+};
+
+const ArtistPlaylist = () => {
     const [artistPlaylists, setArtistPlaylists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,15 +20,14 @@ const ArtistPLaylist = () => {
     useEffect(() => {
         const loadArtists = async () => {
             try {
-                const data = await fetchPlaylists(); // Gọi hàm fetchArtists
-                setArtistPlaylists(data); // Cập nhật danh sách artist
+                const data = await fetchPlaylists();
+                setArtistPlaylists(data);
             } catch (err) {
                 setError('Không thể tải danh sách playlists');
             } finally {
                 setLoading(false);
             }
         };
-
         loadArtists();
     }, []);
 
@@ -37,32 +41,32 @@ const ArtistPLaylist = () => {
 
     return (
         <div className="artist-list">
-            <Swiper
-                spaceBetween={30}  // Giảm khoảng cách giữa các slides
-                slidesPerView={5}  // Hiển thị 5 slides cùng lúc
-                onSlideChange={() => console.log('slide change')}
-            >
-                {artistPlaylists.map((artist) => (
-                    <SwiperSlide key={artist.playlist_id}> {/* Đặt mỗi artist vào một SwiperSlide */}
-                        <div className="artist-card"> {/* Thêm class name cho từng khối */}
-                            <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
-                                <img
-                                    src={artist.image || peanut}
-                                    id="artist-playlist"
-                                    className="img-fluid mx-auto d-block"
-                                    alt="play-img"
-                                />
+            <Swiper spaceBetween={30} slidesPerView={4} onSlideChange={() => console.log('slide change')}>
+                {artistPlaylists.map((artist) => {
+                    const playlistImage = getArtistImage(artist.image);
+                    return (
+                        <SwiperSlide key={artist.playlist_id}>
+                            <div className="artist-card">
+                                <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
+                                    <img
+                                        src={playlistImage}
+                                        id="artist-playlist"
+                                        className="img-fluid mx-auto d-block"
+                                        alt="play-img"
+                                    />
+                                </div>
+                                <a href="../dashboard/music-player.html" className="text-capitalize h5">{artist.title}</a>
+                                <small className="fw-normal line-count-1 text-capitalize">
+                                    <span>By </span>
+                                    <span style={{ color: 'red', fontSize:"14px" }}><b>{artist.first_name || 'Nickname'} {artist.last_name}</b></span>
+                                </small>
                             </div>
-                            <a href="../dashboard/music-player.html" className="text-capitalize h5">{artist.title}</a>
-                            <small className="fw-normal line-count-1 text-capitalize">
-                                <b style={{ color: artist.color || '#F05A22' }}>{artist.tag || 'Tag'}</b> {artist.bio || 'Nickname'}
-                            </small>
-                        </div>
-                    </SwiperSlide>
-                ))}
+                        </SwiperSlide>
+                    );
+                })}
             </Swiper>
         </div>
     );
-}
+};
 
-export default ArtistPLaylist;
+export default ArtistPlaylist;
