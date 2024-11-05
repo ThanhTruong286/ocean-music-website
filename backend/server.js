@@ -10,6 +10,7 @@ const playlistRoutes = require('./routes/playlistRoutes');
 const songRoutes = require('./routes/songRoutes');
 const albumRoutes = require('./routes/albumRoutes');
 const roleRoutes = require('./routes/roleRoutes');
+
 const db = require('./config/db'); // Kết nối DB
 
 const app = express();
@@ -42,6 +43,8 @@ app.use('/api/playlist', playlistRoutes); // playlist
 app.use('/api/song', songRoutes); //bài hát
 app.use('/api/album', albumRoutes);
 app.use('/api/role', roleRoutes);
+
+
 
 // Lắng nghe trên port
 app.listen(PORT, () => {

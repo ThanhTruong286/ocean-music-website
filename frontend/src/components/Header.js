@@ -112,9 +112,10 @@ const Header = () => {
                                     </>
                                 ) : (
                                     <li className="nav-item">
-                                        <a href="/login" className="header-btn">Login</a>
-                                        <a href="/register" className="header-btn">Register</a>
-                                    </li>
+                                    <a className="nav-link" href="/albums">
+                                        <span className="item-name">Albums</span>
+                                    </a>
+                                </li>
                                 )}
                             </ul>
                         </div>

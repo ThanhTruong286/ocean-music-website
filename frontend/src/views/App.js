@@ -7,7 +7,7 @@ import Library from './Library';
 import Artist from './Artist';
 import Profile from './Profile';
 import ChangePasswordView from './ChangePassword';
-import Admin from '../components/Admin';
+import Admin from './Admin';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
