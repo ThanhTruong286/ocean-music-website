@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 04, 2024 at 06:32 AM
+-- Generation Time: Nov 05, 2024 at 09:33 AM
 -- Server version: 8.3.0
--- PHP Version: 8.2.18
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `artists` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`artist_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `artists`
@@ -136,7 +136,8 @@ INSERT INTO `artists` (`artist_id`, `bio`, `user_id`, `debut_date`, `created_at`
 (3, 'Bruno Mars là một ca sĩ người Mỹ với các bản hit như \"Just the Way You Are\" và \"Uptown Funk\".', 3, '2010-07-20 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
 (4, 'Ed Sheeran là một ca sĩ người Anh với các bản hit như \"Shape of You\" và \"Perfect\".', 4, '2011-09-09 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
 (5, 'Ariana Grande là một ca sĩ người Mỹ nổi tiếng với giọng hát mạnh mẽ và các ca khúc như \"Thank U, Next\".', 5, '2013-03-25 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
-(6, 'The Weeknd là một ca sĩ người Canada nổi tiếng với âm nhạc đầy cảm xúc và sâu lắng.', 6, '2010-12-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11');
+(6, 'The Weeknd là một ca sĩ người Canada nổi tiếng với âm nhạc đầy cảm xúc và sâu lắng.', 6, '2010-12-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11'),
+(7, 'Roseanne Park MBE (sinh ngày 11 tháng 2 năm 1997), được biết đến với nghệ danh là Rosé (Tiếng Hàn: 로제), là một ca sỹ và vũ công người Hàn Quốc gốc New Zealand[3][4] hoạt động tại Hàn Quốc.[5] Sinh ra ở New Zealand và lớn lên ở Úc, Rosé đã ký hợp đồng với công ty Hàn Quốc YG Entertainment sau buổi thử giọng thành công vào năm 2012 và được đào tạo trong bốn năm trước khi ra mắt với tư cách là thành viên của nhóm nhạc nữ Blackpink vào tháng 8 năm 2016.', 24, '2024-11-05 16:19:00', '2024-11-05 09:19:00', '2024-11-05 09:19:00');
 
 -- --------------------------------------------------------
 
@@ -152,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `artist_songs` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`artist_song_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `artist_songs`
@@ -178,7 +179,8 @@ INSERT INTO `artist_songs` (`artist_song_id`, `artist_id`, `song_id`, `created_a
 (29, 5, 17, '2024-10-22 06:54:31', '2024-10-22 06:54:31'),
 (30, 6, 18, '2024-10-22 06:54:31', '2024-10-22 06:54:31'),
 (31, 6, 19, '2024-10-22 06:54:31', '2024-10-22 06:54:31'),
-(32, 5, 20, '2024-10-22 06:54:31', '2024-10-22 06:54:31');
+(32, 5, 20, '2024-10-22 06:54:31', '2024-10-22 06:54:31'),
+(33, 7, 21, '2024-11-05 09:19:30', '2024-11-05 09:19:30');
 
 -- --------------------------------------------------------
 
@@ -280,6 +282,7 @@ CREATE TABLE IF NOT EXISTS `listening_history` (
 DROP TABLE IF EXISTS `playlists`;
 CREATE TABLE IF NOT EXISTS `playlists` (
   `playlist_id` int NOT NULL AUTO_INCREMENT,
+  `image` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -291,23 +294,23 @@ CREATE TABLE IF NOT EXISTS `playlists` (
 -- Dumping data for table `playlists`
 --
 
-INSERT INTO `playlists` (`playlist_id`, `title`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Justin\'s Favorites', 1, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(2, 'Chill Vibes', 1, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(3, 'Taylor\'s Love Songs', 2, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(4, 'Country Classics', 2, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(5, 'Funky Hits', 3, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(6, 'Feel Good Tunes', 3, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(7, 'Ed\'s Romantic Collection', 4, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(8, 'Acoustic Favorites', 4, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(9, 'Ariana\'s Top Hits', 5, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(10, 'Pop Anthems', 5, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(11, 'The Weeknd\'s Essentials', 6, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(12, 'Night Vibes', 6, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(13, 'Daily Mix', 7, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(14, 'Road Trip Songs', 7, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(15, 'Workout Playlist', 8, '2024-10-22 06:37:41', '2024-10-22 06:37:41'),
-(16, 'Relaxing Tunes', 8, '2024-10-22 06:37:41', '2024-10-22 06:37:41');
+INSERT INTO `playlists` (`playlist_id`, `image`, `title`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'us-uk-chill.png', 'US-UK Chill', 1, '2024-11-05 07:51:04', '2024-11-05 07:51:04'),
+(2, 'edm.png', 'EDM', 1, '2024-11-05 07:53:32', '2024-11-05 07:53:32'),
+(3, 'taylor_love_song.png', 'Taylor\'s Love Songs', 2, '2024-11-05 07:55:01', '2024-11-05 07:55:01'),
+(4, 'country_classic.png', 'Country Classics', 2, '2024-11-05 07:55:46', '2024-11-05 07:55:46'),
+(5, 'funky_hits.png', 'Funky Hits', 3, '2024-11-05 07:56:44', '2024-11-05 07:56:44'),
+(6, 'feel_good_tunes.png', 'Feel Good Tunes', 3, '2024-11-05 07:57:44', '2024-11-05 07:57:44'),
+(7, 'romantic.png', 'Ed\'s Romantic Collection', 4, '2024-11-05 08:02:45', '2024-11-05 08:02:45'),
+(8, 'acoustic.png', 'Acoustic Favorites', 4, '2024-11-05 08:03:47', '2024-11-05 08:03:47'),
+(9, 'arina_top_hits.png', 'Ariana\'s Top Hits', 5, '2024-11-05 08:04:56', '2024-11-05 08:04:56'),
+(10, 'pop_anthems.png', 'Pop Anthems', 5, '2024-11-05 08:05:51', '2024-11-05 08:05:51'),
+(11, 'theweekend_essential.png', 'The Weeknd\'s Essentials', 6, '2024-11-05 08:06:49', '2024-11-05 08:06:49'),
+(12, 'night_vibes.png', 'Night Vibes', 6, '2024-11-05 08:08:24', '2024-11-05 08:08:24'),
+(13, 'daily_mix.png', 'Daily Mix', 7, '2024-11-05 08:09:39', '2024-11-05 08:09:39'),
+(14, 'road_trip.png', 'Road Trip Songs', 7, '2024-11-05 08:18:48', '2024-11-05 08:18:48'),
+(15, 'workout.png', 'Workout Playlist', 8, '2024-11-05 08:20:41', '2024-11-05 08:20:41'),
+(16, 'relax_tunes.png', 'Relaxing Tunes', 8, '2024-11-05 08:21:12', '2024-11-05 08:21:12');
 
 -- --------------------------------------------------------
 
@@ -417,33 +420,30 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `play_count` int DEFAULT '0',
   PRIMARY KEY (`song_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `songs`
 --
 
 INSERT INTO `songs` (`song_id`, `title`, `duration`, `genre_id`, `release_date`, `file_url`, `cover_image_url`, `lyric`, `created_at`, `updated_at`, `play_count`) VALUES
-(1, 'Love Yourself', 240, 1, '2015-11-13 00:00:00', 'songs/love_yourself.mp3', 'covers/love_yourself.jpg', 'For all the times that you rain on my parade...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(2, 'Sorry', 200, 1, '2015-10-23 00:00:00', 'songs/sorry.mp3', 'covers/sorry.jpg', 'Is it too late now to say sorry?', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(3, 'Blank Space', 231, 2, '2014-11-10 00:00:00', 'songs/blank_space.mp3', 'covers/blank_space.jpg', 'Got a long list of ex-lovers, they\'ll tell you I\'m insane...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(4, 'Love Story', 235, 2, '2008-09-15 00:00:00', 'songs/love_story.mp3', 'covers/love_story.jpg', 'Romeo, take me somewhere we can be alone...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(5, 'Just The Way You Are', 220, 3, '2010-07-20 00:00:00', 'songs/just_the_way_you_are.mp3', 'covers/just_the_way_you_are.jpg', 'When I see your face, there\'s not a thing that I would change...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(6, 'Uptown Funk', 270, 3, '2014-11-10 00:00:00', 'songs/uptown_funk.mp3', 'covers/uptown_funk.jpg', 'This hit, that ice cold, Michelle Pfeiffer, that white gold...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(7, 'Shape of You', 233, 4, '2017-01-06 00:00:00', 'songs/shape_of_you.mp3', 'covers/shape_of_you.jpg', 'I\'m in love with the shape of you...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(8, 'Perfect', 263, 4, '2017-03-03 00:00:00', 'songs/perfect.mp3', 'covers/perfect.jpg', 'Darling, you look perfect tonight...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(9, 'Thank U, Next', 207, 5, '2018-11-03 00:00:00', 'songs/thank_u_next.mp3', 'covers/thank_u_next.jpg', 'Thank you, next...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(10, '7 rings', 178, 5, '2019-01-18 00:00:00', 'songs/7_rings.mp3', 'covers/7_rings.jpg', 'I want it, I got it...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(11, 'Blinding Lights', 200, 6, '2019-11-29 00:00:00', 'songs/blinding_lights.mp3', 'covers/blinding_lights.jpg', 'I said, ooh, I\'m blinded by the lights...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(12, 'Starboy', 230, 6, '2016-09-22 00:00:00', 'songs/starboy.mp3', 'covers/starboy.jpg', 'I\'m tryna put you in the worst mood...', '2024-10-22 06:34:50', '2024-10-22 06:34:50', 0),
-(13, 'Sorry', 230, 1, '2015-10-23 00:00:00', 'songs/sorry.mp3', 'covers/sorry.jpg', 'Is it too late now to say sorry?', '2024-10-22 01:10:00', '2024-10-22 01:10:00', 0),
-(14, 'Shake It Off', 250, 1, '2014-08-18 00:00:00', 'songs/shake_it_off.mp3', 'covers/shake_it_off.jpg', 'Cause the players gonna play...', '2024-10-22 01:12:00', '2024-10-22 01:12:00', 0),
-(15, 'Uptown Funk', 270, 3, '2014-11-10 00:00:00', 'songs/uptown_funk.mp3', 'covers/uptown_funk.jpg', 'Don\'t believe me, just watch...', '2024-10-22 01:14:00', '2024-10-22 01:14:00', 0),
-(16, 'Take Five', 320, 4, '1959-09-21 00:00:00', 'songs/take_five.mp3', 'covers/take_five.jpg', 'Instrumental jazz song.', '2024-10-22 01:15:00', '2024-10-22 01:15:00', 0),
-(17, 'Billie Jean', 300, 7, '1982-01-02 00:00:00', 'songs/billie_jean.mp3', 'covers/billie_jean.jpg', 'Billie Jean is not my lover...', '2024-10-22 01:17:00', '2024-10-22 01:17:00', 0),
-(18, 'All of Me', 260, 7, '2013-08-12 00:00:00', 'songs/all_of_me.mp3', 'covers/all_of_me.jpg', 'Cause all of me, loves all of you...', '2024-10-22 01:18:00', '2024-10-22 01:18:00', 0),
-(19, 'Blinding Lights', 240, 5, '2019-11-29 00:00:00', 'songs/blinding_lights.mp3', 'covers/blinding_lights.jpg', 'I\'m blinded by the lights...', '2024-10-22 01:20:00', '2024-10-22 01:20:00', 0),
-(20, 'Beethoven Symphony No.9', 400, 6, '1824-05-07 00:00:00', 'songs/symphony_9.mp3', 'covers/symphony_9.jpg', 'Instrumental classical music.', '2024-10-22 01:22:00', '2024-10-22 01:22:00', 0);
+(1, 'Love Yourself', 240, 1, '2015-11-13 00:00:00', 'songs/love_yourself.mp3', 'love_yourself.png', 'For all the times that you rain on my parade...', '2024-11-05 08:57:06', '2024-11-05 08:57:06', 0),
+(2, 'Sorry', 200, 1, '2015-10-23 00:00:00', 'songs/sorry.mp3', 'sorry_jb.png', 'Is it too late now to say sorry?', '2024-11-05 09:04:46', '2024-11-05 09:04:46', 0),
+(3, 'Blank Space', 231, 2, '2014-11-10 00:00:00', 'songs/blank_space.mp3', 'blank_space.png', 'Got a long list of ex-lovers, they\'ll tell you I\'m insane...', '2024-11-05 09:05:18', '2024-11-05 09:05:18', 0),
+(4, 'Love Story', 235, 2, '2008-09-15 00:00:00', 'songs/love_story.mp3', 'love_story.png', 'Romeo, take me somewhere we can be alone...', '2024-11-05 09:06:01', '2024-11-05 09:06:01', 0),
+(5, 'Just The Way You Are', 220, 3, '2010-07-20 00:00:00', 'songs/just_the_way_you_are.mp3', 'just_the_way_you_are.png', 'When I see your face, there\'s not a thing that I would change...', '2024-11-05 09:07:07', '2024-11-05 09:07:07', 0),
+(6, 'Uptown Funk', 270, 3, '2014-11-10 00:00:00', 'songs/uptown_funk.mp3', 'uptown_funk.png', 'This hit, that ice cold, Michelle Pfeiffer, that white gold...', '2024-11-05 09:07:54', '2024-11-05 09:07:54', 0),
+(7, 'Shape of You', 233, 4, '2017-01-06 00:00:00', 'songs/shape_of_you.mp3', 'shape_of_you.png', 'I\'m in love with the shape of you...', '2024-11-05 09:08:23', '2024-11-05 09:08:23', 0),
+(8, 'Perfect', 263, 4, '2017-03-03 00:00:00', 'songs/perfect.mp3', 'perfect.png', 'Darling, you look perfect tonight...', '2024-11-05 09:09:17', '2024-11-05 09:09:17', 0),
+(9, 'Thank U, Next', 207, 5, '2018-11-03 00:00:00', 'songs/thank_u_next.mp3', 'thank_you_next.png', 'Thank you, next...', '2024-11-05 09:09:48', '2024-11-05 09:09:48', 0),
+(10, '7 rings', 178, 5, '2019-01-18 00:00:00', 'songs/7_rings.mp3', '7_rings.png', 'I want it, I got it...', '2024-11-05 09:10:36', '2024-11-05 09:10:36', 0),
+(11, 'Blinding Lights', 200, 6, '2019-11-29 00:00:00', 'songs/blinding_lights.mp3', 'blinding_light.png', 'I said, ooh, I\'m blinded by the lights...', '2024-11-05 09:11:09', '2024-11-05 09:11:09', 0),
+(12, 'Starboy', 230, 6, '2016-09-22 00:00:00', 'songs/starboy.mp3', 'star_boy.png', 'I\'m tryna put you in the worst mood...', '2024-11-05 09:11:38', '2024-11-05 09:11:38', 0),
+(14, 'Shake It Off', 250, 1, '2014-08-18 00:00:00', 'songs/shake_it_off.mp3', 'shake_it_off.png', 'Cause the players gonna play...', '2024-11-05 09:14:01', '2024-11-05 09:14:01', 0),
+(16, 'Take Five', 320, 4, '1959-09-21 00:00:00', 'songs/take_five.mp3', 'take_five.png', 'Instrumental jazz song.', '2024-11-05 09:14:34', '2024-11-05 09:14:34', 0),
+(17, 'Billie Jean', 300, 7, '1982-01-02 00:00:00', 'songs/billie_jean.mp3', 'billie_jean.png', 'Billie Jean is not my lover...', '2024-11-05 09:15:04', '2024-11-05 09:15:04', 0),
+(18, 'All of Me', 260, 7, '2013-08-12 00:00:00', 'songs/all_of_me.mp3', 'all_of_me.png', 'Cause all of me, loves all of you...', '2024-11-05 09:15:40', '2024-11-05 09:15:40', 0),
+(21, 'APT', 180, 1, '2024-11-05 16:16:56', '', 'apt.png', '', '2024-11-05 09:16:56', '2024-11-05 09:16:56', 10000000);
 
 -- --------------------------------------------------------
 
@@ -469,7 +469,7 @@ CREATE TABLE IF NOT EXISTS `statistics` (
 DROP TABLE IF EXISTS `subscription`;
 CREATE TABLE IF NOT EXISTS `subscription` (
   `subscription_id` int NOT NULL AUTO_INCREMENT,
-  `subscription_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subscription_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `subscription_valid_date` int NOT NULL,
   PRIMARY KEY (`subscription_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -510,27 +510,28 @@ CREATE TABLE IF NOT EXISTS `users` (
   `date_of_birth` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `role_id`, `date_registered`, `profile_url`, `status`, `last_login`, `subscription_id`, `phone_number`, `is_vip`, `vip_expiration`, `login_attempts`, `last_login_attempt`, `gender`, `date_of_birth`, `created_at`, `updated_at`, `first_name`, `last_name`) VALUES
-(1, 'justinbieber', 'a@gmail.com', '1', 2, '2024-10-22 13:32:11', '/profiles/justinbieber.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567890, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1994-03-01 00:00:00', '2024-10-23 07:17:02', '2024-10-23 07:17:02', NULL, NULL),
-(2, 'taylorswift', 'taylorswift@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/taylorswift.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567891, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1989-12-13 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(3, 'brunomars', 'brunomars@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/brunomars.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567892, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1985-10-08 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(4, 'edsheeran', 'edsheeran@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/edsheeran.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567893, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1991-02-17 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(5, 'arianagrande', 'arianagrande@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/arianagrande.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567894, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1993-06-26 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(6, 'theweeknd', 'theweeknd@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/theweeknd.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567895, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1990-02-16 00:00:00', '2024-10-22 06:32:11', '2024-10-22 06:32:11', NULL, NULL),
-(7, 'john_doe', 'johndoe@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/johndoe.jpg', NULL, '2024-10-22 13:32:28', 0, 1234567896, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 1, '1995-07-19 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
-(8, 'jane_smith', 'janesmith@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/janesmith.jpg', NULL, '2024-10-22 13:32:28', 0, 1234567897, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 0, '1997-04-14 00:00:00', '2024-10-22 06:32:28', '2024-10-22 06:32:28', NULL, NULL),
-(21, 'Admin', 'caot43069@gmail.com', '$2a$10$LMzzzwMiPg7/eRVN8iKpbekBSG44njPgLuB431pUXoaOSYdtU3Yma', 1, '2024-10-23 15:55:50', '', 'active', '2024-10-23 15:55:50', 0, 123, 0, '2024-10-23 15:55:50', 0, '2024-10-23 15:55:50', 0, NULL, '2024-11-04 06:20:45', '2024-11-04 06:20:45', 'Truong', 'Thanh'),
+(1, 'justinbieber', 'a@gmail.com', '1', 2, '2024-10-22 13:32:11', '/profiles/justinbieber.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567890, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1994-03-01 00:00:00', '2024-11-05 06:55:49', '2024-11-05 06:55:49', 'Justin', 'Bieber'),
+(2, 'taylorswift', 'taylorswift@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/taylorswift.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567891, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1989-12-13 00:00:00', '2024-11-05 07:01:22', '2024-11-05 07:01:22', 'Taylor', 'Swift'),
+(3, 'brunomars', 'brunomars@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/brunomars.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567892, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1985-10-08 00:00:00', '2024-11-05 07:01:36', '2024-11-05 07:01:36', 'Bruno', 'Mars'),
+(4, 'edsheeran', 'edsheeran@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/edsheeran.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567893, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1991-02-17 00:00:00', '2024-11-05 07:01:50', '2024-11-05 07:01:50', 'ED', 'Sheeran'),
+(5, 'arianagrande', 'arianagrande@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/arianagrande.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567894, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 0, '1993-06-26 00:00:00', '2024-11-05 07:02:12', '2024-11-05 07:02:12', 'Ariana', 'Grande'),
+(6, 'theweeknd', 'theweeknd@example.com', 'hashedpassword123', 2, '2024-10-22 13:32:11', '/profiles/theweeknd.jpg', NULL, '2024-10-22 13:32:11', 0, 1234567895, 0, '2024-10-22 13:32:11', 0, '2024-10-22 13:32:11', 1, '1990-02-16 00:00:00', '2024-11-05 07:02:28', '2024-11-05 07:02:28', 'The', 'Weekend'),
+(7, 'john_doe', 'johndoe@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/johndoe.jpg', NULL, '2024-10-22 13:32:28', 0, 1234567896, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 1, '1995-07-19 00:00:00', '2024-11-05 07:02:44', '2024-11-05 07:02:44', 'John', 'Doe'),
+(8, 'jane_smith', 'janesmith@example.com', 'hashedpassword123', 1, '2024-10-22 13:32:28', '/profiles/janesmith.jpg', NULL, '2024-10-22 13:32:28', 0, 1234567897, 0, '2024-10-22 13:32:28', 0, '2024-10-22 13:32:28', 0, '1997-04-14 00:00:00', '2024-11-05 07:02:56', '2024-11-05 07:02:56', 'Jane', 'Smith'),
+(21, 'Admin', 'caot43069@gmail.com', '$2a$10$LMzzzwMiPg7/eRVN8iKpbekBSG44njPgLuB431pUXoaOSYdtU3Yma', 1, '2024-10-23 15:55:50', '', 'active', '2024-10-23 15:55:50', 2, 123, 1, '2024-10-23 15:55:50', 0, '2024-10-23 15:55:50', 0, NULL, '2024-11-05 06:31:39', '2024-11-05 06:31:39', 'Truong', 'Thanh'),
 (22, 'Admin', 'thanht43069@gmail.com', '$2a$10$uhV33uEVBcC6Odd2xIr.5uINTHSRjzYj.xPFYi5d/pvXM9qOCnpKO', 1, '2024-10-23 17:01:04', '', 'active', '2024-10-23 17:01:04', 2, 123, 1, '2024-10-23 17:01:04', 0, '2024-10-23 17:01:04', 0, NULL, '2024-11-04 06:30:55', '2024-11-04 06:30:55', 'Truong', 'Thanh'),
-(23, '123', 'ab@gmail.com', '$2a$10$w7I3pMdFk9AmZSq6hRoEZu5gA9nPCPbI/AHIvJtl3RoqcXmkv/zaa', 1, '2024-10-23 17:18:32', '', 'active', '2024-10-23 17:18:32', 0, 123, 0, '2024-10-23 17:18:32', 0, '2024-10-23 17:18:32', 0, NULL, '2024-10-23 10:18:32', '2024-10-23 10:18:32', 'Truong', 'Thanh');
+(23, '123', 'ab@gmail.com', '$2a$10$w7I3pMdFk9AmZSq6hRoEZu5gA9nPCPbI/AHIvJtl3RoqcXmkv/zaa', 1, '2024-10-23 17:18:32', '', 'active', '2024-10-23 17:18:32', 0, 123, 0, '2024-10-23 17:18:32', 0, '2024-10-23 17:18:32', 0, NULL, '2024-10-23 10:18:32', '2024-10-23 10:18:32', 'Truong', 'Thanh'),
+(24, 'ROSÉ', 'rose@gmail.com', '123', 1, '2024-11-05 16:18:12', '', 'active', '2024-11-05 16:18:12', 2, 123, 1, '2024-11-05 16:18:12', 0, '2024-11-05 16:18:12', 1, NULL, '2024-11-05 09:21:13', '2024-11-05 09:21:13', 'ROSÉ', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
