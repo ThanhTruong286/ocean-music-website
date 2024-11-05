@@ -59,8 +59,19 @@
           td {
             border-bottom: 1px solid #eee;
           }
+          
         }
-  
+        .nameartist {
+          font-weight: bold;
+          margin-bottom: 5px;
+        
+          .emailartist {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 2px;
+          }
+        }
+        
         .pagination {
           display: flex;
           justify-content: space-between;
@@ -182,9 +193,11 @@
                 color: #888;
               }
             }
+            
           }
         }
       }
+      
       
   }
   

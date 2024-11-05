@@ -11,7 +11,25 @@ const Roles = () => {
   const [totalSongs, setTotalSongs] = useState(0); 
   const [totalPlaylists, setTotalPlaylists] = useState(0); 
   const [totalUsers, setTotalUsers] = useState(0);
-  // Fetch dữ liệu tổng số nghệ sĩ
+  const [artists, setArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadArtists = async () => {
+      try {
+        const data = await fetchArtists();
+        setArtists(data);
+      } catch (err) {
+        setError('Không thể tải danh sách artist');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadArtists();
+  }, []);
+
   useEffect(() => {
     const getArtists = async () => {
       try {
@@ -25,7 +43,6 @@ const Roles = () => {
     getArtists();
   }, []);
 
-  // Fetch dữ liệu tổng số album
   useEffect(() => {
     const getAlbums = async () => {
       try {
@@ -39,7 +56,6 @@ const Roles = () => {
     getAlbums();
   }, []);
 
-  // Fetch dữ liệu tổng số bài hát
   useEffect(() => {
     const getSongs = async () => {
       try {
@@ -53,7 +69,6 @@ const Roles = () => {
     getSongs();
   }, []);
 
-  // Fetch dữ liệu tổng số playlist
   useEffect(() => {
     const getPlaylists = async () => {
       try {
@@ -67,7 +82,6 @@ const Roles = () => {
     getPlaylists();
   }, []);
 
-  // Fetch dữ liệu tổng số người dùng
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -80,11 +94,7 @@ const Roles = () => {
 
     getUsers();
   }, []);
-  const artists = [
-    { id: 1, name: 'Pete Saraiya', email: 'petesaraiya@demo.com', date: 'Jan 24, 2020', songs: 157 },
-    { id: 2, name: 'Pete Saraiya', email: 'petesaraiya@demo.com', date: 'Jan 24, 2020', songs: 157 },
-    { id: 3, name: 'Pete Saraiya', email: 'petesaraiya@demo.com', date: 'Jan 24, 2020', songs: 157 }
-  ];
+  
   const users = [
     { id: 1, name: 'Jane Cooper', email: 'Janecooper@gmail.com', time: '12 hours ago', img: 'path-to-image' },
     { id: 2, name: 'Wade Warren', email: 'Wadewarren@gmail.com', time: '18 hours ago', img: 'path-to-image' },
@@ -101,6 +111,7 @@ const Roles = () => {
     { id: 4, name: 'Angle Pate', review: "This Song Captures My Emotions And Paints My World With Its Beautiful Melody And Heartfelt Lyrics. It's Truly Special.", time: '09 Hours Ago', img: 'path-to-image' },
     { id: 5, name: 'Vibrat Sharia', review: "This Song Captures My Emotions And Paints My World With Its Beautiful Melody And Heartfelt Lyrics. It's Truly Special.", time: '12 Hours Ago', img: 'path-to-image' }
   ];
+
   return (
     <div>
       <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -120,15 +131,15 @@ const Roles = () => {
                 <p>Total Music Albums</p>
               </div>
               <div className="stat-card">
-                <h3>{totalSongs}</h3> {/* Hiển thị tổng số bài hát */}
+                <h3>{totalSongs}</h3>
                 <p>Total Songs</p>
               </div>
               <div className="stat-card">
-                <h3>{totalPlaylists}</h3> {/* Hiển thị tổng số playlist */}
+                <h3>{totalPlaylists}</h3>
                 <p>Total Playlist</p>
               </div>
               <div className="stat-card">
-                <h3>{totalUsers}</h3> {/* Hiển thị tổng số người dùng */}
+                <h3>{totalUsers}</h3>
                 <p>Total Users</p>
               </div>
             </div>
@@ -136,26 +147,34 @@ const Roles = () => {
             <div className="content-section">
               <div className="top-artist-section">
                 <h2>Top Artist</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>Artist Name</th>
-                      <th>Joining Date</th>
-                      <th>Total Songs</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {artists.map((artist, index) => (
-                      <tr key={artist.id}>
-                        <td>{index + 1}</td>
-                        <td>{artist.name} <br /> {artist.email}</td>
-                        <td>{artist.date}</td>
-                        <td>{artist.songs}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="artist-list">
+                  <div className="artist-header">
+                    <div className="artist-column">No.</div>
+                    <div className="artist-column">Artist Name</div>
+                    <div className="artist-column">Joining Date</div>
+                    <div className="artist-column">Total Songs</div>
+                  </div>
+                  {artists.map((artist, index) => {
+                  // Tạo đối tượng Date từ chuỗi date_registered
+                  const date = new Date(artist.date_registered);
+
+                  // Định dạng ngày theo kiểu YYYY-MM-DD
+                  const formattedDate = date.toLocaleDateString('en-CA'); // Định dạng 'en-CA' cho ra "YYYY-MM-DD"
+
+                  return (
+                    <div className="artist-row" key={artist.artist_id}>
+                      <div className="artist-column">{index + 1}</div>
+                      <div className="artist-column nameartist">
+                        {artist.username}
+                        <div className="emailartist">{artist.email}</div> {/* Thêm email vào dưới tên */}
+                      </div>
+                      <div className="artist-column">{formattedDate}</div>
+                      <div className="artist-column">{artist.totalSongs}</div>
+                    </div>
+                  );
+                })}
+
+                </div>
                 <div className="pagination">
                   <button>Previous</button>
                   <span>1</span>
