@@ -72,7 +72,7 @@
           }
         }
         
-        .pagination {
+        .pagination  {
           display: flex;
           justify-content: space-between;
           margin-top: 20px;
@@ -134,6 +134,18 @@
             }
           }
         }
+        
+      }
+    }
+    .users-header {
+      display: flex;
+      font-weight: bold;
+      justify-content: space-between;
+      align-items: center; // Aligns items vertically in the center
+    
+      .users-column {
+        font-size: 0.9rem;
+        color: #333;
       }
     }
     .recent-reviews-section {
@@ -192,9 +204,31 @@
                 font-size: 0.9rem;
                 color: #888;
               }
+              
             }
             
           }
+          .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+    
+            button {
+              padding: 10px 20px;
+              background-color: #eee;
+              border: none;
+              cursor: pointer;
+    
+              &:hover {
+                background-color: #ddd;
+              }
+            }
+    
+            span {
+              padding: 10px;
+            }
+          }
+          
         }
       }
       

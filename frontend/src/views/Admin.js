@@ -8,12 +8,31 @@ import { fetchArtists, fetchAlbums, fetchingSongs, fetchPlaylists, fetchUsers } 
 const Roles = () => {
   const [totalArtists, setTotalArtists] = useState(0);
   const [totalAlbums, setTotalAlbums] = useState(0);
-  const [totalSongs, setTotalSongs] = useState(0); 
-  const [totalPlaylists, setTotalPlaylists] = useState(0); 
+  const [totalSongs, setTotalSongs] = useState(0);
+  const [totalPlaylists, setTotalPlaylists] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [recentUsers, setRecentUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // Trạng thái cho trang hiện tại
+  const [artistsPerPage] = useState(6); // Số lượng nghệ sĩ mỗi trang
+
+  useEffect(() => {
+    const getRecentUsers = async () => {
+      try {
+        const users = await fetchUsers();
+        const sortedUsers = users.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
+        setRecentUsers(sortedUsers.slice(0, 5));
+      } catch (error) {
+        setError('Không thể tải danh sách người dùng mới');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getRecentUsers();
+  }, []);
 
   useEffect(() => {
     const loadArtists = async () => {
@@ -94,16 +113,29 @@ const Roles = () => {
 
     getUsers();
   }, []);
-  
-  const users = [
-    { id: 1, name: 'Jane Cooper', email: 'Janecooper@gmail.com', time: '12 hours ago', img: 'path-to-image' },
-    { id: 2, name: 'Wade Warren', email: 'Wadewarren@gmail.com', time: '18 hours ago', img: 'path-to-image' },
-    { id: 3, name: 'Jacob Jones', email: 'Jacobjones@gmail.com', time: '24 hours ago', img: 'path-to-image' },
-    { id: 4, name: 'Cody Fisher', email: 'Codyfisher@gmail.com', time: '28 hours ago', img: 'path-to-image' },
-    { id: 5, name: 'Dianne Russell', email: 'Diannerussell@gmail.com', time: '36 hours ago', img: 'path-to-image' },
-    { id: 6, name: 'Loreal Kinas', email: 'Lorealkinas@gmail.com', time: '48 hours ago', img: 'path-to-image' }
-  ];
 
+  // Tính toán nghệ sĩ hiển thị dựa trên trang hiện tại
+  const indexOfLastArtist = (currentPage + 1) * artistsPerPage;
+  const indexOfFirstArtist = indexOfLastArtist - artistsPerPage;
+  const currentArtists = artists.slice(indexOfFirstArtist, indexOfLastArtist);
+
+  // Hàm xử lý nút Next
+  const handleNext = () => {
+    if (currentPage < Math.ceil(totalArtists / artistsPerPage) - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Hàm xử lý nút Previous
+  const handlePrevious = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const totalPages = Math.ceil(totalArtists / artistsPerPage); // Tổng số trang
+
+  // Tạo mảng các số trang
+  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index);
   const reviews = [
     { id: 1, name: 'Alexa Jonas', review: "This Song Captures My Emotions And Paints My World With Its Beautiful Melody And Heartfelt Lyrics. It's Truly Special.", time: '02 Hours Ago', img: 'path-to-image' },
     { id: 2, name: 'Alex Williams', review: "This Song Captures My Emotions And Paints My World With Its Beautiful Melody And Heartfelt Lyrics. It's Truly Special.", time: '06 Hours Ago', img: 'path-to-image' },
@@ -154,43 +186,54 @@ const Roles = () => {
                     <div className="artist-column">Joining Date</div>
                     <div className="artist-column">Total Songs</div>
                   </div>
-                  {artists.map((artist, index) => {
-                  // Tạo đối tượng Date từ chuỗi date_registered
-                  const date = new Date(artist.date_registered);
+                  {currentArtists.map((artist, index) => {
+                    const date = new Date(artist.date_registered);
+                    const formattedDate = date.toLocaleDateString('en-CA');
 
-                  // Định dạng ngày theo kiểu YYYY-MM-DD
-                  const formattedDate = date.toLocaleDateString('en-CA'); // Định dạng 'en-CA' cho ra "YYYY-MM-DD"
-
-                  return (
-                    <div className="artist-row" key={artist.artist_id}>
-                      <div className="artist-column">{index + 1}</div>
-                      <div className="artist-column nameartist">
-                        {artist.username}
-                        <div className="emailartist">{artist.email}</div> {/* Thêm email vào dưới tên */}
+                    return (
+                      <div className="artist-row" key={artist.artist_id}>
+                        <div className="artist-column">{indexOfFirstArtist + index + 1}</div>
+                        <div className="artist-column nameartist">
+                          {artist.username}
+                          <div className="emailartist">{artist.email}</div>
+                        </div>
+                        <div className="artist-column">{formattedDate}</div>
+                        <div className="artist-column">{artist.totalSongs}</div>
                       </div>
-                      <div className="artist-column">{formattedDate}</div>
-                      <div className="artist-column">{artist.totalSongs}</div>
-                    </div>
-                  );
-                })}
-
+                    );
+                  })}
                 </div>
                 <div className="pagination">
-                  <button>Previous</button>
-                  <span>1</span>
-                  <button>Next</button>
-                </div>
+  <button onClick={handlePrevious} disabled={currentPage === 0}>
+    Previous
+  </button>
+  
+  {/* Hiển thị các số trang và thêm sự kiện onClick */}
+  {pageNumbers.map((page) => (
+    <button
+      key={page}
+      onClick={() => setCurrentPage(page)}
+      className={currentPage === page ? 'active' : ''}
+    >
+      {page + 1}
+    </button>
+  ))}
+  
+  <button onClick={handleNext} disabled={currentPage === totalPages - 1}>
+    Next
+  </button>
+</div>
               </div>
 
               <div className="reviews-section">
-                <h2>Total Reviews</h2>
+              <h2>Total Reviews</h2>
                 <div className="reviews-chart">
                   <div className="donut-chart">69</div>
                   <p>Positive Reviews</p>
                   <ul>
-                    <li>Songs <span>5,674</span></li>
-                    <li>Albums <span>1,624</span></li>
-                    <li>Playlist <span>5,515</span></li>
+                    <li>Songs <h5>{totalSongs}</h5></li>
+                    <li>Albums <h5>{totalAlbums}</h5></li>
+                    <li>Playlist <h5>{totalPlaylists}</h5></li>
                   </ul>
                 </div>
               </div>
@@ -200,20 +243,35 @@ const Roles = () => {
           <div className="roles-container">
             <div className="recent-reviews-section">
               <div className="recent-users">
-                <h2>Recent Users</h2>
+              <div className="users-header">
+                    <div className="users-column">Recent Users</div>
+                    <div className="users-column">Last Login</div>
+                    
+                  </div>
                 <ul>
-                  {users.map(user => (
-                    <li key={user.id}>
-                      <img src={user.img} alt={user.name} />
-                      <div>
-                        <p>{user.name}</p>
-                        <p>{user.email}</p>
-                      </div>
-                      <span>{user.time}</span>
-                    </li>
-                  ))}
-                </ul>
+                {recentUsers.map(user => {
+                // Chuyển đổi chuỗi last_login thành một đối tượng Date
+                const formattedDate = new Date(user.last_login).toLocaleDateString('en-CA'); // 'en-CA' cho định dạng "YYYY-MM-DD"
+
+                return (
+                  <li key={user.id}>
+                    <img src={user.img || 'path-to-placeholder-image'} alt={user.name} />
+                    <div>
+                      <p>{user.username}</p>
+                      <p>{user.email}</p>
+                    </div>
+                    <span>{user.time || formattedDate}</span> {/* Hiển thị ngày đã định dạng */}
+                  </li>
+                );
+              })}
+              </ul>
+              <div className="pagination">
+                  <button onClick={handlePrevious} disabled={currentPage === 0}>Previous</button>
+                  <span>{currentPage + 1}</span>
+                  <button onClick={handleNext} disabled={indexOfLastArtist >= totalArtists}>Next</button>
+                </div>
               </div>
+              
 
               <div className="total-reviews">
                 <h2>Total Reviews</h2>
@@ -231,10 +289,15 @@ const Roles = () => {
                 </ul>
               </div>
             </div>
-          </div>
+            </div>
+      
+        
+              
+
+          <Footer />
         </div>
+        
       </main>
-      <Footer />
     </div>
   );
 };
