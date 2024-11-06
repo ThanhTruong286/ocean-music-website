@@ -18,6 +18,34 @@ const Roles = () => {
   const [recentUsers, setRecentUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(0); // Trạng thái cho trang hiện tại
   const [artistsPerPage] = useState(6); // Số lượng nghệ sĩ mỗi trang
+  const [searchTerm, setSearchTerm] = useState('');
+  const [allArtists, setAllArtists] = useState([]);
+  const [filteredArtists, setFilteredArtists] = useState([]);  // Kết quả tìm kiếm
+  const handleSearch = () => {
+    // Lọc artist từ `allArtists` theo `searchTerm`
+    const filtered = allArtists.filter(artist =>
+      artist.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredArtists(filtered);  // Cập nhật danh sách tìm kiếm
+    setCurrentPage(0);  // Reset về trang 1 khi tìm kiếm
+  };
+
+  useEffect(() => {
+    const loadArtists = async () => {
+      try {
+        const data = await fetchArtists();
+        setArtists(data);
+        setAllArtists(data);  // Lưu tất cả artist vào allArtists
+        setFilteredArtists(data); // Lưu tất cả artist vào filteredArtists để hiển thị ngay
+      } catch (err) {
+        setError('Không thể tải danh sách artist');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadArtists();
+  }, []);
 
   useEffect(() => {
     const getRecentUsers = async () => {
@@ -123,11 +151,11 @@ const Roles = () => {
   // Tính toán nghệ sĩ hiển thị dựa trên trang hiện tại
   const indexOfLastArtist = (currentPage + 1) * artistsPerPage;
   const indexOfFirstArtist = indexOfLastArtist - artistsPerPage;
-  const currentArtists = artists.slice(indexOfFirstArtist, indexOfLastArtist);
+  const currentArtists = filteredArtists.slice(indexOfFirstArtist, indexOfLastArtist); // Lọc artist từ filteredArtists thay vì artists
 
   // Hàm xử lý nút Next
   const handleNext = () => {
-    if (currentPage < Math.ceil(totalArtists / artistsPerPage) - 1) {
+    if (currentPage < Math.ceil(filteredArtists.length / artistsPerPage) - 1) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -138,10 +166,11 @@ const Roles = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-  const totalPages = Math.ceil(totalArtists / artistsPerPage); // Tổng số trang
 
-  // Tạo mảng các số trang
-  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index);
+  const totalPages = Math.ceil(filteredArtists.length / artistsPerPage); // Tổng số trang dựa trên filteredArtists
+  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index); // Các số trang
+
+ 
   const reviews = [
     { id: 1, name: 'Alexa Jonas', review: "This Song Captures My Emotions And Paints My World With Its Beautiful Melody And Heartfelt Lyrics. It's Truly Special.", time: '02 Hours Ago', img: 'path-to-image' },
     { id: 2, name: 'Alex Williams', review: "This Song Captures My Emotions And Paints My World With Its Beautiful Melody And Heartfelt Lyrics. It's Truly Special.", time: '06 Hours Ago', img: 'path-to-image' },
@@ -183,55 +212,70 @@ const Roles = () => {
             </div>
 
             <div className="content-section">
-              <div className="top-artist-section">
-                <h2>Top Artist</h2>
-                <div className="artist-list">
-                  <div className="artist-header">
-                    <div className="artist-column">No.</div>
-                    <div className="artist-column">Artist Name</div>
-                    <div className="artist-column">Joining Date</div>
-                    <div className="artist-column">Total Songs</div>
+            <div className="top-artist-section">
+                <div className="top-artist-header">
+                  <h2>Top Artist</h2>
+                  <div className="search-form">
+                    <input
+                      type="text"
+                      placeholder="Search Artists"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button onClick={handleSearch}>Search</button>
                   </div>
-                  {currentArtists.map((artist, index) => {
-                    const date = new Date(artist.date_registered);
-                    const formattedDate = date.toLocaleDateString('en-CA');
+                </div>
 
-                    return (
-                      <div className="artist-row" key={artist.artist_id}>
-                        <div className="artist-column">{indexOfFirstArtist + index + 1}</div>
-                        <img src={faker} className="img-fluid rounded  avatar-55" />
-                        <div className="artist-column nameartist">
-                        
-                          {artist.username}
-                          <div className="emailartist">{artist.email}</div>
-                        </div>
-                        <div className="artist-column">{formattedDate}</div>
-                        <div className="artist-column">{artist.totalSongs}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="pagination">
-                <button onClick={handlePrevious} disabled={currentPage === 0}>
-                  Previous
-                </button>
-  
-                  {/* Hiển thị các số trang và thêm sự kiện onClick */}
-                  {pageNumbers.map((page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={currentPage === page ? 'active' : ''}
-                    >
-                      {page + 1}
-                    </button>
-                  ))}
-                  
-                  <button onClick={handleNext} disabled={currentPage === totalPages - 1}>
-                    Next
-                  </button>
-                </div>
+    
+    <div className="artist-list">
+      <div className="artist-header">
+        <div className="artist-column">No.</div>
+        <div className="artist-column">Artist Name</div>
+        <div className="artist-column">Joining Date</div>
+        <div className="artist-column">Total Songs</div>
+      </div>
+      {currentArtists
+        .filter(artist => 
+          artist.username.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .map((artist, index) => {
+          const date = new Date(artist.date_registered);
+          const formattedDate = date.toLocaleDateString('en-CA');
+          
+          return (
+            <div className="artist-row" key={artist.artist_id}>
+              <div className="artist-column">{indexOfFirstArtist + index + 1}</div>
+              <img src={faker} className="img-fluid rounded avatar-55" alt="Artist" />
+              <div className="artist-column nameartist">
+                {artist.username}
+                <div className="emailartist">{artist.email}</div>
               </div>
+              <div className="artist-column">{formattedDate}</div>
+              <div className="artist-column">{artist.totalSongs}</div>
+            </div>
+          );
+        })}
+    </div>
+
+    <div className="pagination">
+      <button onClick={handlePrevious} disabled={currentPage === 0}>
+        Previous
+      </button>
+      {pageNumbers.map((page) => (
+        <button
+          key={page}
+          onClick={() => setCurrentPage(page)}
+          className={currentPage === page ? 'active' : ''}
+        >
+          {page + 1}
+        </button>
+      ))}
+      <button onClick={handleNext} disabled={currentPage === totalPages - 1}>
+        Next
+      </button>
+    </div>
+  </div>
+
 
               <div className="reviews-section">
               <h2>Total Reviews</h2>

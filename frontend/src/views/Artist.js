@@ -3,6 +3,7 @@ import '../styles/artist.scss'; // Import the SCSS file
 import Header from "../components/Header";
 import faker from "../assets/images/artists/faker.jpg";
 import Sidebar from '../components/Sidebar';
+import ArtistList from "../components/ArtistList";
 const artistsData = {
   favoriteArtists: [
     { name: 'HIEUTHUHAI', role: 'Artist', imgSrc: faker },
@@ -32,15 +33,11 @@ const Artist = () => {
           <div className="artist-page">
             <section className="artist-section">
               <h2>Nghệ sĩ yêu thích của bạn</h2>
-              <div className="artist-grid">
-                {artistsData.favoriteArtists.map((artist, index) => (
-                  <div className="artist-card" key={index}>
-                    <img src={artist.imgSrc} alt={artist.name} className="artist-image" />
-                    <p>{artist.name}</p>
-                    <span>{artist.role}</span>
-                  </div>
-                ))}
-              </div>
+              <div className="swiper overflow-hidden swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
+                  <ul className="swiper-wrapper   p-0 list-unstyled mb-0 " id="swiper-wrapper-74d648be37878784">
+                    <ArtistList />
+                  </ul>
+                </div>
             </section>
             <section className="artist-section">
               <h2>Bạn cũng có thể thích</h2>
