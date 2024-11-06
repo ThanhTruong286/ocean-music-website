@@ -52,7 +52,7 @@ const Home = () => {
                                 </div>
                             </div>
                             {/** TRENDING SONGS */}
-                            <ul className="list-unstyled mb-0">
+                            <ul className="trending-song list-unstyled mb-0">
                                 <TrendingList />
                             </ul>
                         </div>

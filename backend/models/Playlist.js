@@ -1,16 +1,20 @@
 const db = require('../config/db');
 
 class Playlist {
-    constructor(id, title, userId) {
+    constructor(id, title, userId, username, first_name, last_name, image) {
         this.id = id;
         this.title = title;
         this.userId = userId;
+        this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.image = image
     }
 
     static getAll(callback) {
-        db.query('SELECT * FROM playlists', (err, results) => {
+        db.query('SELECT playlists.*, users.* FROM playlists LEFT JOIN users ON playlists.user_id = users.user_id', (err, results) => {
             if (err) return callback(err, null);
-            const playlists = results.map(row => new Playlist(row.playlist_id, row.title, row.user_id));
+            const playlists = results.map(row => new Playlist(row.playlist_id, row.title, row.user_id,row.username,row.first_name, row.last_name, row.image));
             callback(null, playlists);
         });
     }

@@ -19,7 +19,7 @@ body,
 }
 
 *::selection {
-  background-color: #F05A22;
+  background-color: red;
   color: #fff;
 }
 
@@ -155,6 +155,34 @@ body,
   }
 }
 
+.trending-song{
+  height: 200px;
+}
+.card-trending{
+  width: 200px;
+  padding: 0 25px;
+  .card-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .artist{
+      color: red !important;
+    }
+    .title{
+      padding-bottom: 10px;
+    }
+    .title, .artist {
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+      max-width: 100px;
+      display: block;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+  }
+  
+  }
+}
 .main-content {
   margin-left: 16.2rem;
 
@@ -292,11 +320,14 @@ body,
       -webkit-box-orient: vertical;
     }
 
-    .artist-list img {
-      margin: 0 !important;
-      border-radius: 10px;
-      height: 200px;
-      width: 300px;
+    .artist-list{
+      width: 100%;
+      img {
+        margin: 0 !important;
+        border-radius: 10px;
+        height: 200px;
+        width: 100%;
+      } 
     }
   }
 }
@@ -394,9 +425,12 @@ body,
   margin: 0 auto;
 }
 
-.list-unstyled li {
-  font-size: 16px;
+.list-unstyled {
+  li {
+    font-size: 16px;
+  }
 }
+
 
 .header-btn {
   text-decoration: none;

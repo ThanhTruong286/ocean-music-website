@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 class Song {
-    constructor(id, title, duration, genreId, releaseDate, fileUrl, coverImageUrl, lyric, playCount = 0) {
+    constructor(id, title, duration, genreId, releaseDate, fileUrl, coverImageUrl, lyric, playCount = 0, artist) {
         this.id = id;
         this.title = title;
         this.duration = duration;
@@ -11,13 +11,24 @@ class Song {
         this.coverImageUrl = coverImageUrl;
         this.lyric = lyric;
         this.playCount = playCount;
+        this.artist = artist;
     }
 
     static getAll(callback) {
         const query = `
-            SELECT songs.*, genres.name AS genre_name 
-            FROM songs 
-            JOIN genres ON songs.genre_id = genres.genre_id
+SELECT songs.*, 
+       CONCAT(
+           COALESCE(users.first_name, ''), 
+           ' ', 
+           COALESCE(users.last_name, '')
+       ) AS artist
+FROM songs 
+JOIN artist_songs ON songs.song_id = artist_songs.song_id 
+JOIN artists ON artist_songs.artist_id = artists.artist_id
+JOIN users ON artists.user_id = users.user_id
+ORDER BY songs.play_count DESC;
+
+
         `;
         db.query(query, (err, results) => {
             if (err) return callback(err, null);
@@ -30,7 +41,8 @@ class Song {
                 row.file_url,
                 row.cover_image_url,
                 row.lyric,
-                row.play_count
+                row.play_count,
+                row.artist
             ));
             callback(null, songs);
         });
