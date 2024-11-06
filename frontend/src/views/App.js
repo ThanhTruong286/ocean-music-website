@@ -10,6 +10,8 @@ import Subcribe from './Subcribe';
 import ChangePasswordView from './ChangePassword';
 import Payment from './Payment';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ResetPasswordView from './ResetPassword';
+import EmailBackup from "./Email";
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
           <Route path='/change-password' element={<ChangePasswordView />} />
           <Route path='/subcribe' element={<Subcribe />} />
           <Route path='/payment' element={<Payment />} />
+          <Route path='/reset-password' element={<ResetPasswordView />} />
+          <Route path='/email' element={<EmailBackup />} />
         </Routes>
       </Router>
     </div>
