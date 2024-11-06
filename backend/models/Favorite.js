@@ -17,3 +17,4 @@ class FavoriteModel {
 }
 
 module.exports = FavoriteModel;
+
