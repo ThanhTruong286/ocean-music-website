@@ -12,6 +12,7 @@
 
   color: #333;
 }
+
 .top-artist-section {
   background-color: #fff;
   padding: 20px;
@@ -55,7 +56,6 @@
     }
   }
 }
-
 
 .album-list {
   display: flex;
@@ -110,7 +110,6 @@
     }
   }
 }
-
 
 .songs-container {
   margin-top: 40px;
@@ -314,6 +313,31 @@
     #avatar {
       width: 40px;
       height: 40px;
+    }
+  }
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 5px;
+
+  button {
+    padding: 10px 20px;
+    background-color: #eee;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ddd;
+    }
+
+    &.active {
+      background-color: #007bff;
+      color: #fff;
     }
   }
 }
