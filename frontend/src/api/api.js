@@ -140,7 +140,16 @@ export const fetchSongs = async () => {
         throw error;
     }
 };
-
+// Lấy tất cả các bài hát yêu thích
+export const fetchFavorites = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/favorites`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching favorites:', error);
+        throw error;
+    }
+};
 // Fetch all roles
 export const fetchRoles = async () => {
     try {
@@ -155,6 +164,7 @@ export const fetchRoles = async () => {
 export const getUser = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user.userId;
+
     try {
         const response = await axios.get(`${API_URL}/users/profile/${userId}`, {
             headers: {
@@ -162,7 +172,9 @@ export const getUser = async () => {
                 'Authorization': `Bearer ${localStorage.getItem('userToken')}`
             }
         });
-        return response.data;
+
+        const { role_id } = response.data; // Điều chỉnh theo cấu trúc phản hồi API của bạn
+        return { ...response.data, role_id }; // Trả về role_id cùng với dữ liệu người dùng
     } catch (error) {
         console.error('Error sending user ID:', error);
         throw error;
@@ -176,7 +188,7 @@ export const loginUser = async (userData) => {
                 'Content-Type': 'application/json',
             }
         });
-
+        console.log(userData);
         const { token, expiry, userId } = response.data;
 
         localStorage.setItem('user', JSON.stringify({ userId, expiry }));
@@ -265,4 +277,16 @@ export const fetchingSongs = async () => {
     } catch (e) {
         throw e;
     }
+
 };
+
+export const fetchUsers = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/users`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+};
+
