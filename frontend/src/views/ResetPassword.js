@@ -15,13 +15,13 @@ const ResetPasswordView = () => {
         setCaptchaToken(token);
     };
 
-    const handleChangePassword = async (e) => {
+    const handleResetPassword = async (e) => {
         e.preventDefault();
         if (!captchaToken) {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
             return;
         }
-        
+
         try {
             // Gọi API thay đổi mật khẩu với captchaToken
             const response = await ChangePassword(cpass, password, captchaToken);
@@ -40,7 +40,7 @@ const ResetPasswordView = () => {
                     <img src={require('../assets/images/logo.png')} alt="Logo" className="logo" />
                     <h2>Forgot Password</h2>
                     <p>Make Your Password Stronger</p>
-                    <form onSubmit={handleChangePassword}>
+                    <form onSubmit={handleResetPassword}>
                         <div className="form-group">
                             <label htmlFor="cpass">New Password</label>
                             <input

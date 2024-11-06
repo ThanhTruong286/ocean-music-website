@@ -13,6 +13,28 @@ export const SendEmail = async (email) => {
         throw new Error(error.response ? error.response.data : error.message);
     }
 }
+//Reset Password
+export const ResetPassword = async (newPassword, confirmPassword) => {
+    if (!newPassword || !confirmPassword) {
+        throw new Error("Mật khẩu không được để trống");
+    }
+    try {
+        const userId = localStorage.getItem('user');
+        if (!userId) {
+            throw new Error("Không tìm thấy user");
+        }
+        const response = await axios.post(`${API_URL}/auth/reset-password`, { newPassword, confirmPassword, userId }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        return response.data
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || 'Thay đổi mật khẩu thất bại';
+        console.error('Thay đổi mật khẩu thất bại:', errorMessage);
+        throw new Error(errorMessage);
+    }
+}
 // Change Password
 export const ChangePassword = async (currentPassword, newPassword) => {
     if (!currentPassword || !newPassword) {
@@ -21,6 +43,7 @@ export const ChangePassword = async (currentPassword, newPassword) => {
 
     try {
         const userId = localStorage.getItem('user');
+        console.log(userId);
 
         if (!userId) {
             throw new Error('User không hợp lệ. Vui lòng đăng nhập lại.');
