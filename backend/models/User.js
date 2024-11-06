@@ -45,6 +45,26 @@ class User {
         this.last_name = last_name;
     }
 
+    // Tìm người dùng theo resetToken
+    static findByResetToken(resetToken, callback) {
+        db.query('SELECT * FROM users WHERE reset_token = ? AND reset_token_expires > NOW()', [resetToken], (err, results) => {
+            if (err) {
+                console.error('Error during database query:', err);
+                return callback(err);
+            }
+
+            console.log("Results from DB: ", results); // Log kết quả từ truy vấn SQL
+
+            if (!results || results.length === 0) {
+                console.log('Token không hợp lệ hoặc đã hết hạn');
+                return callback(null, null);
+            }
+
+            const user = new User(results[0]);
+            callback(null, user);
+        });
+    }
+
     // Hash mật khẩu
     static async hashPassword(password) {
         const saltRounds = 10;
@@ -62,32 +82,6 @@ class User {
                 if (err) return callback(err);
                 if (results.affectedRows === 0) return callback(null, { message: 'Email not found' });
                 callback(null, { resetToken: token, expiresAt });
-            }
-        );
-    }
-
-    // Đặt lại mật khẩu với mã thông báo
-    static async resetPassword(token, newPassword, callback) {
-        // Tìm người dùng có mã thông báo và còn hiệu lực
-        db.query(
-            'SELECT * FROM users WHERE reset_token = ? AND reset_token_expires > NOW()',
-            [token],
-            async (err, results) => {
-                if (err) return callback(err);
-                if (results.length === 0) return callback(null, { message: 'Invalid or expired token' });
-
-                const user = new User(results[0]);
-                user.password = await User.hashPassword(newPassword); // Hash mật khẩu mới
-
-                // Cập nhật mật khẩu mới và xóa mã thông báo
-                db.query(
-                    'UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE user_id = ?',
-                    [user.password, user.user_id],
-                    (err, results) => {
-                        if (err) return callback(err);
-                        callback(null, { message: 'Password has been reset successfully' });
-                    }
-                );
             }
         );
     }

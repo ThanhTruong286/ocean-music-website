@@ -5,11 +5,60 @@ const UserModel = require('../models/User');
 const nodemailer = require('nodemailer');
 
 exports.resetPassword = async (req, res) => {
-  const data = req.body;
+  const { newPassword, confirmPassword, resetToken } = req.body;
 
-  console.log(data);
-}
+  // Kiểm tra nếu mật khẩu mới và mật khẩu xác nhận khớp
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: "Mật khẩu xác nhận không khớp." });
+  }
 
+  try {
+    // Tìm người dùng có `resetToken`
+    UserModel.findByResetToken(resetToken, (err, user) => {
+      if (err) {
+        return res.status(500).json({ message: "Lỗi khi tìm người dùng" });
+      }
+
+      // Log lỗi nếu không tìm thấy người dùng
+      if (!user) {
+        console.log("Không tìm thấy user với token");
+        return res.status(400).json({ message: "Token không hợp lệ hoặc đã hết hạn." });
+      }
+
+      // Kiểm tra xem token có hết hạn hay không
+      if (new Date() > new Date(user.reset_token_expires)) {
+        return res.status(400).json({ message: "Token đã hết hạn." });
+      }
+
+      // Log user để kiểm tra kết quả trả về
+      console.log("User found: ", user);
+
+      // Mã hóa mật khẩu mới
+      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+        if (err) {
+          return res.status(500).json({ message: "Lỗi khi mã hóa mật khẩu." });
+        }
+
+        // Cập nhật mật khẩu cho người dùng
+        UserModel.update(user.user_id, {
+          password: hashedPassword,
+          reset_token: null,
+          reset_token_expires: null
+        }, (updateErr, updateResults) => {
+          if (updateErr) {
+            console.error('Error during password update:', updateErr);
+            return res.status(500).json({ message: "Đã có lỗi xảy ra trong quá trình thay đổi mật khẩu." });
+          }
+
+          return res.status(200).json({ message: "Mật khẩu đã được thay đổi thành công." });
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Error during password reset:', error);
+    return res.status(500).json({ message: "Đã có lỗi xảy ra trong quá trình thay đổi mật khẩu." });
+  }
+};
 
 exports.sendEmail = async (req, res) => {
   const { email } = req.body;

@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
-import { ChangePassword } from '../api/api';
+import React, { useState, useEffect } from 'react';
+import { ResetPassword } from '../api/api';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/login.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ResetPasswordView = () => {
-    const [cpass, setCPass] = useState('');
     const [password, setPassword] = useState('');
+    const [cpass, setCPass] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [captchaToken, setCaptchaToken] = useState('');
     const navigate = useNavigate();
+
+    // Lấy token từ query parameters
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const resetToken = params.get('token');  // Lấy token từ URL query
+
+    useEffect(() => {
+        if (!resetToken) {
+            setErrorMessage("Token không hợp lệ");
+        }
+    }, [resetToken]);
 
     const handleCaptchaChange = (token) => {
         setCaptchaToken(token);
@@ -21,10 +32,14 @@ const ResetPasswordView = () => {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
             return;
         }
+        if (!resetToken) {
+            setErrorMessage('Token không hợp lệ.');
+            return;
+        }
 
         try {
-            // Gọi API thay đổi mật khẩu với captchaToken
-            const response = await ChangePassword(cpass, password, captchaToken);
+            // Gọi API thay đổi mật khẩu với resetToken, newPassword và confirmPassword
+            const response = await ResetPassword(password, cpass, resetToken, captchaToken);
             console.log('Change Password successful:', response);
             navigate('/login');
         } catch (error) {
