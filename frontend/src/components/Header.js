@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { logoutUser, getUser } from "../api/api"; // Import API functions
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../api/api";
 import AdComponent from "./AdComponent";
 import avatar from "../assets/images/avatar.png";
 
@@ -103,35 +102,36 @@ const Header = () => {
                 <div className="container-fluid navbar-inner">
                     <div className="collapse navbar-collapse">
                         <div className="d-flex align-items-center justify-content-between product-offcanvas">
-                            <ul className="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
+                            <ul className="iq-nav-menu list-unstyled">
                                 <li className="nav-item">
                                     <a className="nav-link active" href="/">
-                                        <span className="item-name">Trang Chủ</span>
+                                        <span className="item-name">Home</span>
                                     </a>
                                 </li>
-                                {user ? ( // Check if user is logged in
+                                {user ? ( // Kiểm tra nếu người dùng đã đăng nhập
                                     <>
-                                        {user.role_id === 1 && ( // Admin role check
+                                        {user.role_id === 1 && ( // Kiểm tra nếu người dùng là admin (role_id = 1)
                                             <li className="nav-item">
                                                 <a className="nav-link" href="/admin">
                                                     <span className="item-name">Admin</span>
                                                 </a>
                                             </li>
                                         )}
-                                        <li className="nav-item">
-                                            <a className="nav-link" href="/albums">
-                                                <span className="item-name">Albums</span>
-                                            </a>
-                                        </li>
                                     </>
-                                ) : (
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="/albums">
-                                            <span className="item-name">Albums</span>
-                                        </a>
-                                    </li>
-                                )}
+                                ) : null}
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/albums">
+                                        <span className="item-name">Albums</span>
+                                    </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="/subcribe">
+                                        <span className="item-name">Get Premium</span>
+                                    </a>
+                                </li>
                             </ul>
+
+
                         </div>
                         {/** Thanh tìm kiếm luôn hiển thị */}
                         <div className="search-box d-xl-block d-none">
