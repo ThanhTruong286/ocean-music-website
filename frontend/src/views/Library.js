@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/library.scss';
 import Header from "../components/Header";
 import Sidebar from '../components/Sidebar';
+import { fetchFavorites, fetchSongs } from '../api/api';
 
 const Library = () => {
+  const [favorites, setFavorites] = useState([]);
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        const favoriteSongs = await fetchFavorites();
+        setFavorites(favoriteSongs);
+      } catch (error) {
+        console.error('Error loading favorite songs:', error);
+      }
+    };
+
+    const loadSongs = async () => {
+      try {
+        const allSongs = await fetchSongs();
+        setSongs(allSongs);
+      } catch (error) {
+        console.error('Error loading songs:', error);
+      }
+    };
+
+    loadFavorites();
+    loadSongs();
+  }, []);
+
   const videos = [
     {
       id: 1,
@@ -31,36 +58,6 @@ const Library = () => {
     },
   ];
 
-  const songs = [
-    {
-      id: 1,
-      title: "Mộng Yu",
-      artist: "AMEE, RTP MCK",
-      album: "Mộng Yu",
-      time: "1 ngày",
-      length: "3:23",
-      thumbnail: "https://via.placeholder.com/50"
-    },
-    {
-      id: 2,
-      title: "Không Phải Gu",
-      artist: "HIEUTHUHAI",
-      album: "Không Phải Gu",
-      time: "3 ngày",
-      length: "3:21",
-      thumbnail: "https://via.placeholder.com/50"
-    },
-    {
-      id: 3,
-      title: "Không Phải Gu",
-      artist: "HIEUTHUHAI",
-      album: "Không Phải Gu",
-      time: "3 ngày",
-      length: "3:21",
-      thumbnail: "https://via.placeholder.com/50"
-    }
-  ];
-
   return (
     <div>
       <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -72,8 +69,6 @@ const Library = () => {
           <div className="library-container">
             <div className="video-library">
               <div className="main-video">
-
-
                 <div className="video-info">
                   <img src="https://via.placeholder.com/600x400" alt="Main Video" />
                   <h3 className="video-section-title">Thư viện</h3>
@@ -85,7 +80,6 @@ const Library = () => {
                   </div>
                 </div>
               </div>
-
 
               <div className="video-list">
                 {videos.map(video => (
@@ -107,20 +101,17 @@ const Library = () => {
                 <thead>
                   <tr>
                     <th>Title</th>
+                    <th>Artist</th>
                     <th>Album</th>
-                    <th>Ngày thêm</th>
                     <th>Thời gian</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {songs.map(song => (
-                    <tr key={song.id}>
-                      <td>
-                        <img src={song.thumbnail} alt={song.title} />
-                        <span>{song.title}</span>
-                      </td>
-                      <td>{song.album}</td>
-                      <td>{song.time}</td>
+                  {favorites.map(song => (
+                    <tr key={song.favorite_id}>
+                      <td>{song.song_id}</td>
+                      <td>{song.artist_name}</td>
+                      <td>{song.album_name}</td>
                       <td>{song.length}</td>
                     </tr>
                   ))}
@@ -128,6 +119,8 @@ const Library = () => {
               </table>
               <button className="see-all">See All</button>
             </div>
+
+            
           </div>
         </div>
       </main>

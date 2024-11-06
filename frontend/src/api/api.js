@@ -70,7 +70,16 @@ export const fetchSongs = async () => {
         throw error;
     }
 };
-
+// Lấy tất cả các bài hát yêu thích
+export const fetchFavorites = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/favorites`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching favorites:', error);
+        throw error;
+    }
+};
 // Fetch all roles
 export const fetchRoles = async () => {
     try {
