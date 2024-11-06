@@ -1,53 +1,65 @@
 .artist-page {
-    background-color: #ffffff; // White background as requested
-    padding: 20px;
-  
-    .artist-section {
-      margin-bottom: 40px;
-  
-      h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #000; // Black for contrast
+  // White background as requested
+  padding: 20px;
+
+  .artist-section {
+    margin-bottom: 40px;
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #000; // Black for contrast
+    }
+
+    .artist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .artist-card {
+      text-align: center;
+      background-color: #f9f9f9;  // Same background as album-item
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        background-color: #f5f5f5;  // Slight background change on hover (optional)
+
+        // Change the artist's name color on hover
+        .artist-name {
+          color: #f05a22; // Set your preferred hover color (same as album hover)
+        }
       }
-  
-      .artist-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 20px;
+
+      .artist-image {
+        width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
       }
-  
-      .artist-card {
-        text-align: center;
-        
-        padding: 10px;
-        border-radius: 10px;
-        
-        transition: transform 0.3s ease;
-  
-        &:hover {
-          transform: scale(1.05);
-        }
-  
-        .artist-image {
-          width: 180px;
-          height: 170px;
-          object-fit: cover;
-          border-radius: 5%;
-          margin-bottom: 10px;
-        }
-  
-        p {
-          font-size: 18px;
-          margin: 5px 0;
-          color: #333;
-        }
-  
-        span {
-          font-size: 14px;
-          color: #777;
-        }
+
+      .artist-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 10px 0;
+        color: #333;
+        text-align: left;
+        transition: color 0.3s ease; // Smooth transition for color change
+      }
+
+      span {
+        font-size: 14px;
+        color: #777;
       }
     }
   }
-  
+}

@@ -1,259 +1,279 @@
 .roles-container {
-    padding: 20px;
-    background-color: #f5f5f5;
-  
-    .stats-section {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-  
-      .stat-card {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        width: 18%;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  
-        h3 {
-          font-size: 2rem;
-          margin-bottom: 10px;
-        }
-  
-        p {
-          font-size: 1rem;
-          color: #888;
-        }
+  padding: 10px;
+  background-color: #f5f5f5;
+
+  .stats-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    .stat-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 18%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      h3 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #888;
       }
     }
-  
-    .content-section {
-      display: flex;
-      justify-content: space-between;
-  
-      .top-artist-section {
-        width: 65%;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  
-        h2 {
-          margin-bottom: 20px;
+  }
+
+  .content-section {
+    display: flex;
+    justify-content: space-between;
+
+    .top-artist-section {
+      width: 65%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+          padding: 10px;
+          text-align: left;
         }
-  
-        table {
-          width: 100%;
-          border-collapse: collapse;
-  
-          th, td {
-            padding: 10px;
-            text-align: left;
-          }
-  
-          th {
-            background-color: #f9f9f9;
-            color: #555;
-          }
-  
-          td {
-            border-bottom: 1px solid #eee;
-          }
-          
-          
+
+        th {
+          background-color: #f9f9f9;
+          color: #555;
         }
-        .top-artist-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        
-        .search-form {
-          display: flex;
-          align-items: center;
-        }
-        
-        .search-form input {
-          padding: 5px;
-          font-size: 14px;
-          margin-right: 5px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          width: 200px; /* Điều chỉnh chiều rộng nếu cần */
-        }
-        
-        .search-form button {
-          padding: 5px 10px;
-          font-size: 14px;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        
-        .search-form button:hover {
-          background-color: #0056b3;
-        }
-        .nameartist {
-          font-weight: bold;
-          margin-bottom: 5px;
-          align-items: center;
-        
-          .emailartist {
-            font-size: 0.9rem;
-            color: #888;
-            margin-top: 2px;
-          }
-         
-        }
-        
-        .pagination {
-          display: flex;
-          justify-content: center; /* Center the pagination buttons */
-          align-items: center; /* Center vertically */
-          margin-top: 20px;
-          gap: 5px; /* Space between buttons */
-        
-          button {
-            padding: 10px 20px;
-            background-color: #eee;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        
-            &:hover {
-              background-color: #ddd;
-            }
-        
-            &.active {
-              background-color: #007bff; /* Change to your preferred active color */
-              color: #fff; /* White text for better contrast */
-              font-weight: bold; /* Make the text bold */
-            }
-          }
+
+        td {
+          border-bottom: 1px solid #eee;
         }
       }
-  
-      .reviews-section {
-        width: 30%;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  
-        h2 {
-          margin-bottom: 20px;
-        }
-  
-        .reviews-chart {
-          text-align: center;
-  
-          .donut-chart {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: #ff6868;
-            color: white;
-            font-size: 2rem;
-            line-height: 150px;
-            margin: 0 auto 20px;
-          }
-  
-          ul {
-            list-style: none;
-            padding: 0;
-  
-            li {
-              display: flex;
-              justify-content: space-between;
-              margin-bottom: 10px;
-  
-              span {
-                color: #888;
-              }
-            }
-          }
-        }
-        
-      }
-    }
-    .users-header {
-      display: flex;
-      font-weight: bold;
-      justify-content: space-between;
-      align-items: center; // Aligns items vertically in the center
-    
-      .users-column {
-        font-size: 0.9rem;
-        color: #333;
-      }
-    }
-    .recent-reviews-section {
+
+      .top-artist-header {
         display: flex;
         justify-content: space-between;
-        margin-top: 30px;
-      
-        .recent-users, .total-reviews {
-          background-color: #fff;
-          width: 48%;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      
-          h2 {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            color: #333;
-          }
-      
-          ul {
-            list-style: none;
-            padding: 0;
-      
-            li {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              margin-bottom: 20px;
-              padding-bottom: 10px;
-              border-bottom: 1px solid #f0f0f0;
-      
-              img {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                object-fit: cover;
-                margin-right: 10px;
-              }
-      
-              div {
-                flex-grow: 1;
-      
-                p:first-of-type {
-                  font-weight: 600;
-                  margin-bottom: 5px;
-                }
-      
-                p:last-of-type {
-                  font-size: 0.9rem;
-                  color: #888;
-                }
-              }
-      
-              span {
-                font-size: 0.9rem;
-                color: #888;
-              }
-              
-            }
-            
-          }
-          
-          }
-          
-        }
+        align-items: center;
+      }
+
+      .search-form {
+        display: flex;
+        align-items: center;
+      }
+
+      .search-form input {
+        padding: 5px;
+        font-size: 14px;
+        margin-right: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 200px; /* Điều chỉnh chiều rộng nếu cần */
+      }
+
+      .search-form button {
+        padding: 5px 10px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .search-form button:hover {
+        background-color: #0056b3;
+      }
+
+      .nameartist {
+        text-align: left; /* Ensures the name and email are aligned to the left */
+        display: flex;
+        flex-direction: column; /* Arrange name and email vertically */
+        align-items: flex-start; /* Align items to the left */
+        margin-right: 10px; /* Optional: Adjust margin for spacing */
+      }
+      .img-fluid {
+        width: 55px; /* You can adjust the size */
+        height: 55px; /* Adjust height as well */
+        border-radius: 50%; /* Circular image */
+        text-align: center; /* Space between the image and the text */
+      }
+      .emailartist {
+        font-size: 0.9rem;
+        color: #888;
+        margin-top: 5px; /* Space between the name and the email */
       }
       
-      
+
+      .pagination {
+        display: flex;
+        justify-content: center; /* Center the pagination buttons */
+        align-items: center; /* Center vertically */
+        margin-top: 20px;
+        gap: 5px; /* Space between buttons */
+
+        button {
+          padding: 10px 20px;
+          background-color: #eee;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #ddd;
+          }
+
+          &.active {
+            background-color: #007bff; /* Change to your preferred active color */
+            color: #fff; /* White text for better contrast */
+            font-weight: bold; /* Make the text bold */
+          }
+        }
+      }
+    }
+
+    .reviews-section {
+      width: 30%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      .reviews-chart {
+        text-align: center;
+
+        .donut-chart {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          background-color: #ff6868;
+          color: white;
+          font-size: 2rem;
+          line-height: 150px;
+          margin: 0 auto 20px;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+
+          li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            span {
+              color: #888;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .users-header {
+    display: flex;
+    font-weight: bold;
+    justify-content: space-between;
+    align-items: center; /* Aligns items vertically in the center */
+
+    .users-column {
+      font-size: 0.9rem;
+      color: #333;
+    }
+  }
+
+  .recent-reviews-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+
+    .recent-users, .total-reviews {
+      background-color: #fff;
+      width: 48%;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      h2 {
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+        color: #333;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #f0f0f0;
+
+          img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+          }
+
+          div {
+            flex-grow: 1;
+
+            p:first-of-type {
+              font-weight: 600;
+              margin-bottom: 5px;
+            }
+
+            p:last-of-type {
+              font-size: 0.9rem;
+              color: #888;
+            }
+          }
+
+          span {
+            font-size: 0.9rem;
+            color: #888;
+          }
+        }
+      }
+    }
+  }
+
+  .artist-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   
+    .artist-column {
+      font-size: 0.9rem;
+      color: #333;
+      padding: 10px;
+    }
+  
+   
+    .artist-column:nth-of-type(2) {
+      /* Align "Artist Name" column to the left */
+      text-align: left;
+      padding-right: 55px;
+    }
+  }
+}
