@@ -3,6 +3,7 @@ import '../styles/admin.scss'; // SCSS file for styling
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
+import faker from "../assets/images/artists/faker.jpg";
 import { fetchArtists, fetchAlbums, fetchingSongs, fetchPlaylists, fetchUsers } from '../api/api';
 
 const Roles = () => {
@@ -22,15 +23,20 @@ const Roles = () => {
     const getRecentUsers = async () => {
       try {
         const users = await fetchUsers();
-        const sortedUsers = users.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
-        setRecentUsers(sortedUsers.slice(0, 5));
+        // Lọc chỉ những người dùng có role_id = 1
+        const adminUsers = users.filter(user => user.role_id === 1);
+        // Sắp xếp danh sách người dùng theo ngày tạo
+        const sortedAdminUsers = adminUsers.sort(
+          (a, b) => new Date(b.date_created) - new Date(a.date_created)
+        );
+        setRecentUsers(sortedAdminUsers.slice(0, 5)); // Lấy 5 người dùng mới nhất
       } catch (error) {
         setError('Không thể tải danh sách người dùng mới');
       } finally {
         setLoading(false);
       }
     };
-
+  
     getRecentUsers();
   }, []);
 
@@ -193,7 +199,9 @@ const Roles = () => {
                     return (
                       <div className="artist-row" key={artist.artist_id}>
                         <div className="artist-column">{indexOfFirstArtist + index + 1}</div>
+                        <img src={faker} className="img-fluid rounded  avatar-55" />
                         <div className="artist-column nameartist">
+                        
                           {artist.username}
                           <div className="emailartist">{artist.email}</div>
                         </div>
@@ -204,25 +212,25 @@ const Roles = () => {
                   })}
                 </div>
                 <div className="pagination">
-  <button onClick={handlePrevious} disabled={currentPage === 0}>
-    Previous
-  </button>
+                <button onClick={handlePrevious} disabled={currentPage === 0}>
+                  Previous
+                </button>
   
-  {/* Hiển thị các số trang và thêm sự kiện onClick */}
-  {pageNumbers.map((page) => (
-    <button
-      key={page}
-      onClick={() => setCurrentPage(page)}
-      className={currentPage === page ? 'active' : ''}
-    >
-      {page + 1}
-    </button>
-  ))}
-  
-  <button onClick={handleNext} disabled={currentPage === totalPages - 1}>
-    Next
-  </button>
-</div>
+                  {/* Hiển thị các số trang và thêm sự kiện onClick */}
+                  {pageNumbers.map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={currentPage === page ? 'active' : ''}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                  
+                  <button onClick={handleNext} disabled={currentPage === totalPages - 1}>
+                    Next
+                  </button>
+                </div>
               </div>
 
               <div className="reviews-section">
@@ -265,12 +273,9 @@ const Roles = () => {
                 );
               })}
               </ul>
-              <div className="pagination">
-                  <button onClick={handlePrevious} disabled={currentPage === 0}>Previous</button>
-                  <span>{currentPage + 1}</span>
-                  <button onClick={handleNext} disabled={indexOfLastArtist >= totalArtists}>Next</button>
-                </div>
+              
               </div>
+              
               
 
               <div className="total-reviews">
