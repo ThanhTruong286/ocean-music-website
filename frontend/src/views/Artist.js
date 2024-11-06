@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import faker from "../assets/images/artists/faker.jpg";
 import Sidebar from '../components/Sidebar';
 import ArtistList from "../components/ArtistList";
+
 const artistsData = {
   favoriteArtists: [
     { name: 'HIEUTHUHAI', role: 'Artist', imgSrc: faker },
