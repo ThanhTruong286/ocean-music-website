@@ -16,17 +16,17 @@ class Song {
 
     static getAll(callback) {
         const query = `
-SELECT songs.*, 
+        SELECT songs.*, 
        CONCAT(
            COALESCE(users.first_name, ''), 
            ' ', 
            COALESCE(users.last_name, '')
        ) AS artist
-FROM songs 
-JOIN artist_songs ON songs.song_id = artist_songs.song_id 
-JOIN artists ON artist_songs.artist_id = artists.artist_id
-JOIN users ON artists.user_id = users.user_id
-ORDER BY songs.play_count DESC;
+        FROM songs 
+        JOIN artist_songs ON songs.song_id = artist_songs.song_id 
+        JOIN artists ON artist_songs.artist_id = artists.artist_id
+        JOIN users ON artists.user_id = users.user_id
+        ORDER BY songs.play_count DESC;
 
 
         `;
@@ -94,7 +94,7 @@ ORDER BY songs.play_count DESC;
         const query = `DELETE FROM songs WHERE song_id = ?`;
         db.query(query, [this.id], callback);
     }
-    
+
 }
 
 module.exports = Song;
