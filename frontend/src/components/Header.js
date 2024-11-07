@@ -28,26 +28,21 @@ const Header = () => {
         const loadUser = async () => {
             try {
                 const data = await getUser();
-                setUser(data);
-            }
-            finally {
+                if (data && data.userId !== null && data.is_vip !== null) {
+                    setUser(data);
+                } else {
+                    navigate('/login'); // Redirect if userId or is_vip is null
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                navigate('/login'); // Redirect on error
+            } finally {
                 setLoading(false);
             }
-        }
+        };
         loadUser();
-    }, []);
-    // Fetch user data
-    const fetchUserData = async () => {
-        try {
-            const userData = await getUser(); // Fetch user data
-            setUser(userData);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            setUser(null); // Set user to null if error occurs
-        } finally {
-            setLoading(false); // Set loading to false
-        }
-    };
+    }, [navigate]);
+
     const handleProfileClick = async (e) => {
         try {
             // Gọi hàm để lấy thông tin người dùng
@@ -60,11 +55,6 @@ const Header = () => {
             // Xử lý lỗi nếu cần
         }
     };
-
-    // Fetch user data on component mount
-    useEffect(() => {
-        fetchUserData();
-    }, []); // Runs once on mount
 
     // Toggle popup visibility
     const togglePopup = () => {
