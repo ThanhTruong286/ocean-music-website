@@ -13,6 +13,7 @@ import Admin from './Admin';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ResetPasswordView from './ResetPassword';
 import EmailBackup from "./Email";
+import MusicPlayer from './Music player';
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path='/reset-password' element={<ResetPasswordView />} />
           <Route path='/email' element={<EmailBackup />} />
           <Route path='/admin' element={<Admin />} /> {/* Add the Admin route */}
+          <Route path='/music-player' element={<MusicPlayer />} /> {/* Add the Admin route */}
         </Routes>
       </Router>
     </div>
