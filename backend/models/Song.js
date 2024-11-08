@@ -94,7 +94,7 @@ class Song {
         const query = `DELETE FROM songs WHERE song_id = ?`;
         db.query(query, [this.id], callback);
     }
-
+    
 }
 
 module.exports = Song;

@@ -199,7 +199,7 @@ const Roles = () => {
                   Total Music Albums</a>
               </div>
               <div className="stat-card">
-                <a className="nav-link" href="/addsong">
+                <a className="nav-link" href="/musiclist">
                 <h3>{totalSongs}</h3>
                 Total Songs</a>
               </div>

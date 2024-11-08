@@ -1,65 +1,21 @@
-.music-list-container {
-    .header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
+.add-song-container {
+    padding: 20px;
+  }
   
-    .song-header-row, .song-row {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
+  .add-song-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
   
-    .song-header-row {
-      font-weight: bold;
-      background-color: #f0f0f0;
-    }
-  
-    .header-cell, .song-cell {
-      flex: 1;
-      padding: 5px;
-      text-align: center;
-    }
-  
-    .song-image-container img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-  
-    .btn {
-      margin: 0 5px;
-      background-color: #007bff;
-    }
-    .search-form {
-        display: flex;
-        align-items: center;
-      }
-
-      .search-form input {
-        padding: 5px;
-        font-size: 14px;
-        margin-right: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        width: 200px; /* Điều chỉnh chiều rộng nếu cần */
-      }
-
-      .search-form button {
-        padding: 5px 10px;
-        font-size: 14px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .search-form button:hover {
-        background-color: #0056b3;
-      }
+  .btn-add-song {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
   

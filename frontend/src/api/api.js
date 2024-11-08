@@ -289,4 +289,16 @@ export const fetchUsers = async () => {
         throw error;
     }
 };
-
+export const fetchAddNewSong = async (newSong) => {
+    try {
+        const response = await axios.post(`${API_URL}/song`, newSong, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Trả về dữ liệu từ API (bao gồm thông tin bài hát hoặc lỗi)
+    } catch (error) {
+        console.error('Lỗi khi thêm bài hát:', error);
+        throw error; // Ném lỗi nếu có
+    }
+};
