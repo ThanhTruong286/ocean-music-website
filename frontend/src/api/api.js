@@ -2,6 +2,20 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+//Get song detail
+export const getSong = async (id) => {
+    try {
+        if (!id) {
+            console.log("song id not found");
+            return;
+        }
+        const response = await axios.get(`${API_URL}/song/song-detail/${id}`);
+        return response.data;
+
+    } catch (e) {
+        throw new Error(e);
+    }
+}
 //Xử lý thanh toán momo
 export const MoMoPayment = async (price, userPlan) => {
     try {

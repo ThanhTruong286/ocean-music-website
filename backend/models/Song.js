@@ -27,8 +27,6 @@ JOIN artist_songs ON songs.song_id = artist_songs.song_id
 JOIN artists ON artist_songs.artist_id = artists.artist_id
 JOIN users ON artists.user_id = users.user_id
 ORDER BY songs.play_count DESC;
-
-
         `;
         db.query(query, (err, results) => {
             if (err) return callback(err, null);
@@ -49,10 +47,23 @@ ORDER BY songs.play_count DESC;
     }
 
     static findById(songId, callback) {
-        const query = `SELECT * FROM songs WHERE song_id = ?`;
+        const query = `SELECT songs.*, 
+                   CONCAT(
+                       COALESCE(users.first_name, ''), 
+                       ' ', 
+                       COALESCE(users.last_name, '')
+                   ) AS artist
+                   FROM songs 
+                   JOIN artist_songs ON songs.song_id = artist_songs.song_id 
+                   JOIN artists ON artist_songs.artist_id = artists.artist_id
+                   JOIN users ON artists.user_id = users.user_id
+                   WHERE songs.song_id = ?  -- Use the songId to filter the results
+                   ORDER BY songs.play_count DESC;`;
+
         db.query(query, [songId], (err, results) => {
             if (err) return callback(err, null);
             if (results.length === 0) return callback(null, null);
+
             const row = results[0];
             const song = new Song(
                 row.song_id,
@@ -63,11 +74,14 @@ ORDER BY songs.play_count DESC;
                 row.file_url,
                 row.cover_image_url,
                 row.lyric,
-                row.play_count
+                row.play_count,
+                row.artist
             );
+
             callback(null, song);
         });
     }
+
 
     save(callback) {
         if (this.id) {

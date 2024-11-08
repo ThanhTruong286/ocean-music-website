@@ -9,6 +9,7 @@ import Profile from './Profile';
 import Subcribe from './Subcribe';
 import ChangePasswordView from './ChangePassword';
 import Payment from './Payment';
+import SongDetail from './SongDetail';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path='/change-password' element={<ChangePasswordView />} />
           <Route path='/subcribe' element={<Subcribe />} />
           <Route path='/payment' element={<Payment />} />
+          <Route path='/song-detail/:id' element={<SongDetail />} />
         </Routes>
       </Router>
     </div>
