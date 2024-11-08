@@ -199,8 +199,9 @@ const Roles = () => {
                   Total Music Albums</a>
               </div>
               <div className="stat-card">
+                <a className="nav-link" href="/addsong">
                 <h3>{totalSongs}</h3>
-                <p>Total Songs</p>
+                Total Songs</a>
               </div>
               <div className="stat-card">
                 <h3>{totalPlaylists}</h3>
