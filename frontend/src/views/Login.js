@@ -10,8 +10,7 @@ const Login = () => {
     const handleSpotifyLogin = async () => {
         try {
             const loginUrl = await getSpotifyLoginUrl();
-            console.log(loginUrl);
-            window.location.href = loginUrl;
+            window.location.href = loginUrl;  // Chuyển hướng người dùng đến Spotify để đăng nhập
         } catch (error) {
             setErrorMessage('Failed to redirect to Spotify login.');
         }

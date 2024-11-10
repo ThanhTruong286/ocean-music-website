@@ -42,12 +42,11 @@ const TrendingList = () => {
             spaceBetween={50}
             slidesPerView={5}
             loop={true}
-            onSlideChange={() => console.log('slide change')}
         >
             {songs.map((song) => {
-                    const songImage = getSongImage(song.coverImageUrl);
+                const songImage = getSongImage(song.coverImageUrl);
                 return (
-                    <SwiperSlide key={song.song_id}>
+                    <SwiperSlide key={song.id}>
                         <li className="col">
                             <div className="card-trending">
                                 <div className="card-body">

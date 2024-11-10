@@ -1,22 +1,29 @@
+import React, { useEffect, useState } from 'react';
 import Header from "../components/Header";
 import faker from "../assets/images/artists/faker.jpg";
-import ArtistPLaylist from "../components/ArtistPlaylist";
+import ArtistList from "../components/ArtistList";
 import GenreList from "../components/GenreList";
 import Sidebar from "../components/Sidebar";
 import RadioList from "../components/RadioList";
 import TrendingList from "../components/TrendingList";
 import RecentlyPlayedList from "../components/RecentlyPlayedList";
 import Footer from "../components/Footer";
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
-import ArtistList from "../components/ArtistList";
+import ArtistPlaylist from "../components/ArtistPlaylist";
 
 const Home = () => {
+    const [accessToken, setAccessToken] = useState(null);
 
+    useEffect(() => {
+        // Lấy accessToken từ localStorage
+        const token = localStorage.getItem('spotifyToken');
+        if (token) {
+            setAccessToken(token);
+        }
+    }, []);
+    if (!accessToken) {
+        return <div>Vui lòng đăng nhập để xem thông tin.</div>; // Nếu không có accessToken, yêu cầu người dùng đăng nhập
+    }
     return (
         <div>
             <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -35,7 +42,7 @@ const Home = () => {
                                 </div>
                             </div>
                             {/** ARTIST PLAYLIST LIST */}
-                            <ArtistPLaylist />
+                            <ArtistPlaylist accessToken={accessToken} />
                             {/** END ARTIST PLAYLIST LIST */}
                         </div>
                         <div className="row mb-4">

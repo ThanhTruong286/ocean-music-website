@@ -40,74 +40,6 @@ export const MoMoPayment = async (price, userPlan) => {
     }
 }
 
-//Send Email
-export const SendEmail = async (email) => {
-    try {
-        const response = await axios.post(`${API_URL}/auth/send-email`, { email });
-        console.log(response);
-        return response.data;
-    } catch (error) {
-        console.log("Send Email Failed", error);
-        throw new Error(error.response ? error.response.data : error.message);
-    }
-}
-//Reset Password
-export const ResetPassword = async (newPassword, confirmPassword, resetToken) => {
-    if (!newPassword || !confirmPassword) {
-        throw new Error("Mật khẩu không được để trống");
-    }
-    try {
-        const response = await axios.post(
-            `${API_URL}/auth/reset-password`,
-            { newPassword, confirmPassword, resetToken },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
-        return response.data;
-    } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Thay đổi mật khẩu thất bại';
-        console.error('Thay đổi mật khẩu thất bại:', errorMessage);
-        throw new Error(errorMessage);
-    }
-};
-
-// Change Password
-
-export const ChangePassword = async (currentPassword, newPassword) => {
-    if (!currentPassword || !newPassword) {
-        throw new Error('Mật khẩu không được để trống.');
-    }
-
-    try {
-        const userId = localStorage.getItem('user');
-        console.log(userId);
-
-        if (!userId) {
-            throw new Error('User không hợp lệ. Vui lòng đăng nhập lại.');
-        }
-
-        const response = await axios.put(
-            `${API_URL}/auth/change-password`,
-            { currentPassword, newPassword, userId },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }
-        );
-
-        console.log('Thay đổi mật khẩu thành công:', response.data);
-        return response.data;
-    } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Thay đổi mật khẩu thất bại';
-        console.error('Thay đổi mật khẩu thất bại:', errorMessage);
-        throw new Error(errorMessage);
-    }
-};
-
 // Fetch all artists
 export const fetchArtists = async () => {
     try {
@@ -161,30 +93,59 @@ export const fetchRoles = async () => {
     }
 };
 
-export const getSpotifyLoginUrl = async () => {
+export const getSpotifyLoginUrl = () => {
+    const clientId = 'c0fde7148f22431abf3454b1e3d5250b';
+    const redirectUri = 'http://localhost:3000/callback';
+    const scopes = [
+        'user-read-private',
+        'user-read-email',
+        'user-library-read',
+        'playlist-read-private',
+        'playlist-read-collaborative',
+        'user-top-read',
+        'user-follow-read',
+        'user-read-playback-state',
+        'user-modify-playback-state',
+        'app-remote-control',
+        'streaming',
+        'playlist-modify-public',
+        'playlist-modify-private'
+    ].join(' '); // Tạo chuỗi các scopes với khoảng trắng phân cách
+
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}`;
+
+    return authUrl;
+};
+
+export const fetchSpotifyUser = async (accessToken) => {
     try {
-        const response = await axios.get(`${API_URL}/auth/login`);
-        console.log(response);
-        return response.data.url;
+        const response = await fetch('https://api.spotify.com/v1/me', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error fetching user profile:', errorText);
+            throw new Error('Failed to fetch user profile');
+        }
+
+        const data = await response.json();
+
+        if (data) {
+            console.log(data);
+            return data;
+        } else {
+            console.error('Display name not found in user profile data');
+            return 'Unknown User';
+        }
+
     } catch (error) {
-        console.error('Failed to get Spotify login URL:', error);
+        console.error('Error fetching user profile:', error);
         throw error;
     }
-};
-export const fetchSpotifyUser = async (accessToken) => {
-    const response = await fetch('https://api.spotify.com/v1/me', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-    }
-
-    const data = await response.json();
-    return data;
 };
 
 export const getUserData = () => {
@@ -204,39 +165,6 @@ export const getUserData = () => {
     return userDataWithExpiry.data;
 };
 
-export const logoutUser = async () => {
-    try {
-        await axios.post(`${API_URL}/auth/logout`, {}, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        localStorage.removeItem('user');
-        localStorage.removeItem('userToken');
-
-        window.location.href = '/login';
-    } catch (error) {
-        console.error('Logout failed:', error.response ? error.response.data : error.message);
-        throw error;
-    }
-};
-
-export const registerUser = async (userData) => {
-    try {
-        console.log(userData);
-        const response = await axios.post(`${API_URL}/auth/register`, userData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error registering user:', error);
-        throw error;
-    }
-};
-
 export const fetchGenres = async () => {
     try {
         const response = await axios.get(`${API_URL}/genres`);
@@ -247,12 +175,58 @@ export const fetchGenres = async () => {
     }
 };
 
-export const fetchPlaylists = async () => {
+export const fetchPlaylists = async (accessToken) => {
     try {
-        const response = await axios.get(`${API_URL}/playlist`);
-        return response.data;
-    } catch (e) {
-        throw e;
+        // Lấy danh sách nghệ sĩ yêu thích
+        const response = await fetch('https://api.spotify.com/v1/me/top/artists', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text(); // Lấy thêm thông tin lỗi từ phản hồi
+            console.error('Error fetching artists:', response.status, errorText);
+            throw new Error('Failed to fetch artists');
+        }
+
+        const data = await response.json();
+        console.log('Artist data:', data);
+
+        const artistId = data.items[0]?.id;
+        const artistName = data.items[0]?.name;
+
+        if (artistId) {
+            console.log(`Fetching albums for artist: ${artistName}`);
+
+            // Lấy danh sách album của nghệ sĩ
+            const playlistsResponse = await fetch(`https://api.spotify.com/v1/artists/${artistId}/albums`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                }
+            });
+
+            if (!playlistsResponse.ok) {
+                const playlistsErrorText = await playlistsResponse.text();
+                console.error('Error fetching playlists:', playlistsResponse.status, playlistsErrorText);
+                throw new Error('Failed to fetch playlists');
+            }
+
+            const playlistsData = await playlistsResponse.json();
+            console.log('Playlists data:', playlistsData);
+
+            return playlistsData.items; // Trả về danh sách album
+
+        } else {
+            console.error('No artist found');
+            throw new Error('No artist found');
+        }
+
+    } catch (error) {
+        console.error('Error in fetchPlaylists:', error);
+        throw error;
     }
 };
 

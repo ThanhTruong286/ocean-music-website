@@ -4,23 +4,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import peanut from "../assets/images/artists/peanut.jpg";
 
-// Load all images from the playlists folder
-const images = require.context('../assets/images/playlists', false, /\.(jpg|jpeg|png|gif)$/);
-
-const getArtistImage = (imageName) => {
-    // Check if the image exists in the context keys, else use peanut as default
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : peanut;
+// Hàm để lấy hình ảnh của playlist
+const getArtistImage = (imageUrl) => {
+    return imageUrl ? imageUrl : peanut;
 };
 
-const ArtistPlaylist = () => {
+const ArtistPlaylist = ({ accessToken }) => {
     const [artistPlaylists, setArtistPlaylists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const loadArtists = async () => {
+        const loadPlaylists = async () => {
             try {
-                const data = await fetchPlaylists();
+                const data = await fetchPlaylists(accessToken);
                 setArtistPlaylists(data);
             } catch (err) {
                 setError('Không thể tải danh sách playlists');
@@ -28,8 +25,11 @@ const ArtistPlaylist = () => {
                 setLoading(false);
             }
         };
-        loadArtists();
-    }, []);
+
+        if (accessToken) {
+            loadPlaylists();
+        }
+    }, [accessToken]);
 
     if (loading) {
         return <div>Đang tải...</div>;
@@ -41,24 +41,24 @@ const ArtistPlaylist = () => {
 
     return (
         <div className="artist-list">
-            <Swiper spaceBetween={30} slidesPerView={4} onSlideChange={() => console.log('slide change')}>
-                {artistPlaylists.map((artist) => {
-                    const playlistImage = getArtistImage(artist.image);
+            <Swiper spaceBetween={30} slidesPerView={4}>
+                {artistPlaylists.map((playlist) => {
+                    const playlistImage = getArtistImage(playlist.images[0]?.url);  // Sử dụng hình ảnh playlist
+                    const artistName = playlist.artists ? playlist.artists[0]?.name : "Unknown Artist";  // Lấy tên nghệ sĩ
+
                     return (
-                        <SwiperSlide key={artist.playlist_id}>
+                        <SwiperSlide key={playlist.id}>
                             <div className="artist-card">
                                 <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
                                     <img
                                         src={playlistImage}
-                                        id="artist-playlist"
                                         className="img-fluid mx-auto d-block"
-                                        alt="play-img"
+                                        alt="playlist-img"
                                     />
                                 </div>
-                                <a href="../dashboard/music-player.html" className="text-capitalize h5">{artist.title}</a>
+                                <a href={playlist.external_urls.spotify} className="text-capitalize h5">{playlist.name}</a>
                                 <small className="fw-normal line-count-1 text-capitalize">
-                                    <span>By </span>
-                                    <span style={{ color: 'red', fontSize:"14px" }}><b>{artist.first_name || 'Nickname'} {artist.last_name}</b></span>
+                                    <span>By {artistName}</span>
                                 </small>
                             </div>
                         </SwiperSlide>
