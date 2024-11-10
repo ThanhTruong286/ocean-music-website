@@ -161,44 +161,30 @@ export const fetchRoles = async () => {
     }
 };
 
-export const getUser = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user.userId;
-
+export const getSpotifyLoginUrl = async () => {
     try {
-        const response = await axios.get(`${API_URL}/users/profile/${userId}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-            }
-        });
-
-        const { role_id } = response.data; // Điều chỉnh theo cấu trúc phản hồi API của bạn
-        return { ...response.data, role_id }; // Trả về role_id cùng với dữ liệu người dùng
+        const response = await axios.get(`${API_URL}/auth/login`);
+        console.log(response);
+        return response.data.url;
     } catch (error) {
-        console.error('Error sending user ID:', error);
+        console.error('Failed to get Spotify login URL:', error);
         throw error;
     }
 };
+export const fetchSpotifyUser = async (accessToken) => {
+    const response = await fetch('https://api.spotify.com/v1/me', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    });
 
-export const loginUser = async (userData) => {
-    try {
-        const response = await axios.post(`${API_URL}/auth/login`, userData, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        console.log(userData);
-        const { token, expiry, userId } = response.data;
-
-        localStorage.setItem('user', JSON.stringify({ userId, expiry }));
-        localStorage.setItem('userToken', JSON.stringify({ token }));
-
-        return response.data;
-    } catch (error) {
-        console.error('Login failed:', error.response ? error.response.data : error.message);
-        throw error;
+    if (!response.ok) {
+        throw new Error('Failed to fetch user data');
     }
+
+    const data = await response.json();
+    return data;
 };
 
 export const getUserData = () => {

@@ -1,10 +1,11 @@
 const cors = require('cors');
 const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const artistRoutes = require('./routes/artistRoutes');
 const authRoutes = require('./routes/authRoutes');
-const errorHandler = require('./middlewares/errorHandler'); // Middleware xử lý lỗi;
 const genreRoutes = require('./routes/genreRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
 const songRoutes = require('./routes/songRoutes');
@@ -12,16 +13,21 @@ const albumRoutes = require('./routes/albumRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
-const db = require('./config/db'); // Kết nối DB
+const db = require('./config/db');
+const session = require('express-session');
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 app.use(cors());
-const PORT = process.env.PORT || 5000;
-
-const session = require('express-session');
+app.use(cors({
+  origin: 'http://localhost:3000', // Cho phép frontend truy cập
+  credentials: true,
+}));
+const PORT = process.env.BACKEND_PORT || 8989;
 
 app.use(session({
-  secret: 'MIKASA',
+  secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
@@ -30,18 +36,17 @@ app.use(session({
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json()); // Để xử lý JSON
-app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệu từ form
-// Middleware xử lý lỗi
-app.use(errorHandler);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Sử dụng routes
-app.use('/api/auth', authRoutes); // Route cho xác thực
-app.use('/api/users', userRoutes); // Route cho người dùng
-app.use('/api/artist', artistRoutes); // Route cho artist
-app.use('/api/genres', genreRoutes); // thể loại
-app.use('/api/playlist', playlistRoutes); // playlist
-app.use('/api/song', songRoutes); //bài hát
+app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/artist', artistRoutes);
+app.use('/api/genres', genreRoutes);
+app.use('/api/playlist', playlistRoutes);
+app.use('/api/song', songRoutes);
 app.use('/api/album', albumRoutes);
 app.use('/api/role', roleRoutes);
 app.use('/api/payment', paymentRoutes);

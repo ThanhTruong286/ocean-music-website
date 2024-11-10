@@ -6,7 +6,9 @@ const authController = require('../controllers/authController');
 router.post('/register', authController.registerUser);
 
 // Route cho đăng nhập người dùng
-router.post('/login', authController.loginUser);
+router.get('/login', authController.loginUser);
+
+router.get('/login/callback', authController.loginCallback);
 
 router.post('/logout', authController.logoutUser);
 

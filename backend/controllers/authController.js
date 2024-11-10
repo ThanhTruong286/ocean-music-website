@@ -1,8 +1,18 @@
 const db = require('../config/db'); // Kết nối với MySQL
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const UserModel = require('../models/User');
 const nodemailer = require('nodemailer');
+const querystring = require('querystring');
+const dotenv = require('dotenv');
+const path = require('path');
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+const axios = require('axios');
+
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:3000/callback';
+const FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:3000';
+const SCOPES = 'user-read-private user-read-email playlist-read-private';
 
 exports.resetPassword = async (req, res) => {
   const { newPassword, confirmPassword, resetToken } = req.body;
@@ -129,9 +139,6 @@ exports.sendEmail = async (req, res) => {
     }
   });
 };
-
-
-// Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
   const { firstName, lastName, username, email, password, phone } = req.body;
 
@@ -188,69 +195,56 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-
 // LOGIN
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const queryParams = querystring.stringify({
+    client_id: CLIENT_ID,
+    response_type: 'code',
+    redirect_uri: REDIRECT_URI,
+    scope: SCOPES,
+  });
 
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required.' });
+  const spotifyLoginUrl = `https://accounts.spotify.com/authorize?${queryParams}`;
+  res.json({ url: spotifyLoginUrl });
+};
+exports.loginCallback = async (req, res) => {
+  const { code } = req.query;
+
+  if (!code) {
+    return res.status(400).send('Code is missing');
   }
+
+  const data = querystring.stringify({
+    code,
+    redirect_uri: process.env.REDIRECT_URI || 'http://localhost:3000/callback',
+    grant_type: 'authorization_code',
+  });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64'),
+    },
+  };
 
   try {
-    // Truy vấn để lấy thông tin người dùng
-    const results = await new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-        if (err) {
-          console.error('Database query error during user login:', err);
-          return reject(err);
-        }
-        resolve(results);
-      });
+    const response = await axios.post('https://accounts.spotify.com/api/token', data, config);
+    const { access_token, refresh_token, expires_in } = response.data;
+
+    // Log response data để kiểm tra chi tiết
+    console.log("Spotify token response:", response.data);
+
+    return res.json({
+      access_token,
+      refresh_token,
+      expires_in,
     });
-
-    // Kiểm tra xem có người dùng nào được tìm thấy không
-    if (!results || results.length === 0) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
-    }
-
-    const user = results[0];
-
-    // Kiểm tra mật khẩu đã băm có tồn tại không
-    if (!user.password) {
-      return res.status(400).json({ message: 'Invalid email or password.' });
-    }
-
-    // Kiểm tra mật khẩu
-    const passwordMatch = await bcrypt.compare(password, user.password)
-      .catch(err => {
-        console.error('Error during password verification:', err);
-        return false; // Nếu có lỗi, giả sử mật khẩu không khớp
-      });
-
-    // Phản hồi kết quả xác thực
-    if (passwordMatch) {
-      // Tạo token
-      const token = jwt.sign(
-        { userId: user.user_id }, // Payload
-        "MIKASA",
-        { expiresIn: '30d' } // Thời hạn token là 30 ngày
-      );
-
-      // Trả về token và thông tin người dùng
-      return res.status(200).json({
-        message: 'Login successful',
-        userId: user.user_id,
-        token: token // Gửi token về client
-      });
-    } else {
-      return res.status(400).json({ message: 'Invalid email or password.' });
-    }
-  } catch (err) {
-    console.error('Server error during login:', err);
-    res.status(500).json({ message: 'Server error', error: err.message });
+  } catch (error) {
+    console.error('Error getting access token:', error.response ? error.response.data : error.message);
+    return res.status(500).send('Error getting access token');
   }
 };
+
 
 // LOGOUT
 exports.logoutUser = (req, res) => {
