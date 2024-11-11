@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPlaylists } from '../api/api';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import peanut from "../assets/images/artists/peanut.jpg";
+import peanut from "../assets/images/artists/peanut.jpg"; // Hình ảnh mặc định
+import { fetchPlaylists } from '../api/api'; // Import hàm API mới
 
-// Hàm để lấy hình ảnh của playlist
-const getArtistImage = (imageUrl) => {
-    return imageUrl ? imageUrl : peanut;
-};
-
-const ArtistPlaylist = ({ accessToken }) => {
-    const [artistPlaylists, setArtistPlaylists] = useState([]);
-    const [loading, setLoading] = useState(true);
+const ArtistPlaylist = () => {
+    const [playlists, setPlaylists] = useState([]); // Lưu danh sách playlist
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const accessToken = localStorage.getItem('spotifyToken');  // Lấy access token từ localStorage
 
+    // Hàm gọi API để lấy danh sách playlist
     useEffect(() => {
         const loadPlaylists = async () => {
             try {
                 const data = await fetchPlaylists(accessToken);
-                setArtistPlaylists(data);
+
+                setPlaylists(data); // Lưu danh sách playlist
             } catch (err) {
-                setError('Không thể tải danh sách playlists');
+                setError('Không tải được danh sách playlist');
+                console.error(err);
             } finally {
                 setLoading(false);
             }
@@ -31,8 +30,13 @@ const ArtistPlaylist = ({ accessToken }) => {
         }
     }, [accessToken]);
 
+    // Hàm lấy ảnh playlist nếu có, nếu không sẽ dùng ảnh mặc định
+    const getPlaylistImage = (images) => {
+        return images?.[0]?.url || peanut;
+    };
+
     if (loading) {
-        return <div>Đang tải...</div>;
+        return <div>Đang tải danh sách playlist...</div>;
     }
 
     if (error) {
@@ -40,52 +44,53 @@ const ArtistPlaylist = ({ accessToken }) => {
     }
 
     return (
-        <div className="artist-list">
-            <Swiper spaceBetween={30} slidesPerView={4}>
-                {artistPlaylists.map((playlist) => {
-                    const playlistImage = getArtistImage(playlist.images[0]?.url);  // Sử dụng hình ảnh playlist
-                    const artistName = playlist.artists ? playlist.artists[0]?.name : "Unknown Artist";  // Lấy tên nghệ sĩ
+        <Swiper spaceBetween={10} slidesPerView={5} loop={true}>
+            {playlists.map((playlist, index) => {
+                const playlistImage = getPlaylistImage(playlist.images);
+                const playlistName = playlist.name;
+                const playlistOwner = playlist.owner.display_name;
+                const spotifyUrl = playlist.external_urls.spotify;
 
-                    return (
-                        <SwiperSlide key={playlist.id}>
-                            <div className="artist-card">
-                                <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
-                                    <img
-                                        src={playlistImage}
-                                        className="img-fluid mx-auto d-block"
-                                        alt="playlist-img"
-                                    />
-                                </div>
-                                <a 
-                                    href={playlist.external_urls.spotify} 
-                                    className="text-capitalize h5 d-block overflow-hidden text-overflow-ellipsis" 
+                return (
+                    <SwiperSlide key={index}>
+                        <li className="swiper-slide card card-slide" role="group">
+                            <div className="card-body">
+                                <img src={playlistImage} className="mb-3 img-fluid rounded-3" alt={playlistName} />
+
+                                {/* Tên playlist */}
+                                <a
+                                    href={spotifyUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-capitalize h5 d-block"
                                     style={{
-                                        display: 'block',
-                                        maxWidth: '100%',
                                         whiteSpace: 'nowrap',
                                         overflow: 'hidden',
-                                        textOverflow: 'ellipsis'
+                                        textOverflow: 'ellipsis',
+                                        display: 'block'
                                     }}
                                 >
-                                    {playlist.name}
+                                    {playlistName}
                                 </a>
-                                <small 
-                                    className="fw-normal line-count-1 text-capitalize overflow-hidden text-overflow-ellipsis" 
+
+                                {/* Tên chủ sở hữu playlist */}
+                                <small
+                                    className="fw-normal text-capitalize"
                                     style={{
-                                        display: 'block',
                                         whiteSpace: 'nowrap',
                                         overflow: 'hidden',
-                                        textOverflow: 'ellipsis'
+                                        textOverflow: 'ellipsis',
+                                        display: 'block'
                                     }}
                                 >
-                                    <span>By {artistName}</span>
+                                    {playlistOwner}
                                 </small>
                             </div>
-                        </SwiperSlide>
-                    );
-                })}
-            </Swiper>
-        </div>
+                        </li>
+                    </SwiperSlide>
+                );
+            })}
+        </Swiper>
     );
 };
 

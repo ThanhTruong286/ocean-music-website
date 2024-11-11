@@ -10,8 +10,6 @@ const SpotifyCallback = () => {
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
 
-            console.log("Code from URL:", code); // Debug log để kiểm tra mã code
-
             if (code) {
                 try {
                     // Gửi mã code đến backend để lấy access token

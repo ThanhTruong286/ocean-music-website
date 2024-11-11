@@ -60,7 +60,7 @@ const RecentlyPlayedList = () => {
                 return (
                     <SwiperSlide key={index}>
                         <li className="swiper-slide card card-slide" role="group">
-                            <div style={{ maxHeight: "250px" }} className="card-body">
+                            <div className="card-body">
                                 <img src={songImage} className="mb-3 img-fluid rounded-3" alt={trackName} />
 
                                 {/* Tên bài hát */}

@@ -1,64 +1,103 @@
-import faker from "../assets/images/artists/faker.jpg";
-import { fetchArtists } from '../api/api';
 import React, { useEffect, useState } from 'react';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
+import peanut from "../assets/images/artists/peanut.jpg"; // Hình ảnh mặc định
+import { fetchTrendingSongs } from '../api/api'; // Import hàm API mới
 
-const ArtistList = () => {
-    const [artists, setArtists] = useState([]);
-    const [loading, setLoading] = useState(true);
+const TrendingSong = () => {
+    const [trendingSongs, setTrendingSongs] = useState([]); // Lưu bài hát trending
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const accessToken = localStorage.getItem('spotifyToken');  // Lấy access token từ localStorage
 
+    // Hàm gọi API để lấy danh sách bài hát trending
     useEffect(() => {
-        const loadArtists = async () => {
+        const loadTrendingSongs = async () => {
             try {
-                const data = await fetchArtists(); // Gọi hàm fetchArtists
-                setArtists(data); // Cập nhật danh sách artist
+                const data = await fetchTrendingSongs(accessToken);
+
+                // Loại bỏ các bài hát trùng lặp (nếu có)
+                const uniqueSongs = data.filter(
+                    (item, index, self) => index === self.findIndex(t => t.id === item.id)
+                );
+
+                setTrendingSongs(uniqueSongs); // Lưu danh sách bài hát trending
             } catch (err) {
-                setError('Không thể tải danh sách artist');
+                setError('Không tải được danh sách bài hát trending');
+                console.error(err);
             } finally {
                 setLoading(false);
             }
         };
 
-        loadArtists();
-    }, []);
+        if (accessToken) {
+            loadTrendingSongs();
+        }
+    }, [accessToken]);
+
+    // Hàm lấy ảnh bài hát nếu có, nếu không sẽ dùng ảnh mặc định
+    const getSongImage = (images) => {
+        return images?.[0]?.url || peanut;
+    };
 
     if (loading) {
-        return <div>Đang tải...</div>;
+        return <div>Đang tải danh sách bài hát trending...</div>;
     }
 
     if (error) {
         return <div>Lỗi: {error}</div>;
     }
+
     return (
-        <Swiper
-            spaceBetween={30}  // Giảm khoảng cách giữa các slides
-            slidesPerView={6}  // Hiển thị 5 slides cùng lúc
-            onSlideChange={() => console.log('slide change')}
-        >
-            {artists.map((artist) => {
+        <Swiper spaceBetween={10} slidesPerView={5} loop={true}>
+            {trendingSongs.map((item, index) => {
+                const track = item;  // Đối với API này, mỗi item đã là một track
+                const songImage = getSongImage(track.album.images);
+                const trackName = track.name;
+                const artistName = track.artists.map(artist => artist.name).join(', ');
+                const spotifyUrl = track.external_urls.spotify;
+
                 return (
-                    <SwiperSlide key={artist.artist_id}>
-                        <li
-                            className="swiper-slide mb-3 swiper-slide-active"
-                            role="group"
-                            aria-label="3 / 7"
-                            style={{ width: '192.2px', marginRight: '20px' }}
-                            data-swiper-slide-index="2"
-                        >
-                            <img src={faker} className="img-fluid rounded-3 mb-3" alt="Artist" />
-                            <a href="#" className="text-capitalize text-center h5 d-block">{artist.username}</a> {/* Thay user_id bằng username */}
-                            <small className="fw-normal text-capitalize text-center d-block">{artist.username}</small>
+                    <SwiperSlide key={index}>
+                        <li className="swiper-slide card card-slide" role="group">
+                            <div className="card-body">
+                                <img src={songImage} className="mb-3 img-fluid rounded-3" alt={trackName} />
+
+                                {/* Tên bài hát */}
+                                <a
+                                    href={spotifyUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-capitalize h5 d-block"
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        display: 'block'
+                                    }}
+                                >
+                                    {trackName}
+                                </a>
+
+                                {/* Tên nghệ sĩ */}
+                                <small
+                                    className="fw-normal text-capitalize"
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        display: 'block'
+                                    }}
+                                >
+                                    {artistName}
+                                </small>
+                            </div>
                         </li>
                     </SwiperSlide>
-                )
+                );
             })}
-
         </Swiper>
-    )
-}
-export default ArtistList
+    );
+};
+
+export default TrendingSong;
