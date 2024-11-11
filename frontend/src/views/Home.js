@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from "../components/Header";
 import faker from "../assets/images/artists/faker.jpg";
 import ArtistList from "../components/ArtistList";
-import GenreList from "../components/GenreList";
+import NewRelease from "../components/GenreList";
 import Sidebar from "../components/Sidebar";
 import RadioList from "../components/RadioList";
 import TrendingList from "../components/TrendingList";
@@ -10,8 +10,10 @@ import RecentlyPlayedList from "../components/RecentlyPlayedList";
 import Footer from "../components/Footer";
 import 'swiper/css';
 import ArtistPlaylist from "../components/ArtistPlaylist";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [accessToken, setAccessToken] = useState(null);
 
     useEffect(() => {
@@ -22,7 +24,7 @@ const Home = () => {
         }
     }, []);
     if (!accessToken) {
-        return <div>Vui lòng đăng nhập để xem thông tin.</div>; // Nếu không có accessToken, yêu cầu người dùng đăng nhập
+        navigate('/login');
     }
     return (
         <div>
@@ -81,13 +83,13 @@ const Home = () => {
                             <div className="col-lg-12 mb-5">
                                 <div className="card-header mb-3">
                                     <div className="header-title">
-                                        <h4 className="card-title text-capitalize">top genres for you</h4>
+                                        <h4 className="card-title text-capitalize">New Releases</h4>
                                     </div>
                                 </div>
                                 <div className="swiper overflow-hidden swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
-                                    {/** GENRE LIST */}
+                                    {/** NewRelease */}
                                     <ul className="swiper-wrapper   p-0 list-unstyled mb-0 ">
-                                        <GenreList />
+                                        <NewRelease />
                                     </ul>
                                 </div>
                             </div>

@@ -3,7 +3,7 @@ import '../styles/library.scss';
 import Header from "../components/Header";
 import Sidebar from '../components/Sidebar';
 import { fetchFavorites } from '../api/api'; // Giữ nguyên fetchFavorites
-import { fetchingSongs } from '../api/api'; // Đảm bảo đã nhập fetchingSongs đúng
+import { fetchTrendingSongs } from '../api/api'; // Đảm bảo đã nhập fetchingSongs đúng
 import faker from "../assets/images/artists/faker.jpg";
 
 const Library = () => {
@@ -25,7 +25,7 @@ const Library = () => {
     // Tải tất cả các bài hát
     const loadSongs = async () => {
       try {
-        const allSongs = await fetchingSongs(); // Gọi API fetchingSongs
+        const allSongs = await fetchTrendingSongs(); // Gọi API fetchingSongs
         setSongs(allSongs); // Lưu danh sách bài hát vào state songs
       } catch (error) {
         console.error('Error loading songs:', error);

@@ -62,16 +62,6 @@ export const fetchAlbums = async () => {
     }
 };
 
-// Fetch all songs
-export const fetchSongs = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/songs`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching songs:', error);
-        throw error;
-    }
-};
 // Lấy tất cả các bài hát yêu thích
 export const fetchFavorites = async () => {
     try {
@@ -79,16 +69,6 @@ export const fetchFavorites = async () => {
         return response.data;
     } catch (error) {
         console.error('Error fetching favorites:', error);
-        throw error;
-    }
-};
-// Fetch all roles
-export const fetchRoles = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/roles`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching roles:', error);
         throw error;
     }
 };
@@ -109,11 +89,12 @@ export const getSpotifyLoginUrl = () => {
         'app-remote-control',
         'streaming',
         'playlist-modify-public',
-        'playlist-modify-private'
-    ].join(' '); // Tạo chuỗi các scopes với khoảng trắng phân cách
+        'playlist-modify-private',
+        'user-read-recently-played'
+    ].join(' ');
+     // Tạo chuỗi các scopes với khoảng trắng phân cách
 
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}`;
-
     return authUrl;
 };
 
@@ -135,7 +116,6 @@ export const fetchSpotifyUser = async (accessToken) => {
         const data = await response.json();
 
         if (data) {
-            console.log(data);
             return data;
         } else {
             console.error('Display name not found in user profile data');
@@ -148,32 +128,30 @@ export const fetchSpotifyUser = async (accessToken) => {
     }
 };
 
-export const getUserData = () => {
-    const userDataWithExpiry = JSON.parse(localStorage.getItem('user'));
-
-    if (!userDataWithExpiry) {
-        return null;
-    }
-
-    const now = new Date().getTime();
-
-    if (now > userDataWithExpiry.expiry) {
-        localStorage.removeItem('user');
-        return null;
-    }
-
-    return userDataWithExpiry.data;
-};
-
-export const fetchGenres = async () => {
+export const fetchTopGenres = async (accessToken) => {
     try {
-        const response = await axios.get(`${API_URL}/genres`);
-        return response.data;
-    } catch (e) {
-        console.error('Error fetching genres: ', e);
-        throw e;
+        const response = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error fetching genres:', response.status, errorText);
+            throw new Error('Failed to fetch genres');
+        }
+
+        const data = await response.json();
+        return data.genres; // Trả về danh sách thể loại nhạc
+
+    } catch (error) {
+        console.error('Error in fetchGenres:', error);
+        throw error;
     }
 };
+
 
 export const fetchPlaylists = async (accessToken) => {
     try {
@@ -215,7 +193,6 @@ export const fetchPlaylists = async (accessToken) => {
             }
 
             const playlistsData = await playlistsResponse.json();
-            console.log('Playlists data:', playlistsData);
 
             return playlistsData.items; // Trả về danh sách album
 
@@ -230,23 +207,56 @@ export const fetchPlaylists = async (accessToken) => {
     }
 };
 
-export const fetchingSongs = async () => {
+export const fetchTrendingSongs = async (accessToken) => {
     try {
-        const res = await axios.get(`${API_URL}/song`);
-        return res.data;
-    } catch (e) {
-        throw e;
-    }
+        // Gọi API để lấy danh sách album mới (trending)
+        const response = await fetch('https://api.spotify.com/v1/browse/new-releases', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
 
-};
+        // Kiểm tra nếu có lỗi
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error fetching trending songs:', response.status, errorText);
+            throw new Error('Failed to fetch trending songs');
+        }
 
-export const fetchUsers = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/users`);
-        return response.data;
+        // Parse kết quả trả về dưới dạng JSON
+        const data = await response.json();
+        // Trả về danh sách các album và bài hát
+        return data.albums.items; // Trả về danh sách album mới
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error in fetchTrendingSongs:', error);
         throw error;
     }
 };
+
+export const fetchRecentlyPlayed = async (accessToken) => {
+    try {
+        const response = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=10', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error fetching recently played songs:', response.status, errorText);
+            throw new Error('Failed to fetch recently played songs');
+        }
+
+        const data = await response.json();
+        return data.items;
+    } catch (error) {
+        console.error('Error in fetchRecentlyPlayed:', error);
+        throw error;
+    }
+};
+
 

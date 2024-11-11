@@ -56,8 +56,28 @@ const ArtistPlaylist = ({ accessToken }) => {
                                         alt="playlist-img"
                                     />
                                 </div>
-                                <a href={playlist.external_urls.spotify} className="text-capitalize h5">{playlist.name}</a>
-                                <small className="fw-normal line-count-1 text-capitalize">
+                                <a 
+                                    href={playlist.external_urls.spotify} 
+                                    className="text-capitalize h5 d-block overflow-hidden text-overflow-ellipsis" 
+                                    style={{
+                                        display: 'block',
+                                        maxWidth: '100%',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }}
+                                >
+                                    {playlist.name}
+                                </a>
+                                <small 
+                                    className="fw-normal line-count-1 text-capitalize overflow-hidden text-overflow-ellipsis" 
+                                    style={{
+                                        display: 'block',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }}
+                                >
                                     <span>By {artistName}</span>
                                 </small>
                             </div>
