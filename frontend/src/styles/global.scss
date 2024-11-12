@@ -29,6 +29,20 @@ body,
   min-height: 100vh;
 }
 
+.background {
+  background-image: url(../assets/images/background.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  /* Hình nền sẽ co lại để vừa với khung */
+  background-position: center;
+  /* Căn giữa hình nền */
+  height: 100vh;
+  /* Chiều cao đầy đủ của viewport */
+  width: 100%;
+  /* Chiều rộng 100% để phủ hết chiều ngang */
+  position: relative;
+}
+
 .content-inner {
   padding-bottom: 100px;
 }
@@ -49,12 +63,13 @@ body,
     transition: transform 0.3s ease;
 
     &:hover {
-      transform: scale(1.3);
+      transform: scale(2);
     }
   }
 }
 
 .sidebar {
+  margin-top: 90px;
   display: block;
   position: fixed;
   width: 100%;
@@ -62,11 +77,12 @@ body,
   top: 0;
   bottom: 0;
   z-index: 910;
-  background-color: #fff;
+  background-color: #000 !important;
 
   .sidebar-header {
-    border-bottom: 1px solid #e0e1e1;
     height: auto;
+    background-color: #000;
+    border-bottom: 1px solid #333;
 
     .navbar-brand {
       padding: 20px;
@@ -96,7 +112,7 @@ body,
         line-height: 1.125;
         padding: .75rem;
         display: flex;
-        color: inherit;
+        color: white;
         align-items: center;
         white-space: nowrap;
         text-transform: capitalize;
@@ -124,7 +140,8 @@ body,
         .default-icon {
           font-size: calc(1rem - 2px);
           letter-spacing: .18rem;
-          color: var(--bs-gray-900);
+          color: white;
+          font-weight: 700;
         }
       }
 
@@ -135,12 +152,13 @@ body,
       .nav-item {
         position: relative;
         margin-top: 2px;
-        color: #14161A;
         height: auto;
 
         .item-name {
           background-color: transparent;
           padding-left: 1rem;
+          color: white !important;
+          font-weight: 700;
         }
       }
 
@@ -156,7 +174,7 @@ body,
 }
 
 .trending-song {
-  height: 200px;
+  height: auto;
 }
 
 .card-trending {
@@ -167,6 +185,7 @@ body,
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: auto;
 
     .artist {
       color: red !important;
@@ -193,13 +212,32 @@ body,
 .main-content {
   margin-left: 16.2rem;
 
+  .position-relative {
+    min-height: 90px;
+    z-index: 999;
+  }
+
   .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    min-height: 90px;
+    background-color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    border-bottom: 1px solid #333;
+
     .navbar {
       position: fixed;
     }
 
     .navbar-inner {
-      padding: 0 calc(var(.75rem, 1rem) * 2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
 
     .list-unstyled {
@@ -210,67 +248,83 @@ body,
 
     .iq-nav-menu {
       display: flex;
+      justify-content: flex-start;
+      /* Căn các link về phía bên trái */
+      gap: 1.5rem;
+      /* Giảm khoảng cách giữa các link */
+      flex-grow: 1;
 
       .nav-link:not(.active):hover {
         transform: scale(1.2);
       }
 
       .item-name {
-        color: #14161A;
+        color: white !important;
         cursor: pointer;
+        font-weight: 700 !important;
       }
 
       a.active {
         .item-name {
-          color: red;
+          color: red !important;
         }
       }
     }
 
     .search-box {
-      width: 400px;
-      margin-left: 126px;
-      margin-right: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff; // Màu nền tối
+      border-radius: 8px; // Bo tròn góc
+      width: 100%;
 
       .dropdown {
-        position: relative;
+        width: 100%;
+      }
 
-        .search-box-drop {
-          padding: 10px 14px;
-          border: .2px solid var(--bs-border-color);
-          border-radius: 5px;
+      .search-box-drop {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%; // Chiếm hết không gian ngang của .search-box
+        max-width: 600px; // Giới hạn chiều rộng tối đa của hộp tìm kiếm
+        margin: 0 auto; // Căn giữa
+      }
 
-          .search-box-drop-submit {
-            padding-left: 15px;
-            background: rgba(0, 0, 0, 0);
-            border: none;
-            outline: none;
-            color: var(--bs-body-color);
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
+      .search-box-inner {
+        display: flex;
+        align-items: center;
+        width: 100%; // Đảm bảo ô nhập liệu chiếm hết chiều rộng còn lại
+        background-color: transparent; // Nền trong suốt
+
+        // Button (biểu tượng tìm kiếm)
+        .search-box-drop-submit {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            fill: white; // Màu trắng cho biểu tượng tìm kiếm
+            width: 24px;
+            height: 24px;
           }
+        }
 
-          #search-field {
-            padding: 0 0 0 30px;
-            color: var(--bs-body-color);
-            background: rgba(0, 0, 0, 0);
-            font-size: 12px;
-            box-shadow: none;
-            border: none;
-            width: max-content;
-          }
-
-          #search-field:focus {
-            outline: none;
-          }
-
-          .search-box-drop-submit svg {
-            height: 18px;
-            width: 18px;
-            vertical-align: middle;
-          }
+        // Input tìm kiếm
+        input {
+          background-color: transparent;
+          color: white; // Màu chữ trắng
+          border: none; // Không viền
+          outline: none; // Bỏ outline khi ô input được chọn
+          padding: 5px 10px;
+          flex-grow: 1; // Ô input sẽ chiếm hết không gian còn lại
+          font-size: 16px; // Kích thước chữ
+          width: 100%; // Chiếm hết chiều rộng của container
         }
       }
     }
@@ -311,8 +365,8 @@ body,
 
       .card-title {
         text-transform: capitalize !important;
-        font-weight: 400;
-        font-size: 20px;
+        font-weight: 700;
+        font-size: 30px;
       }
     }
 
@@ -597,7 +651,7 @@ body,
       }
 
       .nav-link {
-        color: black;
+        color: white;
 
         &:hover {
           color: red;
@@ -1349,64 +1403,6 @@ body,
 
     &:hover {
       background-color: #f7b600;
-    }
-  }
-}
-
-//SONG DETAIL
-#song-detail {
-  h3 {
-    font-weight: 400;
-    font-size: 23px;
-  }
-
-  p {
-    font-size: 16px;
-  }
-
-  h6 {
-    font-size: 16px;
-  }
-
-  .play-btn {
-    background-color: red;
-    color: white;
-    border: none;
-  }
-
-  .play-btn:hover {
-    background-color: #000;
-    color: white !important;
-  }
-
-  .avatar-60 {
-    height: 3.75rem;
-    width: 3.75rem;
-    min-width: 3.75rem;
-    text-align: center;
-    line-height: 3.75rem;
-    -webkit-border-radius: .25rem;
-    border-radius: .25rem;
-  }
-
-  .card {
-    display: flex;
-    justify-content: center;
-
-    th {
-      padding: 16px 24px;
-      letter-spacing: .2px;
-      text-transform: capitalize;
-      letter-spacing: .6px;
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    td {
-      vertical-align: middle;
-      padding: 16px 24px;
-      font-weight: 400;
-      font-size: 16px;
     }
   }
 }

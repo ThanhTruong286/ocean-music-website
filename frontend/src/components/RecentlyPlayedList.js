@@ -1,70 +1,90 @@
-// Import Swiper React components
+import React, { useEffect, useState } from 'react';
+import { fetchPlaylists } from '../api/api';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import peanut from "../assets/images/artists/peanut.jpg";
 
+// Load all images from the playlists folder
+const images = require.context('../assets/images/playlists', false, /\.(jpg|jpeg|png|gif)$/);
 
-// Import Swiper styles
-import 'swiper/css';
+const getArtistImage = (imageName) => {
+    // Check if the image exists in the context keys, else use peanut as default
+    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : peanut;
+};
 
-const RecentlyPlayedList = () => {
+const ArtistPlaylist = () => {
+    const [artistPlaylists, setArtistPlaylists] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const loadArtists = async () => {
+            try {
+                const data = await fetchPlaylists();
+                setArtistPlaylists(data);
+            } catch (err) {
+                setError('Không thể tải danh sách playlists');
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadArtists();
+    }, []);
+
+    if (loading) {
+        return <div>Đang tải...</div>;
+    }
+
+    if (error) {
+        return <div>Lỗi: {error}</div>;
+    }
+
     return (
-        <Swiper
-            spaceBetween={10}
-            slidesPerView={5}
-            onSlideChange={() => console.log('slide change')}
-        >
-            <SwiperSlide>
-                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
-                    <div className="card-body">
+        <div className="artist-list">
+            <Swiper spaceBetween={20} slidesPerView={5} loop={true}>
+                {artistPlaylists.map((artist) => {
+                    const playlistImage = getArtistImage(artist.image);
 
-                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                    </div>
-                </li>
-            </SwiperSlide>
-            <SwiperSlide>
-                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
-                    <div className="card-body">
+                    return (
+                        <SwiperSlide key={artist.playlist_id}>
+                            <li className="swiper-slide card card-slide" role="group">
+                                <div className="card-body">
+                                    {/* Hình ảnh playlist */}
+                                    <img
+                                        src={playlistImage}
+                                        className="mb-3 img-fluid rounded-3"
+                                        alt={artist.title || 'Playlist Image'}
+                                    />
 
-                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                    </div>
-                </li>
-            </SwiperSlide>
-            <SwiperSlide>
-                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
-                    <div className="card-body">
+                                    {/* Tên Playlist */}
+                                    <a
+                                        href="../dashboard/music-player.html"
+                                        className="text-capitalize line-count-1 h5 d-block"
+                                        style={{
+                                            marginTop: "10px",
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                        }}
+                                    >
+                                        {artist.title}
+                                    </a>
 
-                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                    </div>
-                </li>
-            </SwiperSlide>
-            <SwiperSlide>
-                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
-                    <div className="card-body">
+                                    {/* Tên nghệ sĩ */}
+                                    <small className="fw-normal line-count-1 text-capitalize">
+                                        <span>By </span>
+                                        <span style={{ color: 'red', fontSize: '14px' }}>
+                                            <b>{artist.first_name || 'Unknown'} {artist.last_name || ''}</b>
+                                        </span>
+                                    </small>
+                                </div>
+                            </li>
+                        </SwiperSlide>
+                    );
+                })}
+            </Swiper>
+        </div>
+    );
+};
 
-                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                    </div>
-                </li>
-            </SwiperSlide>
-            <SwiperSlide>
-                <li className="swiper-slide card card-slide swiper-slide-active" role="group" aria-label="5 / 12" data-swiper-slide-index="4">
-                    <div className="card-body">
-
-                        <img src={peanut} id="15" className="mb-3 img-fluid rounded-3" alt="song-img" />
-                        <a href="../dashboard/music-player.html" className=" text-capitalize line-count-1 h5 d-block">my crying eyes</a>
-                        <small className="fw-normal text-capitalize line-count-1">snoods smith jonas </small>
-                    </div>
-                </li>
-            </SwiperSlide>
-        </Swiper>
-    )
-}
-
-export default RecentlyPlayedList
+export default ArtistPlaylist;

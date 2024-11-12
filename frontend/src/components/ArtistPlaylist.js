@@ -41,26 +41,44 @@ const ArtistPlaylist = () => {
 
     return (
         <div className="artist-list">
-            <Swiper spaceBetween={30} slidesPerView={4} onSlideChange={() => console.log('slide change')}>
+            <Swiper spaceBetween={20} slidesPerView={5} loop={true}>
                 {artistPlaylists.map((artist) => {
                     const playlistImage = getArtistImage(artist.image);
+
                     return (
                         <SwiperSlide key={artist.playlist_id}>
-                            <div className="artist-card">
-                                <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
+                            <li className="swiper-slide card card-slide" role="group">
+                                <div className="card-body">
+                                    {/* Hình ảnh playlist */}
                                     <img
                                         src={playlistImage}
-                                        id="artist-playlist"
-                                        className="img-fluid mx-auto d-block"
-                                        alt="play-img"
+                                        className="mb-3 img-fluid rounded-3"
+                                        alt={artist.title || 'Playlist Image'}
                                     />
+
+                                    {/* Tên Playlist */}
+                                    <a
+                                        href="../dashboard/music-player.html"
+                                        className="text-capitalize line-count-1 h5 d-block"
+                                        style={{
+                                            marginTop: "10px",
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                        }}
+                                    >
+                                        {artist.title}
+                                    </a>
+
+                                    {/* Tên nghệ sĩ */}
+                                    <small className="fw-normal line-count-1 text-capitalize">
+                                        <span>By </span>
+                                        <span style={{ color: 'red', fontSize: '14px' }}>
+                                            <b>{artist.first_name || 'Unknown'} {artist.last_name || ''}</b>
+                                        </span>
+                                    </small>
                                 </div>
-                                <a href="../dashboard/music-player.html" className="text-capitalize h5">{artist.title}</a>
-                                <small className="fw-normal line-count-1 text-capitalize">
-                                    <span>By </span>
-                                    <span style={{ color: 'red', fontSize:"14px" }}><b>{artist.first_name || 'Nickname'} {artist.last_name}</b></span>
-                                </small>
-                            </div>
+                            </li>
                         </SwiperSlide>
                     );
                 })}
