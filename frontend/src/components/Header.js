@@ -33,12 +33,12 @@ const Header = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('spotifyToken');
+        localStorage.removeItem('userToken');
         navigate('/login');
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('spotifyToken');
+        const token = localStorage.getItem('userToken');
         if (token) {
             setAccessToken(token);
         } else {
@@ -75,6 +75,15 @@ const Header = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
+    }, []);
+    useEffect(() => {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            // Nếu không có token, điều hướng về trang đăng nhập
+            navigate('/login');
+        }
     }, []);
 
     return (
@@ -117,8 +126,8 @@ const Header = () => {
                                                 <div className="search-box-inner">
                                                     <button type="submit" className="search-box-drop-submit">
                                                         <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                                            <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
-                                                            <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></circle>
+                                                            <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                                         </svg>
                                                     </button>
                                                     <input id="search-field" type="text" placeholder="Search here ..." />

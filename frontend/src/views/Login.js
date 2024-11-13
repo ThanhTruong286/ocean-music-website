@@ -19,7 +19,7 @@ const Login = () => {
             // Gửi yêu cầu đăng nhập
             const response = await loginUser(userData);
             console.log('Login successful:', response);
-            navigate('/');
+            navigate('/', { replace: true });
         } catch (error) {
             console.error('Login failed:', error);
             setErrorMessage(error.response?.data?.message || 'Invalid email or password.');

@@ -57,20 +57,7 @@ const Profile = () => {
                                                     <h4 id="fullname" className="me-2 h4">{user.first_name} {user.last_name} - <span>{user.username}</span></h4>
                                                 </div>
                                             </div>
-                                            <ul className="d-flex nav nav-pills mb-0 text-center profile-tab nav-slider" data-toggle="slider-tab" id="profile-pills-tab" role="tablist">
-                                                <li className="nav-item" role="presentation">
-                                                    <a className="nav-link show" data-bs-toggle="tab" href="#profile-feed" role="tab" aria-selected="false" tabIndex="-1">Feed</a>
-                                                </li>
-                                                <li className="nav-item" role="presentation">
-                                                    <a className="nav-link" data-bs-toggle="tab" href="#profile-activity" role="tab" aria-selected="false" tabIndex="-1">Activity</a>
-                                                </li>
-                                                <li className="nav-item" role="presentation">
-                                                    <a className="nav-link" data-bs-toggle="tab" href="#profile-friends" role="tab" aria-selected="false" tabIndex="-1">Friends</a>
-                                                </li>
-                                                <li className="nav-item" role="presentation">
-                                                    <a className="nav-link active" data-bs-toggle="tab" href="#profile-profile" role="tab" aria-selected="true">Profile</a>
-                                                </li>
-                                            </ul>
+
                                         </div>
                                     </div>
                                 </div>
@@ -259,11 +246,7 @@ const Profile = () => {
                                         <div className="mb-1">Loại tài khoản: <a href="#" className="ms-3">{user.subscription_name || "Thường"}</a></div>
                                         <div>Hết hạn lúc: <span>10:00</span></div>
                                         <hr />
-                                        <ul className="d-flex nav nav-pills mb-0 text-center profile-tab nav-slider" data-toggle="slider-tab" id="profile-pills-tab" role="tablist">
-                                            <li className="nav-item" role="presentation">
-                                                <a className="nav-link active" data-bs-toggle="tab" href="change-password" role="tab" aria-selected="true">Change Password</a>
-                                            </li>
-                                        </ul>
+
                                     </div>
                                 </div>
                                 <div className="card">

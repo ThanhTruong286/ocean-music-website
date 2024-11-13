@@ -427,29 +427,10 @@ body,
   background-color: black !important;
   margin: 0;
   transition: all .45s ease 0s;
+  color: #fff;
 
-  .footer-top {
-    max-width: fit-content;
-
-    input {
-      margin: 0;
-    }
-
-    .seek_slider {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: red;
-      appearance: none;
-    }
-  }
-
-  .footer-bottom {
-    padding: 1rem 0;
-
-    .track-art {
+  .track-art {
+    img {
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -457,27 +438,80 @@ body,
       height: 50px;
       width: 50px;
       border-radius: 4px;
-      background-image: url(../assets/images/artists/peanut.jpg);
     }
+  }
 
-    .playpause-track {
-      span {
-        background-color: red;
-        border-radius: 50%;
-      }
-    }
+  .player-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: black;
+  }
 
-    .volume_slider {
-      width: 80%;
-      height: 2px;
-      background-color: red;
-      appearance: none;
-      margin: 0 10px;
-    }
+  .song-info {
+    display: flex;
+    flex-direction: column;
 
-    #volumebar {
-      height: 3px;
-    }
+  }
+
+  .song-info .title {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .song-info .artist {
+    font-size: 14px;
+    color: red;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+  }
+
+  .controls i {
+    margin: 0 10px;
+    cursor: pointer;
+  }
+
+  .play-button {
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .play-button i {
+    color: white;
+    font-size: 20px;
+  }
+
+  .volume-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .volume-container input[type="range"] {
+    margin: 0 10px;
+  }
+
+  .time {
+    margin-left: 10px;
+  }
+
+  .extra-controls {
+    display: flex;
+    align-items: center;
+  }
+
+  .extra-controls i {
+    margin-left: 10px;
+    cursor: pointer;
   }
 }
 

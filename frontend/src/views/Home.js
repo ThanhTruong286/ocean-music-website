@@ -17,7 +17,7 @@ const Home = () => {
 
     useEffect(() => {
         // Lấy accessToken từ localStorage
-        const token = localStorage.getItem('spotifyToken');
+        const token = localStorage.getItem('userToken');
         if (token) {
             setAccessToken(token);
         } else {
