@@ -164,7 +164,7 @@ const Header = () => {
                         <div className="search-box d-xl-block d-none" style={{ maxWidth: "400px", margin: "auto" }}>
                             <div className="dropdown" style={{ position: "relative", width: "100%" }}>
                                 <div className="search-box-drop" id="search-box-drop">
-                                    <div className="d-flex align-items-center gap-2" style={{ padding: "8px", border: "1px solid #ddd", borderRadius: "8px", backgroundColor: "#f9f9f9" }}>
+                                    <div className="d-flex align-items-center gap-2">
                                         <button type="submit" className="search-box-drop-submit" style={{ background: "none", border: "none", cursor: "pointer" }}>
                                             <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                                 <circle
@@ -191,13 +191,7 @@ const Header = () => {
                                             placeholder="Search here..."
                                             value={searchTerm}
                                             onChange={handleSearchChange}
-                                            style={{
-                                                width: "100%",
-                                                border: "none",
-                                                outline: "none",
-                                                backgroundColor: "transparent",
-                                                fontSize: "16px",
-                                            }}
+                                            
                                         />
                                     </div>
 
