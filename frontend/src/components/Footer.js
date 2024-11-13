@@ -1,8 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import CryptoJS from 'crypto-js';
-import { getSong } from "../api/api";
+import "../styles/global.scss";
 import faker from "../assets/images/artists/faker.jpg";
+import { useEffect, useState, useRef } from "react";
+import { getSong } from "../api/api";
+import { useParams } from "react-router-dom";
+import CryptoJS from "crypto-js";
 
 // Load all images from the songs folder
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
@@ -12,95 +13,42 @@ const getSongImage = (imageName) => {
     return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
 };
 
-// Key for AES encryption (Keep this secret and do not hardcode in production)
-const SECRET_KEY = 'MIKASA';
-
-const decryptId = (encryptedId) => {
-    const decoded = decodeURIComponent(encryptedId);
-    const bytes = CryptoJS.AES.decrypt(decoded, SECRET_KEY);
-    return bytes.toString(CryptoJS.enc.Utf8);
-};
-
 const Footer = () => {
     const audioRef = useRef(null);
-    const { id } = useParams();  // Lấy id từ URL
-    const [songs, setSong] = useState(null);
+    const currentTrack = localStorage.getItem('currentTrack');
+    const [song, setSong] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [currentTrack, setCurrentTrack] = useState('');
+    const [volume, setVolume] = useState(50);  // Mặc định âm lượng là 50%
 
-    // Lấy dữ liệu bài hát từ API
+    // Giải mã ID bài hát từ URL
+    const decryptId = (encryptedId) => {
+        const decoded = decodeURIComponent(encryptedId);
+        const bytes = CryptoJS.AES.decrypt(decoded, "MIKASA");
+        return bytes.toString(CryptoJS.enc.Utf8);
+    };
+
     useEffect(() => {
         const loadSong = async () => {
             try {
-                const savedSongId = localStorage.getItem('currentTrack'); // Lấy ID bài hát từ localStorage
-                if (!savedSongId) return;
-
-                // Giải mã ID và lấy bài hát
-                const decryptedId = decryptId(savedSongId);
-                const response = await getSong(decryptedId);  // Lấy thông tin bài hát
+                const decryptedId = decryptId(currentTrack); // Giải mã id
+                const response = await getSong(decryptedId); // Lấy thông tin bài hát
                 setSong(response);
-                setCurrentTrack(decryptedId);  // Lưu ID bài hát vào currentTrack khi tải bài hát
             } catch (error) {
                 setError(true);
             } finally {
                 setLoading(false);
             }
         };
-
-        // Kiểm tra nếu id trong URL không trùng với currentTrack thì tải lại bài hát
-        const savedSongId = localStorage.getItem('currentTrack');
-        if (id !== savedSongId) {
-            setCurrentTrack(id);  // Cập nhật currentTrack nếu URL có ID khác
-            localStorage.setItem('currentTrack', id);  // Lưu ID vào localStorage
+        if (currentTrack) {
+            loadSong();
         }
+    }, [currentTrack]);
 
-        loadSong();  // Gọi hàm load song
-    }, [id]);
-
-    useEffect(() => {
-        // Lưu currentTrack, currentTime, và isPlaying vào localStorage mỗi khi có thay đổi
-        localStorage.setItem('currentTrack', currentTrack);
-        localStorage.setItem('currentTime', currentTime);
-        localStorage.setItem('isPlaying', isPlaying);
-    }, [currentTrack, currentTime, isPlaying]);
-
-    useEffect(() => {
-        // Lấy dữ liệu đã lưu từ localStorage khi component mount
-        const savedTrack = localStorage.getItem('currentTrack');
-        const savedTime = localStorage.getItem('currentTime');
-        const isSavedPlaying = localStorage.getItem('isPlaying') === 'true';
-
-        if (savedTrack && savedTrack !== 'undefined') {
-            setCurrentTrack(savedTrack);  // Khôi phục currentTrack từ localStorage
-        }
-
-        if (savedTime) {
-            setCurrentTime(parseFloat(savedTime));  // Khôi phục currentTime từ localStorage
-        }
-
-        if (savedTrack && savedTrack !== 'undefined') {
-            setIsPlaying(isSavedPlaying);  // Khôi phục trạng thái phát nhạc
-        }
-
-        if (isSavedPlaying && audioRef.current) {
-            audioRef.current.play();  // Nếu đang phát, tiếp tục phát
-        }
-    }, []);
-
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.currentTime = currentTime;  // Cập nhật thời gian hiện tại của audio
-            if (isPlaying) {
-                audioRef.current.play();  // Tiến hành phát nhạc
-            } else {
-                audioRef.current.pause();  // Dừng phát nhạc
-            }
-        }
-    }, [currentTrack, currentTime, isPlaying]);
+    const songImage = getSongImage(song?.coverImageUrl);
 
     // Định dạng thời gian
     const formatTime = (time) => {
@@ -109,64 +57,71 @@ const Footer = () => {
         return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     };
 
-    // Chuyển đổi trạng thái play/pause
+    // Xử lý khi bài hát được phát hoặc tạm dừng
     const togglePlayPause = () => {
-        if (!isPlaying) {
-            setCurrentTrack(id);  // Lưu bài hát vào currentTrack khi phát
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
         }
-
-        setIsPlaying(!isPlaying);  // Chuyển đổi trạng thái phát/dừng nhạc
+        setIsPlaying(!isPlaying); // Đổi trạng thái play/pause
     };
 
+    // Cập nhật thời gian bài hát đang phát
+    const handleTimeUpdate = () => {
+        setCurrentTime(audioRef.current.currentTime);
+    };
+
+    // Lấy thông tin về thời gian khi bài hát được tải
+    const handleLoadedMetadata = () => {
+        setDuration(audioRef.current.duration);
+    };
+
+    // Thay đổi tiến trình bài hát khi người dùng kéo thanh điều khiển
     const handleProgressChange = (e) => {
         const value = e.target.value;
         audioRef.current.currentTime = value;
-        setCurrentTime(value);  // Cập nhật currentTime khi người dùng thay đổi tiến trình
+        setCurrentTime(value); // Cập nhật thời gian
     };
 
-    const handleTimeUpdate = () => {
-        setCurrentTime(audioRef.current.currentTime);  // Cập nhật thời gian khi tiến trình thay đổi
-    };
-
-    const handleLoadedMetadata = () => {
-        setDuration(audioRef.current.duration);  // Cập nhật tổng thời gian bài hát khi metadata được tải
-    };
-
+    // Thay đổi âm lượng
     const handleVolumeChange = (e) => {
-        audioRef.current.volume = e.target.value / 100;  // Cập nhật âm lượng
+        const volumeValue = e.target.value / 100; // Chuyển âm lượng thành giá trị từ 0 đến 1
+        audioRef.current.volume = volumeValue;
+        setVolume(e.target.value); // Cập nhật âm lượng
     };
 
-    const songImage = getSongImage(songs?.coverImageUrl);
-    const songAudioUrl = songs?.fileUrl;
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     if (loading) {
-        return <div>Loading ...</div>;
+        return <div>Đang tải...</div>;
+    }
+
+    if (error) {
+        return <div>Lỗi khi tải bài hát</div>;
     }
 
     return (
         <footer className="footer">
             <div className="player-container">
                 <div className="track-art">
-                    <img src={songImage} alt={songs?.title || "Default song"} />
+                    <img src={songImage} alt={song?.title || "Bài hát mặc định"} />
                 </div>
                 <div className="song-info">
-                    <div className="title">{songs ? songs.title : "TITLE"}</div>
-                    <div className="artist">{songs ? songs.artist : "ARTIST"}</div>
+                    <div className="title">{song?.title}</div>
+                    <div className="artist">{song?.artist}</div>
                 </div>
 
+                {/* Audio player */}
                 <audio
                     ref={audioRef}
-                    src={songAudioUrl ? require(`../assets/audios/${songAudioUrl}`) : ""}
+                    src={song?.fileUrl ? require(`../assets/audios/${song?.fileUrl}`) : ""}
                     onTimeUpdate={handleTimeUpdate}
                     onLoadedMetadata={handleLoadedMetadata}
-                    onError={() => console.error("Audio source not supported:", songAudioUrl)}
+                    onError={() => console.error("Audio source not supported")}
                     autoPlay={isPlaying}
                 />
 
+                {/* Controls */}
                 <div className="controls">
                     <i className="fas fa-step-backward"></i>
                     <div className="play-button" onClick={togglePlayPause}>
@@ -175,6 +130,7 @@ const Footer = () => {
                     <i className="fas fa-step-forward"></i>
                 </div>
 
+                {/* Progress bar */}
                 <div className="progress-container">
                     <input
                         type="range"
@@ -185,21 +141,25 @@ const Footer = () => {
                         className="progress-bar"
                     />
                 </div>
+
+                {/* Time display */}
                 <div className="time">
                     {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
 
+                {/* Volume control */}
                 <div className="volume-container">
                     <i className="fas fa-volume-up"></i>
                     <input
                         type="range"
                         min="0"
                         max="100"
-                        defaultValue="50"
+                        value={volume}
                         onChange={handleVolumeChange}
                     />
                 </div>
 
+                {/* Extra controls (optional) */}
                 <div className="extra-controls">
                     <i className="fas fa-list"></i>
                     <i className="fas fa-expand"></i>

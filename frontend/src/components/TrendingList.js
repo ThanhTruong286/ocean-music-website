@@ -4,6 +4,7 @@ import 'swiper/css';
 import faker from "../assets/images/artists/faker.jpg";
 import { fetchingSongs } from "../api/api";
 import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
 // Load all images from the songs folder
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
@@ -25,6 +26,7 @@ const TrendingList = () => {
     const [songs, setSongs] = useState([]);
     const [errors, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();  // Dùng useNavigate để điều hướng
 
     useEffect(() => {
         const loadSongs = async () => {
@@ -39,6 +41,14 @@ const TrendingList = () => {
         };
         loadSongs();
     }, []);
+
+    const handleOnclickSong = (encryptedId) => {
+        const currentId = localStorage.getItem('currentTrack');
+        if (!currentId || currentId !== encryptedId) {
+            localStorage.setItem('currentTrack', encryptedId);  // Lưu bài hát vào localStorage
+        }
+        navigate(`/song-detail/${encryptedId}`);  // Chuyển hướng sang trang chi tiết
+    }
 
     if (loading) {
         return <div>Đang tải danh sách nhạc...</div>;
@@ -71,13 +81,13 @@ const TrendingList = () => {
                                     </div>
 
                                     {/* Tên bài hát */}
-                                    <a
-                                        href={`/song-detail/${encryptedId}`}
+                                    <div
                                         className="title text-capitalize line-count-1 h6 d-block text-truncate"
-                                        style={{ maxWidth: '150px', margin: '0 auto' }}
+                                        style={{ maxWidth: '150px', margin: '0 auto', cursor: "pointer" }}
+                                        onClick={() => handleOnclickSong(encryptedId)}
                                     >
                                         {song.title}
-                                    </a>
+                                    </div>
 
                                     {/* Tên nghệ sĩ */}
                                     <small className="artist fw-light text-muted text-capitalize d-block line-count-1">
