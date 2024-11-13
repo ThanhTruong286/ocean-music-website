@@ -50,3 +50,11 @@ exports.deleteAlbum = (req, res) => {
         res.json({ message: 'Album deleted' });
     });
 };
+exports.countAllAlbums = (req, res) => {
+    db.query('SELECT COUNT(*) AS total FROM albums', (error, results) => {
+        if (error) {
+            return res.status(500).json({ error: 'Error fetching albums count' });
+        }
+        res.json({ total: results[0].total });
+    });
+};

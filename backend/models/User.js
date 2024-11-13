@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 class User {
     constructor({
@@ -46,10 +47,45 @@ class User {
         this.subscription_name = subscription_name
     }
 
+    // Tìm người dùng theo resetToken
+    static findByResetToken(resetToken, callback) {
+        db.query('SELECT * FROM users WHERE reset_token = ? AND reset_token_expires > NOW()', [resetToken], (err, results) => {
+            if (err) {
+                console.error('Error during database query:', err);
+                return callback(err);
+            }
+
+            console.log("Results from DB: ", results); // Log kết quả từ truy vấn SQL
+
+            if (!results || results.length === 0) {
+                console.log('Token không hợp lệ hoặc đã hết hạn');
+                return callback(null, null);
+            }
+
+            const user = new User(results[0]);
+            callback(null, user);
+        });
+    }
+
     // Hash mật khẩu
     static async hashPassword(password) {
         const saltRounds = 10;
         return await bcrypt.hash(password, saltRounds);
+    }
+    // Tạo mã thông báo đặt lại mật khẩu và lưu vào cơ sở dữ liệu
+    static async generateResetToken(email, callback) {
+        const token = crypto.randomBytes(32).toString('hex'); // Tạo mã thông báo ngẫu nhiên
+        const expiresAt = new Date(Date.now() + 3600000); // Hết hạn trong 1 giờ
+
+        db.query(
+            `UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE email = ?`,
+            [token, expiresAt, email],
+            (err, results) => {
+                if (err) return callback(err);
+                if (results.affectedRows === 0) return callback(null, { message: 'Email not found' });
+                callback(null, { resetToken: token, expiresAt });
+            }
+        );
     }
 
     // Lưu người dùng mới vào cơ sở dữ liệu

@@ -4,7 +4,7 @@ const UserModel = require('./User'); // Để truy xuất tên người dùng t�
 class ArtistModel {
     static async getAllArtists() {
         const query = `
-            SELECT artists.artist_id, artists.bio, artists.user_id, users.username
+            SELECT artists.artist_id, artists.bio, artists.user_id, users.*
             FROM artists
             JOIN users ON artists.user_id = users.user_id
         `;

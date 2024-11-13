@@ -1,30 +1,45 @@
-import React, { useState } from 'react';
-import { ChangePassword } from '../api/api';
+import React, { useState, useEffect } from 'react';
+import { ResetPassword } from '../api/api';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/login.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const ChangePasswordView = () => {
-    const [cpass, setCPass] = useState('');
+const ResetPasswordView = () => {
     const [password, setPassword] = useState('');
+    const [cpass, setCPass] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [captchaToken, setCaptchaToken] = useState('');
     const navigate = useNavigate();
+
+    // Lấy token từ query parameters
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const resetToken = params.get('token');  // Lấy token từ URL query
+
+    useEffect(() => {
+        if (!resetToken) {
+            setErrorMessage("Token không hợp lệ");
+        }
+    }, [resetToken]);
 
     const handleCaptchaChange = (token) => {
         setCaptchaToken(token);
     };
 
-    const handleChangePassword = async (e) => {
+    const handleResetPassword = async (e) => {
         e.preventDefault();
         if (!captchaToken) {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
             return;
         }
-        
+        if (!resetToken) {
+            setErrorMessage('Token không hợp lệ.');
+            return;
+        }
+
         try {
-            // Gọi API thay đổi mật khẩu với captchaToken
-            const response = await ChangePassword(cpass, password, captchaToken);
+            // Gọi API thay đổi mật khẩu với resetToken, newPassword và confirmPassword
+            const response = await ResetPassword(password, cpass, resetToken, captchaToken);
             console.log('Change Password successful:', response);
             navigate('/login');
         } catch (error) {
@@ -38,11 +53,11 @@ const ChangePasswordView = () => {
             <div className="login-container">
                 <div className="login-left">
                     <img src={require('../assets/images/logo.png')} alt="Logo" className="logo" />
-                    <h2>Change Password</h2>
+                    <h2>Forgot Password</h2>
                     <p>Make Your Password Stronger</p>
-                    <form onSubmit={handleChangePassword}>
+                    <form onSubmit={handleResetPassword}>
                         <div className="form-group">
-                            <label htmlFor="cpass">Current Password</label>
+                            <label htmlFor="cpass">New Password</label>
                             <input
                                 type="text"
                                 id="cpass"
@@ -53,7 +68,7 @@ const ChangePasswordView = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="password">New Password</label>
+                            <label htmlFor="password">Confirm Password</label>
                             <input
                                 type="text"
                                 id="password"
@@ -69,7 +84,7 @@ const ChangePasswordView = () => {
                         />
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="form-options">
-                            <a href="/reset-password" className="forgot-password">Forgot Password?</a>
+                            <a href="/login" className="forgot-password">Sign in</a>
                         </div>
                         <button type="submit" className="login-button">Submit</button>
                     </form>
@@ -101,4 +116,4 @@ const ChangePasswordView = () => {
     );
 };
 
-export default ChangePasswordView;
+export default ResetPasswordView;

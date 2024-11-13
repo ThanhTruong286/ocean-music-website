@@ -1,65 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/library.scss';
 import Header from "../components/Header";
 import Sidebar from '../components/Sidebar';
+import { fetchFavorites } from '../api/api'; // Giữ nguyên fetchFavorites
+import { fetchingSongs } from '../api/api'; // Đảm bảo đã nhập fetchingSongs đúng
+import faker from "../assets/images/artists/faker.jpg";
 
 const Library = () => {
-  const videos = [
-    {
-      id: 1,
-      title: "FLVR FULL EP",
-      artist: "tlinh x Low G",
-      time: "1 ngày",
-      length: "3:23",
-      thumbnail: "https://via.placeholder.com/150"
-    },
-    {
-      id: 2,
-      title: "Không Phải Gu",
-      artist: "HIEUTHUHAI ft. B Ray & Tage",
-      time: "3 ngày",
-      length: "3:21",
-      thumbnail: "https://via.placeholder.com/150"
-    },
-    {
-      id: 3,
-      title: "Chim Sâu",
-      artist: "RPT MCK",
-      time: "7 ngày",
-      length: "2:38",
-      thumbnail: "https://via.placeholder.com/150"
-    },
-  ];
+  const [favorites, setFavorites] = useState([]);
+  const [songs, setSongs] = useState([]);
+  const [showAll, setShowAll] = useState(false); // Trạng thái để hiển thị tất cả bài hát
 
-  const songs = [
-    {
-      id: 1,
-      title: "Mộng Yu",
-      artist: "AMEE, RTP MCK",
-      album: "Mộng Yu",
-      time: "1 ngày",
-      length: "3:23",
-      thumbnail: "https://via.placeholder.com/50"
-    },
-    {
-      id: 2,
-      title: "Không Phải Gu",
-      artist: "HIEUTHUHAI",
-      album: "Không Phải Gu",
-      time: "3 ngày",
-      length: "3:21",
-      thumbnail: "https://via.placeholder.com/50"
-    },
-    {
-      id: 3,
-      title: "Không Phải Gu",
-      artist: "HIEUTHUHAI",
-      album: "Không Phải Gu",
-      time: "3 ngày",
-      length: "3:21",
-      thumbnail: "https://via.placeholder.com/50"
-    }
-  ];
+  useEffect(() => {
+    // Tải danh sách bài hát yêu thích
+    const loadFavorites = async () => {
+      try {
+        const favoriteSongs = await fetchFavorites();
+        setFavorites(favoriteSongs);
+      } catch (error) {
+        console.error('Error loading favorite songs:', error);
+      }
+    };
+
+    // Tải tất cả các bài hát
+    const loadSongs = async () => {
+      try {
+        const allSongs = await fetchingSongs(); // Gọi API fetchingSongs
+        setSongs(allSongs); // Lưu danh sách bài hát vào state songs
+      } catch (error) {
+        console.error('Error loading songs:', error);
+      }
+    };
+
+    loadFavorites();
+    loadSongs(); // Gọi hàm loadSongs khi component được render
+
+  }, []); // Chạy 1 lần khi component render
+
+  // Hàm để toggle trạng thái "showAll" khi bấm nút "See All"
+  const toggleShowAll = () => {
+    setShowAll(prevShowAll => !prevShowAll); // Đổi trạng thái của showAll
+  };
 
   return (
     <div>
@@ -72,34 +53,47 @@ const Library = () => {
           <div className="library-container">
             <div className="video-library">
               <div className="main-video">
-
-
-                <div className="video-info">
-                  <img src="https://via.placeholder.com/600x400" alt="Main Video" />
-                  <h3 className="video-section-title">Thư viện</h3>
-                  <h2>FLVR FULL EP</h2>
-                  <p>by tlinh x Low G</p>
-                  <div className="video-controls">
-                    <button className="play-all">Phát tất cả</button>
-                    <button className="shuffle">Trộn bài</button>
-                  </div>
-                </div>
+                {/* Kiểm tra xem có bài hát nào không, nếu có thì hiển thị bài hát đầu tiên */}
+                {songs.length > 0 && (
+                  <>
+                    <img
+                      src={faker}  // Bạn có thể thay đổi để lấy ảnh từ bài hát, ví dụ songs[0].thumbnail nếu có
+                      className="img-fluid rounded me-3 avatar-55"
+                      alt="Video Thumbnail"
+                    />
+                    <div className="video-info">
+                      <h3 className="video-section-title">Thư viện</h3>
+                      <h2>{songs[0].title}</h2> {/* Tên bài hát */}
+                      <p>{songs[0].lyric}</p> {/* Tên nghệ sĩ */}
+                      <div className="video-controls">
+                        <button className="play-all">Phát tất cả</button>
+                        <button className="shuffle">Trộn bài</button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-
 
               <div className="video-list">
-                {videos.map(video => (
-                  <div key={video.id} className="video-item">
-                    <img src={video.thumbnail} alt={video.title} />
+                {songs.slice(0, showAll ? songs.length : 4).map(song => ( // Nếu showAll là true, hiển thị tất cả bài hát, nếu không hiển thị 4 bài hát đầu
+                  <div key={song.id} className="video-item">
+                    <img src={faker} className="img-fluid rounded me-3 avatar-55" />
                     <div className="video-details">
-                      <h3>{video.title}</h3>
-                      <p>{video.artist} - {video.time} - {video.length}</p>
+                      <h3>{song.title}</h3>
+                      <p>{song.lyric} - {song.duration} - {song.length} </p>
                     </div>
-                    <button className="add-button">+</button>
                   </div>
+
                 ))}
+                <button className="see-all" onClick={toggleShowAll}>
+                  {showAll ? "Hide" : "See All"} {/* Hiển thị "See All" khi chưa nhấn, "Hide" khi đã nhấn */}
+                </button>
+
               </div>
             </div>
+
+
+
 
             <div className="favorite-songs">
               <h2>Bài nhạc ưa thích</h2>
@@ -107,20 +101,17 @@ const Library = () => {
                 <thead>
                   <tr>
                     <th>Title</th>
+                    <th>Artist</th>
                     <th>Album</th>
-                    <th>Ngày thêm</th>
                     <th>Thời gian</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {songs.map(song => (
-                    <tr key={song.id}>
-                      <td>
-                        <img src={song.thumbnail} alt={song.title} />
-                        <span>{song.title}</span>
-                      </td>
-                      <td>{song.album}</td>
-                      <td>{song.time}</td>
+                  {favorites.map(song => (
+                    <tr key={song.favorite_id}>
+                      <td>{song.song_id}</td>
+                      <td>{song.artist_name}</td>
+                      <td>{song.album_name}</td>
                       <td>{song.length}</td>
                     </tr>
                   ))}

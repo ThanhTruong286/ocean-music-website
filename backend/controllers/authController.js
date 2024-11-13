@@ -2,6 +2,134 @@ const db = require('../config/db'); // Kết nối với MySQL
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/User');
+const nodemailer = require('nodemailer');
+
+exports.resetPassword = async (req, res) => {
+  const { newPassword, confirmPassword, resetToken } = req.body;
+
+  // Kiểm tra nếu mật khẩu mới và mật khẩu xác nhận khớp
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: "Mật khẩu xác nhận không khớp." });
+  }
+
+  try {
+    // Tìm người dùng có `resetToken`
+    UserModel.findByResetToken(resetToken, (err, user) => {
+      if (err) {
+        return res.status(500).json({ message: "Lỗi khi tìm người dùng" });
+      }
+
+      // Log lỗi nếu không tìm thấy người dùng
+      if (!user) {
+        console.log("Không tìm thấy user với token");
+        return res.status(400).json({ message: "Token không hợp lệ hoặc đã hết hạn." });
+      }
+
+      // Kiểm tra xem token có hết hạn hay không
+      if (new Date() > new Date(user.reset_token_expires)) {
+        return res.status(400).json({ message: "Token đã hết hạn." });
+      }
+
+      // Log user để kiểm tra kết quả trả về
+      console.log("User found: ", user);
+
+      // Mã hóa mật khẩu mới
+      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+        if (err) {
+          return res.status(500).json({ message: "Lỗi khi mã hóa mật khẩu." });
+        }
+
+        // Cập nhật mật khẩu cho người dùng
+        UserModel.update(user.user_id, {
+          password: hashedPassword,
+          reset_token: null,
+          reset_token_expires: null
+        }, (updateErr, updateResults) => {
+          if (updateErr) {
+            console.error('Error during password update:', updateErr);
+            return res.status(500).json({ message: "Đã có lỗi xảy ra trong quá trình thay đổi mật khẩu." });
+          }
+
+          return res.status(200).json({ message: "Mật khẩu đã được thay đổi thành công." });
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Error during password reset:', error);
+    return res.status(500).json({ message: "Đã có lỗi xảy ra trong quá trình thay đổi mật khẩu." });
+  }
+};
+
+exports.sendEmail = async (req, res) => {
+  const { email } = req.body;
+
+  // Gọi hàm generateResetToken để tạo reset token và gửi email
+  UserModel.generateResetToken(email, async (err, result) => {
+    if (err) {
+      console.error('Error generating reset token:', err);
+      return res.status(500).json({ message: 'Error generating reset token' });
+    }
+
+    const resetLink = `http://localhost:3000/reset-password?token=${result.resetToken}`;
+
+    // Tạo transporter để gửi email
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'thainho24@gmail.com',
+        pass: 'rojn bxuk lcsn gicg'
+      }
+    });
+
+    // Thiết lập thông tin email
+    const mailOptions = {
+      from: 'thainho24@gmail.com',
+      to: email,
+      subject: 'Reset Password Request',
+      text: 'Yêu cầu lấy lại mật khẩu',
+      html: `
+      <!DOCTYPE html>
+      <html lang="vi">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Yêu Cầu Lấy Lại Mật Khẩu</title>
+          <style>
+              body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px; }
+              .container { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+              h1 { color: #007bff; }
+              p { font-size: 16px; }
+              .footer { margin-top: 20px; font-size: 14px; color: #666; }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h1>Yêu Cầu Lấy Lại Mật Khẩu</h1>
+              <p>Chào bạn,</p>
+              <p>Chúng tôi đã nhận được yêu cầu lấy lại mật khẩu cho tài khoản của bạn. Nếu bạn không thực hiện yêu cầu này, bạn có thể bỏ qua email này.</p>
+              <p>Để tiếp tục, hãy nhấn vào liên kết bên dưới:</p>
+              <p><a href="${resetLink}">Đặt lại mật khẩu của bạn</a></p>
+              <p>Trân trọng,<br>Đội ngũ hỗ trợ của chúng tôi</p>
+              <div class="footer">
+                  <p>© 2024 Công ty của bạn. Tất cả quyền được bảo lưu.</p>
+              </div>
+          </div>
+      </body>
+      </html>
+      `
+    };
+
+    try {
+      // Gửi email
+      await transporter.sendMail(mailOptions);
+      res.status(200).json({ message: 'Email sent successfully!' });
+    } catch (error) {
+      console.log("Error sending email:", error);
+      res.status(500).json({ message: 'Failed to send email.', error: error.message });
+    }
+  });
+};
+
 
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
@@ -143,51 +271,52 @@ exports.changePassword = async (req, res) => {
 
   // Kiểm tra thông tin đầu vào
   if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: 'Missing password' });
+    return res.status(400).json({ message: 'Missing password' });
   }
 
   // Parse userId từ JSON
   let user;
   try {
-      const userParse = JSON.parse(userId);
-      user = userParse.userId; // Lấy userId
+    const userParse = JSON.parse(userId);
+    user = userParse.userId; // Lấy userId
   } catch (error) {
-      return res.status(400).json({ message: 'Invalid userId format' });
+    return res.status(400).json({ message: 'Invalid userId format' });
   }
 
   try {
-      UserModel.findById(user, async (err, foundUser) => {
-          if (err) {
-              return res.status(500).json({ message: "Server error" });
-          }
+    UserModel.findById(user, async (err, foundUser) => {
+      if (err) {
+        return res.status(500).json({ message: "Server error" });
+      }
 
-          // Kiểm tra nếu không tìm thấy user
-          if (!foundUser) {
-              return res.status(404).json({ message: "User not found" });
-          }
+      // Kiểm tra nếu không tìm thấy user
+      if (!foundUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
 
-          // Kiểm tra mật khẩu hiện tại
-          const checkPass = await bcrypt.compare(currentPassword, foundUser.password);
+      // Kiểm tra mật khẩu hiện tại
+      const checkPass = await bcrypt.compare(currentPassword, foundUser.password);
 
-          if (!checkPass) {
-              return res.status(401).json({ message: "Password is incorrect" });
-          }
+      if (!checkPass) {
+        return res.status(401).json({ message: "Password is incorrect" });
+      }
 
-          // Băm mật khẩu mới
-          const hashedPassword = await bcrypt.hash(newPassword, 10);
+      // Băm mật khẩu mới
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-          console.log(foundUser);
-          UserModel.update(foundUser.user_id, { password: hashedPassword }, (err) => {
-              if (err) {
-                  return res.status(500).json({ message: "Server error" });
-              }
-              res.status(200).json({ message: "Change successfully" });
-          });
+      console.log(foundUser);
+      UserModel.update(foundUser.user_id, { password: hashedPassword }, (err) => {
+        if (err) {
+          return res.status(500).json({ message: "Server error" });
+        }
+        res.status(200).json({ message: "Change successfully" });
       });
+    });
   } catch (error) {
-      console.error('Error in changePassword:', error); // Ghi log lỗi
-      res.status(500).json({ message: 'Server error', error });
+    console.error('Error in changePassword:', error); // Ghi log lỗi
+    res.status(500).json({ message: 'Server error', error });
   }
 };
+
 
 
