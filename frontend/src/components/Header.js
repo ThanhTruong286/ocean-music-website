@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { logoutUser, getUser } from "../api/api"; // Import API functions
+import { logoutUser, getUser, fetchingSongs } from "../api/api"; // Import API functions
 import { useNavigate } from "react-router-dom";
 import AdComponent from "./AdComponent";
+
 import avatar from "../assets/images/avatar.png";
 
 const Header = () => {
@@ -10,7 +11,43 @@ const Header = () => {
     const [isPopupVisible, setPopupVisible] = useState(false); // Popup visibility state
     const popupRef = useRef(null); // Reference for the popup
     const navigate = useNavigate(); // Hook for navigation
+    const [searchTerm, setSearchTerm] = useState("");
+    const [songs, setSongs] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [filteredSongs, setFilteredSongs] = useState([]);
+    // Fetch songs on component mount
+    useEffect(() => {
+        const loadSongs = async () => {
+            try {
+                const data = await fetchingSongs();
+                setSongs(data); // Set songs from API
+            } catch (error) {
+                console.error("Error fetching songs:", error);
+            }
+        };
+        loadSongs();
+    }, []);
 
+    // Update filtered songs when searchTerm changes
+    useEffect(() => {
+        if (searchTerm) {
+            setFilteredSongs(
+                songs.filter(
+                    (song) =>
+                        song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        song.artist.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+            setIsSearching(true);
+        } else {
+            setIsSearching(false);
+        }
+    }, [searchTerm, songs]);
+
+    // Handle search input change
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
     // Logout handler
     const handleLogout = async () => {
         try {
@@ -124,23 +161,85 @@ const Header = () => {
 
                         </div>
                         {/** Thanh tìm kiếm luôn hiển thị */}
-                        <div className="search-box d-xl-block d-none">
-                            <div className="dropdown">
+                        <div className="search-box d-xl-block d-none" style={{ maxWidth: "400px", margin: "auto" }}>
+                            <div className="dropdown" style={{ position: "relative", width: "100%" }}>
                                 <div className="search-box-drop" id="search-box-drop">
-                                    <div className="d-flex align-items-center justify-content-between gap-2">
-                                        <div className="search-box-inner">
-                                            <button type="submit" className="search-box-drop-submit">
-                                                <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24">
-                                                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" strokeWidth="1.5"
-                                                        strokeLinecap="round" strokeLinejoin="round" />
-                                                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" strokeWidth="1.5"
-                                                        strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </button>
-                                            <input id="search-field" type="text" placeholder="Search here ... " />
-                                        </div>
+                                    <div className="d-flex align-items-center gap-2" style={{ padding: "8px", border: "1px solid #ddd", borderRadius: "8px", backgroundColor: "#f9f9f9" }}>
+                                        <button type="submit" className="search-box-drop-submit" style={{ background: "none", border: "none", cursor: "pointer" }}>
+                                            <svg fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                <circle
+                                                    cx="11.7669"
+                                                    cy="11.7666"
+                                                    r="8.98856"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.5"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                                <path
+                                                    d="M18.0186 18.4851L21.5426 22"
+                                                    stroke="currentColor"
+                                                    strokeWidth="1.5"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                />
+                                            </svg>
+                                        </button>
+                                        <input
+                                            id="search-field"
+                                            type="text"
+                                            placeholder="Search here..."
+                                            value={searchTerm}
+                                            onChange={handleSearchChange}
+                                            style={{
+                                                width: "100%",
+                                                border: "none",
+                                                outline: "none",
+                                                backgroundColor: "transparent",
+                                                fontSize: "16px",
+                                            }}
+                                        />
                                     </div>
+
+                                    {/* Search results dropdown */}
+                                    {isSearching && (
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: "100%",
+                                                left: 0,
+                                                width: "100%",
+                                                backgroundColor: "white",
+                                                border: "1px solid #ddd",
+                                                borderRadius: "8px",
+                                                marginTop: "8px",
+                                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                                                zIndex: 1000,
+                                            }}
+                                        >
+                                            {filteredSongs.length > 0 ? (
+                                                filteredSongs.map((song) => (
+                                                    <div
+                                                        key={song.id}
+                                                        style={{
+                                                            padding: "12px 16px",
+                                                            cursor: "pointer",
+                                                            borderBottom: "1px solid #f0f0f0",
+                                                            display: "flex",
+                                                            justifyContent: "space-between",
+                                                            alignItems: "center",
+                                                        }}
+                                                    >
+                                                        
+                                                        <span>{song.title}</span>
+                                                        <span style={{ fontSize: "14px", color: "#666" }}>{song.artist}</span>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div style={{ padding: "12px 16px", color: "#999" }}>No results found</div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
