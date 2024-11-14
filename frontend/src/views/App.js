@@ -15,6 +15,7 @@ import ChangePasswordView from './ChangePassword';
 import Payment from './Payment';
 import SongDetail from './SongDetail';
 import GeneralSetting from './GeneralSetting';
+import Chart from './chart';
 // Import Footer nếu bạn vẫn muốn hiển thị nó trên mọi trang
 import Footer from '../components/Footer';
 
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/payment" element={<Payment />} />
           <Route path="/song-detail/:id" element={<SongDetail />} />
           <Route path="/general-setting" element={<GeneralSetting />} />
+          <Route path="/chart" element={<Chart />} />
 
         </Routes>
       </Router>

@@ -37,7 +37,7 @@ const Sidebar = () => {
                             </li>
                             {/* Charts */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/chart" className="nav-link collapsed">
                                     <i className="fa-solid fa-chart-line"></i>
                                     <span className="item-name">Biểu Đồ</span>
                                 </a>
