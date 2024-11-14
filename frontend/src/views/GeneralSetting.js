@@ -1,17 +1,14 @@
-// src/views/GeneralSetting.js
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/setting.scss';
 
 const GeneralSetting = () => {
-    const { t, i18n } = useTranslation();
-
-    const handleLanguageChange = (e) => {
-        i18n.changeLanguage(e.target.value); // Thay đổi ngôn ngữ khi chọn
-    };
+    const [explicitContent, setExplicitContent] = useState(true);
+    const [autoplay, setAutoplay] = useState(true);
+    const [autoAdjust, setAutoAdjust] = useState(true);
+    const [normalizeVolume, setNormalizeVolume] = useState(true);
 
     return (
         <div>
@@ -22,20 +19,20 @@ const GeneralSetting = () => {
                 <div id="home">
                     <Header />
                     <div className="container">
-                        <h1>{t('title')}</h1>
+                        <h1>Cài đặt</h1>
                         <div className="section">
-                            <h2>{t('language')}</h2>
-                            <p>{t('languageDescription')}</p>
+                            <h2>Ngôn ngữ</h2>
+                            <p>Chọn ngôn ngữ - Các thay đổi sẽ được áp dụng sau khi bạn khởi động lại ứng dụng</p>
                             <div className="dropdown">
-                                <select id="language-select" onChange={handleLanguageChange}>
-                                    <option value="vi">Tiếng Việt</option>
-                                    <option value="en">English</option>
+                                <select id="language-select">
+                                    <option>Tiếng Việt (Vietnamese)</option>
+                                    <option>English</option>
                                 </select>
                             </div>
                         </div>
                         <div className="section">
-                            <h2>{content[language].explicitContent}</h2>
-                            <p>{content[language].explicitContentDescription}</p>
+                            <h2>Nội dung phản cảm</h2>
+                            <p>Cho phép phát nội dung được đánh giá là phản cảm.</p>
                             <div className="toggle-switch">
                                 <input 
                                     type="checkbox" 
@@ -47,8 +44,8 @@ const GeneralSetting = () => {
                             </div>
                         </div>
                         <div className="section">
-                            <h2>{content[language].autoplay}</h2>
-                            <p>{content[language].autoplayDescription}</p>
+                            <h2>Tự động phát</h2>
+                            <p>Thưởng thức nhạc không gián đoạn. Khi bạn nghe hết nhạc, chúng tôi sẽ phát nội dung tương tự</p>
                             <div className="toggle-switch">
                                 <input 
                                     type="checkbox" 
@@ -60,22 +57,22 @@ const GeneralSetting = () => {
                             </div>
                         </div>
                         <div className="section">
-                            <h2>{content[language].audioQuality}</h2>
-                            <p>{content[language].streamQuality}</p>
+                            <h2>Chất lượng âm thanh</h2>
+                            <p>Chất lượng stream</p>
                             <div className="dropdown">
                                 <select id="stream-quality-select">
                                     <option>Cao</option>
                                     <option>Thấp</option>
                                 </select>
                             </div>
-                            <p>{content[language].downloadQuality}</p>
+                            <p>Tải xuống <i className="fas fa-info-circle info-icon"></i></p>
                             <div className="dropdown">
                                 <select id="download-quality-select">
                                     <option>Cao</option>
                                     <option>Thấp</option>
                                 </select>
                             </div>
-                            <p>{content[language].autoAdjust}</p>
+                            <p>Tự động điều chỉnh chất lượng - Chế độ cài đặt đề xuất: Bật <i className="fas fa-info-circle info-icon"></i></p>
                             <div className="toggle-switch">
                                 <input 
                                     type="checkbox" 
@@ -85,7 +82,7 @@ const GeneralSetting = () => {
                                 />
                                 <label htmlFor="auto-adjust"></label>
                             </div>
-                            <p>{content[language].normalizeVolume}</p>
+                            <p>Chuẩn hóa âm lượng - Đặt cùng mức âm lượng cho tất cả các bài hát và podcast</p>
                             <div className="toggle-switch">
                                 <input 
                                     type="checkbox" 
