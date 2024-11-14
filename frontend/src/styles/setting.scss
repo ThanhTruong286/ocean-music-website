@@ -1,0 +1,68 @@
+.container {
+    padding: 20px;
+}
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+.section {
+    margin-bottom: 20px;
+}
+.section h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.section p {
+    font-size: 14px;
+    color: #B3B3B3;
+    margin: 5px 0;
+}
+.dropdown, .toggle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.dropdown select {
+    background-color: #333;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+.toggle-switch label {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.toggle-switch label:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.toggle-switch input[type="checkbox"]:checked + label {
+    background-color: #1DB954;
+}
+.toggle-switch input[type="checkbox"]:checked + label:before {
+    transform: translateX(20px);
+}
+.info-icon {
+    font-size: 14px;
+    color: #B3B3B3;
+    margin-left: 5px;
+}
