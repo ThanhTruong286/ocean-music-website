@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, memo } from "react";
 import { getSong } from "../api/api";
 import CryptoJS from "crypto-js";
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
     const audioRef = useRef(null);
@@ -11,7 +12,8 @@ const Footer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(50);  // Mặc định âm lượng là 50%
+    const [volume, setVolume] = useState(100);
+    const navigate = useNavigate();  // Dùng useNavigate để điều hướng
 
     const decryptId = (encryptedId) => {
         const decoded = decodeURIComponent(encryptedId);
@@ -133,6 +135,10 @@ const Footer = () => {
         localStorage.setItem('audioIsPlaying', 'true');
     };
 
+    const handleOnclickSong = (encryptedId) => {
+        navigate(`/song-detail/${encryptedId}`);  // Chuyển hướng sang trang chi tiết
+    }
+
     if (loading) {
         return <div>Đang tải...</div>;
     }
@@ -205,7 +211,7 @@ const Footer = () => {
                 {/* Extra controls (optional) */}
                 <div className="extra-controls">
                     <i className="fas fa-list"></i>
-                    <i className="fas fa-expand"></i>
+                    <i className="fas fa-expand" onClick={() => handleOnclickSong(currentTrack)}></i>
                 </div>
             </div>
         </footer>

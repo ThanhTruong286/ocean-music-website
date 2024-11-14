@@ -60,7 +60,7 @@ const TrendingList = () => {
         <div className="trending-list">
             <Swiper
                 spaceBetween={20}
-                slidesPerView={5}
+                slidesPerView={3}
                 loop={true}
             >
                 {songs.map((song) => {
