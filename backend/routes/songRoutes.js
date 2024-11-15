@@ -9,7 +9,7 @@ router.get('/', songController.getAllSongs);
 router.post('/', songController.createSong);
 
 // Route to get a song by ID
-router.get('/:id', songController.getSongById);
+router.get('/song-detail/:id', songController.getSongById);
 
 // Route to update a song by ID
 router.put('/:id', songController.updateSong);

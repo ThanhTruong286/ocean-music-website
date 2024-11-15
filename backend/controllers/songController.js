@@ -26,7 +26,7 @@ exports.createSong = (req, res) => {
 };
 
 exports.getSongById = (req, res) => {
-    const songId = parseInt(req.params.id, 10);
+    const songId = req.params.id;
     Song.findById(songId, (err, song) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching song', error: err.message });

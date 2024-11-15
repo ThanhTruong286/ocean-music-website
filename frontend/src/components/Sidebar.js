@@ -4,14 +4,6 @@ import logo from '../assets/images/logo.png';
 const Sidebar = () => {
     return (
         <div>
-            <div className="sidebar-header d-flex align-items-center justify-content-center">
-                <a href="#" className="navbar-brand">
-                    {/* LOGO */}
-                    <div className="logo-main">
-                        <img src={logo} alt="Logo" className="logo-img" />
-                    </div>
-                </a>
-            </div>
             <div className="sidebar-body pt-0 data-scrollbar">
                 <div className="scroll-content">
                     <div className="sidebar-list">
@@ -38,7 +30,7 @@ const Sidebar = () => {
                             </li>
                             {/* Thư Viện */}
                             <li className="nav-item">
-                                <a href="/library" className="nav-link collapsed">
+                                <a href="/playlist" className="nav-link collapsed">
                                     <i className="fa-solid fa-music"></i>
                                     <span className="item-name">Thư Viện</span>
                                 </a>

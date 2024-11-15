@@ -1,65 +1,99 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPlaylists } from '../api/api';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import peanut from "../assets/images/artists/peanut.jpg";
+import faker from "../assets/images/artists/faker.jpg";
+import { fetchingSongs } from "../api/api";
+import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
-// Load all images from the playlists folder
-const images = require.context('../assets/images/playlists', false, /\.(jpg|jpeg|png|gif)$/);
+// Load all images from the songs folder
+const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
-const getArtistImage = (imageName) => {
-    // Check if the image exists in the context keys, else use peanut as default
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : peanut;
+// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
+const getSongImage = (imageName) => {
+    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
 };
 
-const ArtistPlaylist = () => {
-    const [artistPlaylists, setArtistPlaylists] = useState([]);
+// Key for AES encryption (Keep this secret and do not hardcode in production)
+const SECRET_KEY = 'MIKASA';
+
+const encryptId = (id) => {
+    const encrypted = CryptoJS.AES.encrypt(id.toString(), SECRET_KEY).toString();
+    return encodeURIComponent(encrypted);
+};
+
+const TrendingList = () => {
+    const [songs, setSongs] = useState([]);
+    const [errors, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const navigate = useNavigate();  // Dùng useNavigate để điều hướng
 
     useEffect(() => {
-        const loadArtists = async () => {
+        const loadSongs = async () => {
             try {
-                const data = await fetchPlaylists();
-                setArtistPlaylists(data);
+                const data = await fetchingSongs();
+                setSongs(data);
             } catch (err) {
-                setError('Không thể tải danh sách playlists');
+                setError("Không tải được danh sách nhạc");
             } finally {
                 setLoading(false);
             }
         };
-        loadArtists();
+        loadSongs();
     }, []);
 
-    if (loading) {
-        return <div>Đang tải...</div>;
+    const handleOnclickSong = (encryptedId) => {
+        const currentId = localStorage.getItem('currentTrack');
+        if (!currentId || currentId !== encryptedId) {
+            localStorage.setItem('currentTrack', encryptedId);  // Lưu bài hát vào localStorage
+        }
+        navigate(`/song-detail/${encryptedId}`);  // Chuyển hướng sang trang chi tiết
     }
 
-    if (error) {
-        return <div>Lỗi: {error}</div>;
+    if (loading) {
+        return <div>Đang tải danh sách nhạc...</div>;
+    } else if (errors) {
+        return <div>Lỗi: {errors}</div>;
     }
 
     return (
-        <div className="artist-list">
-            <Swiper spaceBetween={30} slidesPerView={4} onSlideChange={() => console.log('slide change')}>
-                {artistPlaylists.map((artist) => {
-                    const playlistImage = getArtistImage(artist.image);
+        <div className="trending-list">
+            <Swiper
+                spaceBetween={20}
+                slidesPerView={3}
+                loop={true}
+            >
+                {songs.map((song) => {
+                    const songImage = getSongImage(song.coverImageUrl);
+                    const encryptedId = encryptId(song.id);
+
                     return (
-                        <SwiperSlide key={artist.playlist_id}>
-                            <div className="artist-card">
-                                <div className="bg-soft-danger position-relative rounded-3 card-box mb-3">
-                                    <img
-                                        src={playlistImage}
-                                        id="artist-playlist"
-                                        className="img-fluid mx-auto d-block"
-                                        alt="play-img"
-                                    />
+                        <SwiperSlide key={song.id}>
+                            <div className="swiper-slide card">
+                                <div className="card-body text-center p-3">
+                                    {/* Hình ảnh bài hát */}
+                                    <div className="image-container mb-3">
+                                        <img
+                                            src={songImage}
+                                            className="mb-3 img-fluid rounded-3"
+                                            alt={song.title}
+                                        />
+                                    </div>
+
+                                    {/* Tên bài hát */}
+                                    <div
+                                        className="title text-capitalize line-count-1 h6 d-block text-truncate"
+                                        style={{ maxWidth: '150px', margin: '0 auto', cursor: "pointer" }}
+                                        onClick={() => handleOnclickSong(encryptedId)}
+                                    >
+                                        {song.title}
+                                    </div>
+
+                                    {/* Tên nghệ sĩ */}
+                                    <small className="artist fw-light text-muted text-capitalize d-block line-count-1">
+                                        {song.artist}
+                                    </small>
                                 </div>
-                                <a href="../dashboard/music-player.html" className="text-capitalize h5">{artist.title}</a>
-                                <small className="fw-normal line-count-1 text-capitalize">
-                                    <span>By </span>
-                                    <span style={{ color: 'red', fontSize:"14px" }}><b>{artist.first_name || 'Nickname'} {artist.last_name}</b></span>
-                                </small>
                             </div>
                         </SwiperSlide>
                     );
@@ -69,4 +103,4 @@ const ArtistPlaylist = () => {
     );
 };
 
-export default ArtistPlaylist;
+export default TrendingList;

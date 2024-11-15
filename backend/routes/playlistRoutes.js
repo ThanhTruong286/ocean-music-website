@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const playlistController = require('../controllers/playlistController');
+const authenticateToken = require('../middlewares/authMiddleware');
 
 // Route lấy tất cả các playlist
-router.get('/', playlistController.getAllPlaylists);
+router.get('/', authenticateToken, playlistController.getAllPlaylists);
 
 // Route thêm một playlist mới
-router.post('/', playlistController.createPlaylist);
+router.post('/', authenticateToken, playlistController.createPlaylist);
 
 // Route lấy playlist theo ID
 router.get('/:id', playlistController.getPlaylistById);
