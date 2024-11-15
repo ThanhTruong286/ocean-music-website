@@ -30,7 +30,7 @@ const Sidebar = () => {
                             </li>
                             {/* Thư Viện */}
                             <li className="nav-item">
-                                <a href="/library" className="nav-link collapsed">
+                                <a href="/playlist" className="nav-link collapsed">
                                     <i className="fa-solid fa-music"></i>
                                     <span className="item-name">Thư Viện</span>
                                 </a>

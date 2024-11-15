@@ -2,6 +2,87 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const updatePlaylist = async (playlistId, newPlaylist) => {
+}
+export const deletePlaylist = async (playlistId) => {
+
+}
+export const getAllUserPlaylist = async () => {
+    const accessToken = localStorage.getItem('userToken');  // Lấy accessToken từ localStorage
+
+    // Kiểm tra xem token có tồn tại không
+    if (!accessToken) {
+        throw new Error("User is not authenticated");
+    }
+
+    try {
+        // Gửi yêu cầu GET đến API với header Authorization chứa Bearer token
+        const response = await axios.get(`${API_URL}/playlist`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`  // Gửi token trong header Authorization
+            }
+        });
+
+        return response.data;  // Trả về danh sách playlist từ API
+    } catch (error) {
+        console.error('Error fetching user playlists:', error);
+
+        // Xử lý lỗi nếu có
+        if (error.response) {
+            // Lỗi từ server (status khác 2xx)
+            throw new Error(error.response.data.message || 'Failed to fetch playlists');
+        } else if (error.request) {
+            // Lỗi khi không nhận được phản hồi từ server
+            throw new Error('No response from server');
+        } else {
+            // Lỗi khác (cấu hình hoặc lỗi khác)
+            throw new Error(error.message);
+        }
+    }
+};
+
+// Hàm Add Playlist
+export const addPlaylist = async () => {
+    const accessToken = localStorage.getItem('userToken');
+
+    // Kiểm tra nếu token không tồn tại
+    if (!accessToken) {
+        throw new Error('User is not authenticated');
+    }
+
+    try {
+        // Gửi request đến API, với headers chính xác
+        const response = await axios.post(
+            `${API_URL}/playlist/`,
+            {}, // Nếu bạn không cần gửi dữ liệu trong body, để rỗng hoặc gửi payload cần thiết.
+            {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,  // Đảm bảo chỉ truyền chuỗi token
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        // Xử lý lỗi chi tiết
+        if (error.response) {
+            // Lỗi từ phía server (API trả về status khác 2xx)
+            console.error('Server Error:', error.response.data);
+            throw new Error(error.response.data.message || 'Failed to add playlist');
+        } else if (error.request) {
+            // Lỗi do không nhận được phản hồi từ server
+            console.error('No response from server:', error.request);
+            throw new Error('No response from server');
+        } else {
+            // Lỗi khác (cấu hình, cú pháp, v.v.)
+            console.error('Error:', error.message);
+            throw new Error(error.message);
+        }
+    }
+};
+
 //Get song detail
 export const getSong = async (id) => {
     try {
@@ -135,23 +216,28 @@ export const fetchRoles = async () => {
 };
 
 export const getUser = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user.userId;
+    const accessToken = localStorage.getItem("userToken");
+
+    // Kiểm tra nếu không có token
+    if (!accessToken) {
+        throw new Error("No access token found, please log in.");
+    }
+
     try {
-        const response = await axios.get(`${API_URL}/users/profile/${userId}`, {
+        // Gửi yêu cầu GET đến API với header Authorization chứa Bearer token
+        const response = await axios.get(`${API_URL}/users/profile`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+                'Authorization': `Bearer ${accessToken}` // Sử dụng token xác thực
             }
         });
-        return response.data; // Trả về dữ liệu từ backend
+
+        return response.data; // Trả về thông tin người dùng từ backend
     } catch (error) {
-        console.error('Error sending user ID:', error);
+        console.error('Error fetching user data:', error);
         throw error; // Ném lại lỗi để xử lý ở nơi khác
     }
 };
-
-
 
 export const loginUser = async (userData) => {
 
@@ -162,10 +248,9 @@ export const loginUser = async (userData) => {
             }
         });
 
-        const { token, expiry, userId } = response.data;
+        const { token } = response.data;
 
-        localStorage.setItem('user', JSON.stringify({ userId, expiry }));
-        localStorage.setItem('userToken', JSON.stringify({ token }));
+        localStorage.setItem('userToken', token);
 
         return response.data;
     } catch (error) {
@@ -173,24 +258,6 @@ export const loginUser = async (userData) => {
         throw error;
     }
 };
-
-export const getUserData = () => {
-    const userDataWithExpiry = JSON.parse(localStorage.getItem('user'));
-
-    if (!userDataWithExpiry) {
-        return null;
-    }
-
-    const now = new Date().getTime();
-
-    // Kiểm tra thời gian hết hạn
-    if (now > userDataWithExpiry.expiry) {
-        localStorage.removeItem('user'); // Xóa dữ liệu đã hết hạn
-        return null;
-    }
-
-    return userDataWithExpiry.data;
-}
 
 export const logoutUser = async () => {
     try {
@@ -202,7 +269,6 @@ export const logoutUser = async () => {
         });
 
         // Xóa token lưu trữ trên client
-        localStorage.removeItem('user');
         localStorage.removeItem('userToken');
 
         // Chuyển hướng người dùng về trang đăng nhập hoặc trang chủ
@@ -237,14 +303,7 @@ export const fetchGenres = async () => {
         throw e;
     }
 };
-export const fetchPlaylists = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/playlist`);
-        return response.data;
-    } catch (e) {
-        throw e;
-    }
-}
+
 export const fetchingSongs = async () => {
     try {
         const res = await axios.get(`${API_URL}/song`);

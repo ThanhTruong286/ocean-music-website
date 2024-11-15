@@ -1,0 +1,261 @@
+.container {
+    margin-top: 30px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header .icons {
+    display: flex;
+    align-items: center;
+}
+
+.header .icons i {
+    margin-left: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.filters button.active {
+    background-color: #fff;
+    color: #000;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.table th {
+    color: #b3b3b3;
+    font-weight: normal;
+}
+
+.table tr:last-child {
+    border-bottom: none;
+}
+
+.table .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.table .title {
+    display: flex;
+    align-items: center;
+}
+
+.table .title span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.table .subtitle {
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+.container {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header img {
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+}
+
+.header .details {
+    display: flex;
+    flex-direction: column;
+}
+
+.header .details h1 {
+    font-size: 72px;
+    margin: 0;
+}
+
+.header .details p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.play-button {
+    background-color: #1DB954;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.play-button i {
+    font-size: 24px;
+    color: #FFFFFF;
+}
+
+.song-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.song-list th,
+.song-list td {
+    padding: 10px;
+    text-align: left;
+}
+
+.song-list th {
+    border-bottom: 1px solid #333;
+}
+
+.song-list td {
+    border-bottom: 1px solid #333;
+}
+
+.song-list img {
+    width: 40px;
+    height: 40px;
+}
+
+.recommended {
+    margin-top: 40px;
+}
+
+.recommended h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.recommended .song {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.recommended .song img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.recommended .song .details {
+    display: flex;
+    align-items: center;
+}
+
+.recommended .song .details p {
+    margin: 0;
+}
+
+.recommended .song .details p.title {
+    font-size: 16px;
+}
+
+.recommended .song .details p.artist {
+    font-size: 14px;
+    color: #B3B3B3;
+}
+
+.recommended .song .add-button {
+    background-color: transparent;
+    border: 1px solid #B3B3B3;
+    border-radius: 50px;
+    padding: 5px 10px;
+    color: #B3B3B3;
+    cursor: pointer;
+}
+
+/* Styling for action links (nghe, sửa, xóa) */
+table .actions a {
+    margin: 0 10px;
+    padding: 0 12px;
+    font-size: 14px;
+    text-decoration: none;
+    /* Bỏ underline */
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    /* Giúp thẻ a giống với button */
+    transition: background-color 0.3s ease;
+}
+
+/* "Nghe" link */
+table .actions .play {
+    background-color: #28a745;
+    color: #fff;
+}
+
+table .actions .watch {
+    background-color: black;
+    color: #fff;
+}
+
+table .actions .play:hover {
+    background-color: #218838;
+}
+
+/* "Sửa" link */
+table .actions .edit {
+    background-color: #007bff;
+    color: #fff;
+}
+
+table .actions .edit:hover {
+    background-color: #0056b3;
+}
+
+/* "Xóa" link */
+table .actions .delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+table .actions .delete:hover {
+    background-color: #c82333;
+}

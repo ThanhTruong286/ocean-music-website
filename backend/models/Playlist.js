@@ -11,10 +11,23 @@ class Playlist {
         this.image = image
     }
 
+    static getUserPlaylist(userId, callback) {
+        db.query('SELECT * FROM playlists WHERE user_id = ?', [userId], (err, results) => {
+            if (err) return callback(err, null);
+            if (results.length === 0) return callback(null, []); // Return an empty array if no playlists are found
+
+            // Map through results to create an array of Playlist instances
+            const playlists = results.map(row => new Playlist(row.playlist_id, row.title, row.user_id));
+
+            callback(null, playlists);  // Return an array of playlists
+        });
+    }
+
+
     static getAll(callback) {
         db.query('SELECT playlists.*, users.* FROM playlists LEFT JOIN users ON playlists.user_id = users.user_id', (err, results) => {
             if (err) return callback(err, null);
-            const playlists = results.map(row => new Playlist(row.playlist_id, row.title, row.user_id,row.username,row.first_name, row.last_name, row.image));
+            const playlists = results.map(row => new Playlist(row.playlist_id, row.title, row.user_id, row.username, row.first_name, row.last_name, row.image));
             callback(null, playlists);
         });
     }

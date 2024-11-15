@@ -2,7 +2,8 @@ const Playlist = require('../models/Playlist');
 
 // Lấy tất cả các playlist
 exports.getAllPlaylists = (req, res) => {
-    Playlist.getAll((err, playlists) => {
+    const userId = req.user.userId;
+    Playlist.getUserPlaylist(userId, (err, playlists) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching playlists', error: err.message });
         }
@@ -10,21 +11,23 @@ exports.getAllPlaylists = (req, res) => {
     });
 };
 
-// Tạo một playlist mới
+// Thêm Playlist mới
 exports.createPlaylist = (req, res) => {
-    const { title, user_id: userId } = req.body;
-    if (!title || !userId) {
-        return res.status(400).json({ message: 'Title and user_id are required' });
-    }
+    const userId = req.user.userId;
 
-    const newPlaylist = new Playlist(null, title, userId);
+    // Tạo đối tượng Playlist mới
+    const newPlaylist = new Playlist(null, "My Playlist", userId);
+
+    // Gọi phương thức save để lưu playlist
     newPlaylist.save((err, playlist) => {
         if (err) {
+            console.error('Failed to create playlist:', err);
             return res.status(500).json({ message: 'Error creating playlist', error: err.message });
         }
-        res.status(201).json({ message: 'Playlist created', playlist });
+        res.status(201).json({ message: 'Playlist created successfully', playlist });
     });
 };
+
 
 // Lấy playlist theo ID
 exports.getPlaylistById = (req, res) => {
