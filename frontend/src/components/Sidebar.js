@@ -16,7 +16,7 @@ const Sidebar = () => {
                             </li>
                             {/* Khám Phá */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/discover-music" className="nav-link collapsed">
                                     <i className="fa-solid fa-earth-americas"></i>
                                     <span className="item-name">Khám Phá</span>
                                 </a>

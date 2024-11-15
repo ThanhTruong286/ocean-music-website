@@ -1,0 +1,159 @@
+.discover-music {
+    padding: 30px;
+    background-color: white; // Set background color to white
+
+    h2 {
+        color: black; // Black text for headings
+        font-weight: bold;
+        margin-bottom: 25px;
+        font-size: 1.5em;
+        text-transform: uppercase;
+    }
+
+    .recently-played {
+        margin-bottom: 50px;
+
+        .recently-played-list {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+
+            .recently-played-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: black; // Black text for song info
+                text-align: center;
+                transition: transform 0.3s ease-in-out;
+
+                &:hover {
+                    transform: scale(1.05); // Scale on hover for better interaction
+                }
+
+                .album-cover {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 15px;
+                    object-fit: cover;
+                    transition: transform 0.3s ease-in-out;
+
+                    &:hover {
+                        transform: scale(1.1); // Image scaling on hover
+                    }
+                }
+
+                .song-title {
+                    font-weight: bold;
+                    margin-top: 12px;
+                    font-size: 1.1em;
+                }
+
+                .artist-name {
+                    font-size: 0.9em;
+                    color: #333; // Darker grey for artist name
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+
+    .new-releases {
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            justify-content: flex-start;
+
+            button {
+                background-color: #ff4f5c; // Soft red button background
+                border: 2px solid transparent;
+                border-radius: 20px;
+                color: black; // Black text on buttons
+                cursor: pointer;
+                font-size: 1em;
+                padding: 8px 15px;
+                transition: all 0.3s ease;
+
+                &.active {
+                    background-color: #ff1f2b; // Darker red when active
+                    font-weight: bold;
+                }
+
+                &:hover {
+                    background-color: #ff1f2b; // Darker red on hover
+                    border-radius: 25px;
+                }
+
+                &:focus {
+                    outline: none;
+                    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.6); // Add focus outline
+                }
+            }
+        }
+
+        .new-releases-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); // Create 3 equal-width columns
+            gap: 20px; // Space between grid items (songs)
+            padding: 20px 0;
+
+            .new-release-item {
+                display: flex;
+                flex-direction: row; // Align items horizontally
+                align-items: center; // Align vertically centered within the row
+                justify-content: space-between; // Distribute items evenly across the row
+                color: black; // Black text for all song info
+                background-color: rgba(0, 0, 0, 0.05); // Light grey background for each item
+                border-radius: 10px;
+                padding: 15px;
+                transition: transform 0.3s ease-in-out;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+                &:hover {
+                    transform: scale(1.05); // Slight scale-up effect on hover
+                }
+
+                .album-cover {
+                    width: 60px; // Smaller album cover to fit the horizontal layout
+                    height: 60px;
+                    border-radius: 10px;
+                    object-fit: cover;
+                }
+
+                .song-info {
+                    padding-left: 15px;
+                    flex-grow: 1; // Allow song info to take up available space
+
+                    .song-title {
+                        font-weight: bold;
+                        font-size: 1.1em;
+                    }
+
+                    .artist-name {
+                        font-size: 0.9em;
+                        color: #333; // Darker grey color for artist name
+                    }
+                }
+
+                .duration {
+                    font-size: 0.8em;
+                    color: #333; // Dark grey color for duration
+                    text-align: right;
+                    padding-right: 15px;
+                }
+
+                .play-icon {
+                    width: 24px;
+                    height: 24px;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+
+                    &:hover {
+                        transform: scale(1.2); // Slightly scale up the play icon on hover
+                    }
+                }
+            }
+        }
+    }
+}
