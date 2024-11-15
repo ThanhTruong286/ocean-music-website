@@ -15,6 +15,7 @@ import ResetPasswordView from './ResetPassword';
 import EmailBackup from "./Email";
 import MusicList  from "./MusicList";
 import AddSong from './AddSong';
+import MucsicHistory from "./MusicHistory";
 const App = () => {
   return (
     <div id='main'>
@@ -32,9 +33,10 @@ const App = () => {
           <Route path='/payment' element={<Payment />} />
           <Route path='/reset-password' element={<ResetPasswordView />} />
           <Route path='/email' element={<EmailBackup />} />
-          <Route path='/admin' element={<Admin />} /> \
+          <Route path='/admin' element={<Admin />} /> 
           <Route path='/musiclist' element={<MusicList />} /> 
           <Route path="/add-song" element={<AddSong/>} />
+          <Route path='/musichistory' element={<MucsicHistory />} /> 
 
         </Routes>
       </Router>

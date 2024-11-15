@@ -52,7 +52,7 @@ const Sidebar = () => {
                             </li>
                             {/* Lịch Sử */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/musichistory" className="nav-link collapsed">
                                     <i className="fa-solid fa-rotate"></i>
                                     <span className="item-name">Lịch Sử</span>
                                 </a>

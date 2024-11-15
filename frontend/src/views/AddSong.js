@@ -1,13 +1,10 @@
-import Header from "../components/Header";
-
-import Sidebar from "../components/Sidebar";
-
-import Footer from "../components/Footer";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchAddNewSong } from '../api/api';
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 import '../styles/addsong.scss';
-// Import Swiper React components
 
 const Home = () => {
   const [newSong, setNewSong] = useState({
@@ -31,17 +28,21 @@ const Home = () => {
 
   const handleAddSong = async () => {
     try {
+      setLoading(true);
       const result = await fetchAddNewSong(newSong);
+      setLoading(false);
       if (result && result.songId) {
         navigate('/music-list');
       } else {
         setError('Lỗi khi thêm bài hát');
       }
     } catch (error) {
+      setLoading(false);
       console.error('Lỗi khi gọi API:', error);
       setError('Lỗi khi thêm bài hát');
     }
   };
+
   return (
     <div>
       <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -121,6 +122,7 @@ const Home = () => {
       </main>
       <Footer />
     </div>
-  )
-}
-export default Home
+  );
+};
+
+export default Home;

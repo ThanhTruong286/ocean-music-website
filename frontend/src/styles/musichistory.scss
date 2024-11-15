@@ -1,0 +1,63 @@
+.music-history {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+  
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #4CAF50;
+      text-transform: uppercase;
+    }
+  
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+  
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+        font-size: 1rem;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+  
+      td {
+        background-color: #fafafa;
+      }
+  
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+  
+      tr:last-child td {
+        border-bottom: none;
+      }
+  
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .history-table {
+          font-size: 0.9rem;
+        }
+  
+        th,
+        td {
+          padding: 10px;
+        }
+      }
+    }
+  }
+  
