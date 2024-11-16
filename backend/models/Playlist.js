@@ -32,16 +32,79 @@ class Playlist {
         });
     }
 
-    static findById(playlistId, callback) {
-        db.query('SELECT * FROM playlists WHERE playlist_id = ?', [playlistId], (err, results) => {
+    static findById(playlistId, userId, callback) {
+        const query = `
+            SELECT 
+                p.playlist_id,
+                p.title AS playlist_title,
+                p.user_id,
+                s.song_id,
+                s.title AS song_title,
+                s.cover_image_url, -- Lấy hình ảnh của bài hát
+                a.artist_id,
+                u.user_id,
+                CONCAT(
+                    COALESCE(u.first_name, ''), 
+                    CASE 
+                        WHEN u.first_name IS NOT NULL AND u.last_name IS NOT NULL THEN ' ' 
+                        ELSE '' 
+                    END,
+                    COALESCE(u.last_name, '')
+                ) AS artist_name
+            FROM playlists p
+            LEFT JOIN playlist_songs ps ON p.playlist_id = ps.playlist_id
+            LEFT JOIN songs s ON ps.song_id = s.song_id
+            LEFT JOIN artist_songs ats ON s.song_id = ats.song_id
+            LEFT JOIN artists a ON ats.artist_id = a.artist_id
+            LEFT JOIN users u ON a.user_id = u.user_id -- Lấy thông tin nghệ sĩ từ bảng users
+            WHERE p.playlist_id = ? AND p.user_id = ?
+        `;
+        
+        // Thực hiện truy vấn với playlistId và userId
+        db.query(query, [playlistId, userId], (err, results) => {
             if (err) return callback(err, null);
+    
             if (results.length === 0) return callback(null, null);
-            const row = results[0];
-            const playlist = new Playlist(row.playlist_id, row.title, row.user_id);
-            callback(null, playlist);
+    
+            // Lấy thông tin playlist từ kết quả
+            const playlistInfo = {
+                playlistId: results[0].playlist_id,
+                title: results[0].playlist_title,
+                userId: results[0].user_id,
+                songs: []
+            };
+    
+            // Duyệt qua các bài hát và thêm vào danh sách `songs`
+            results.forEach(row => {
+                if (row.song_id) {
+                    // Kiểm tra xem bài hát đã tồn tại trong danh sách hay chưa
+                    const existingSongIndex = playlistInfo.songs.findIndex(song => song.songId === row.song_id);
+    
+                    if (existingSongIndex !== -1) {
+                        // Nếu bài hát đã tồn tại, thêm nghệ sĩ vào danh sách nghệ sĩ
+                        playlistInfo.songs[existingSongIndex].artists.push({
+                            artistId: row.artist_id,
+                            name: row.artist_name
+                        });
+                    } else {
+                        // Nếu bài hát chưa tồn tại, thêm bài hát mới vào danh sách
+                        playlistInfo.songs.push({
+                            songId: row.song_id,
+                            title: row.song_title,
+                            coverImageUrl: row.cover_image_url, // Thêm cover_image_url vào đối tượng bài hát
+                            artists: row.artist_id ? [{
+                                artistId: row.artist_id,
+                                name: row.artist_name
+                            }] : []
+                        });
+                    }
+                }
+            });
+    
+            callback(null, playlistInfo);
         });
     }
-
+    
     save(callback) {
         if (this.id) {
             db.query('UPDATE playlists SET title = ? WHERE playlist_id = ?', [this.title, this.id], callback);

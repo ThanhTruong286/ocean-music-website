@@ -4,7 +4,12 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import 'swiper/css';
 import "../styles/playlist.scss";
+import CryptoJS from 'crypto-js';
 import { addPlaylist, getAllUserPlaylist, deletePlaylist, updatePlaylist } from "../api/api"; // Giả sử bạn đã có API cho xóa và sửa
+
+const encryptPlaylistId = (id) => {
+    return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(id));
+};
 
 const Playlist = () => {
     const [playlists, setPlaylists] = useState([]);  // Lưu danh sách playlist
@@ -27,7 +32,6 @@ const Playlist = () => {
         const loadPlaylist = async () => {
             try {
                 const data = await getAllUserPlaylist();  // Fetch data from the API
-                console.log("Fetched playlists data:", data);  // Check the structure of the response
 
                 // If the data is an object, wrap it in an array
                 const playlists = Array.isArray(data) ? data : [data]; // Wrap in an array if it's not already
@@ -121,31 +125,34 @@ const Playlist = () => {
                                 </thead>
                                 <tbody>
                                     {userPlaylist.length > 0 ? (
-                                        userPlaylist.map((playlist, index) => (
-                                            <tr key={index}>
-                                                <td className="title">
-                                                    <div>
-                                                        <span>{playlist.title}</span>
-                                                    </div>
-                                                </td>
-                                                <td>{new Date().toLocaleDateString()}</td>
-                                                <td>{new Date().toLocaleTimeString()}</td>
-                                                <td className="actions">
-                                                    {/* Các nút hành động */}
-                                                    <a href="#" className="watch" onClick={() => handlePlay(playlist.id)}>Xem</a>
-                                                    <a href="#" className="play" onClick={() => handlePlay(playlist.id)}>Nghe</a>
-                                                    <a href="#" className="edit" onClick={() => handleEdit(playlist.id)}>Sửa</a>
-                                                    <a href="#" className="delete" onClick={() => handleDelete(playlist.id)}>Xóa</a>
-                                                </td>
-
-                                            </tr>
-                                        ))
+                                        userPlaylist.map((playlist, index) => {
+                                            const encodedId = encryptPlaylistId(playlist.id); // Mã hóa playlistId
+                                            return (
+                                                <tr key={index}>
+                                                    <td className="title">
+                                                        <div>
+                                                            <span>{playlist.title}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>{new Date().toLocaleDateString()}</td>
+                                                    <td>{new Date().toLocaleTimeString()}</td>
+                                                    <td className="actions">
+                                                        {/* Các nút hành động với playlistId đã mã hóa */}
+                                                        <a href={`/playlist/${encodedId}`} className="watch">Xem</a>
+                                                        <a href="#" className="play" onClick={() => handlePlay(playlist.id)}>Nghe</a>
+                                                        <a href="#" className="edit" onClick={() => handleEdit(playlist.id)}>Sửa</a>
+                                                        <a href="#" className="delete" onClick={() => handleDelete(playlist.id)}>Xóa</a>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
                                     ) : (
                                         <tr>
                                             <td colSpan="4">Không có playlist nào.</td>
                                         </tr>
                                     )}
                                 </tbody>
+
                             </table>
                         </div>
                     </div>

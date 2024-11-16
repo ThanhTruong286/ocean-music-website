@@ -10,7 +10,7 @@ router.get('/', authenticateToken, playlistController.getAllPlaylists);
 router.post('/', authenticateToken, playlistController.createPlaylist);
 
 // Route lấy playlist theo ID
-router.get('/:id', playlistController.getPlaylistById);
+router.get('/:id',authenticateToken, playlistController.getPlaylistById);
 
 // Route cập nhật playlist theo ID
 router.put('/:id', playlistController.updatePlaylist);

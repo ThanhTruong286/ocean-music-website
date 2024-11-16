@@ -2,6 +2,24 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getPlaylistById = async (playlistId) => {
+    const accessToken = localStorage.getItem('userToken');
+
+    if(!accessToken){
+        throw new Error("user is not authenticated");
+    }
+    try{
+        const response = await axios.get(`${API_URL}/playlist/${playlistId}`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}` 
+            }
+        })
+        return response.data;
+    } catch (e){
+        throw new Error("error get playlist by id");
+    }
+}
 export const updatePlaylist = async (playlistId, newPlaylist) => {
 }
 export const deletePlaylist = async (playlistId) => {

@@ -1,5 +1,8 @@
 const Playlist = require('../models/Playlist');
 
+const decodeBase64 = (id) => {
+    return Buffer.from(id, 'base64').toString('utf-8');
+}
 // Lấy tất cả các playlist
 exports.getAllPlaylists = (req, res) => {
     const userId = req.user.userId;
@@ -28,11 +31,13 @@ exports.createPlaylist = (req, res) => {
     });
 };
 
-
 // Lấy playlist theo ID
 exports.getPlaylistById = (req, res) => {
-    const playlistId = parseInt(req.params.id, 10);
-    Playlist.findById(playlistId, (err, playlist) => {
+    const playlistId = req.params.id;
+    const decodePlaylistId = decodeBase64(playlistId);
+    const userId = req.user.userId;
+
+    Playlist.findById(decodePlaylistId,userId, (err, playlist) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching playlist', error: err.message });
         }
