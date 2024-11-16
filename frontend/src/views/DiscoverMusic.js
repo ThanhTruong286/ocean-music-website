@@ -40,7 +40,7 @@ const Home = () => {
 
         fetchData();
     }, []);
-    
+
 
 
     useEffect(() => {
@@ -138,13 +138,11 @@ const Home = () => {
                                 className="new-releases-list"
                             >
                                 {Array.from({ length: Math.ceil(filteredNewReleases.length / 3) }, (_, i) => {
-                                    // Sử dụng return trong arrow function
                                     return (
                                         <SwiperSlide key={i}>
                                             <div className="new-release-group">
-                                                {songs.slice(i * 3, i * 3 + 3).map((song, index) => {
-                                                    const songImage = getSongImage(song.coverImageUrl); // Sử dụng ảnh từ song.coverImageUrl hoặc ảnh mặc định
-
+                                                {filteredNewReleases.slice(i * 3, i * 3 + 3).map((song, index) => {
+                                                    const songImage = getSongImage(song.coverImageUrl || '');
                                                     return (
                                                         <div key={index} className="new-release-item">
                                                             {/* Hình ảnh bài hát */}
@@ -163,7 +161,7 @@ const Home = () => {
                                                             </div>
 
                                                             {/* Thời lượng bài hát */}
-                                                            <p className="duration">{song.duration}</p>
+                                                            <p className="duration">{song.duration || 'N/A'}</p>
 
                                                             {/* Biểu tượng phát */}
                                                             <img src={playIcon} alt="Play" className="play-icon" />
@@ -207,7 +205,7 @@ const Home = () => {
                             </ul>
                         </div>
                     </div>
-                                 
+
 
                 </div >
             </main >
