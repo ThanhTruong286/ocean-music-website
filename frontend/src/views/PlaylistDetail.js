@@ -5,9 +5,18 @@ import Footer from "../components/Footer";
 import 'swiper/css';
 import "../styles/playlist.scss";
 import { getPlaylistById } from '../api/api';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
 import faker from "../assets/images/artists/faker.jpg";
 
+
+const SECRET_KEY = 'MIKASA';
+
+// Hàm mã hóa ID
+const encryptId = (id) => {
+    const encrypted = CryptoJS.AES.encrypt(id.toString(), SECRET_KEY).toString();
+    return encodeURIComponent(encrypted);
+};
 // Load all images from the songs folder
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
@@ -17,26 +26,33 @@ const getSongImage = (imageName) => {
 };
 
 const PlaylistDetail = () => {
-    const { id: playlistId } = useParams(); // Dùng destructuring để lấy playlistId từ URL params
+    const { id: playlistId } = useParams();
     const [playList, setPlaylist] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadPlaylist = async () => {
             try {
                 const data = await getPlaylistById(playlistId);
-                console.log(data); // In ra dữ liệu playlist để kiểm tra
-                setPlaylist(data); // Lưu dữ liệu playlist vào state
+                console.log(data);
+                setPlaylist(data);
             } catch (e) {
                 console.error("Error fetching playlist:", e);
                 throw new Error("Error fetching playlist");
             }
         };
         loadPlaylist();
-    }, [playlistId]); // Duyệt lại khi playlistId thay đổi
+    }, [playlistId]);
 
     if (!playList) {
-        return <div>Loading...</div>; // Hiển thị khi dữ liệu chưa được tải xong
+        return <div>Loading...</div>;
     }
+
+    // Hàm xử lý khi nhấn vào tên bài hát
+    const handleOnclickSong = (songId) => {
+        const encryptedId = encryptId(songId);
+        navigate(`/song-detail/${encryptedId}`);
+    };
 
     return (
         <div>
@@ -69,9 +85,9 @@ const PlaylistDetail = () => {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Title</th>
-                                    <th>Artist(s)</th>
-                                    <th>Date added</th>
+                                    <th>Tên Bài Hát</th>
+                                    <th>Nghệ Sĩ(s)</th>
+                                    <th>Ngày Thêm</th>
                                     <th><i className="far fa-clock"></i></th>
                                 </tr>
                             </thead>
@@ -87,7 +103,13 @@ const PlaylistDetail = () => {
                                                 width="40"
                                                 style={{ marginRight: '10px' }}
                                             />
-                                            <span>{song.title}</span>
+                                            <span
+                                                className="song-title"
+                                                style={{ cursor: 'pointer', color: 'blue' }}
+                                                onClick={() => handleOnclickSong(song.songId)}
+                                            >
+                                                {song.title}
+                                            </span>
                                         </td>
                                         <td>
                                             {song.artists.map((artist, artistIndex) => (
