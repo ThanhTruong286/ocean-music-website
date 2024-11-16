@@ -64,7 +64,7 @@ const Sidebar = () => {
                             </li>
                             {/* Cài đặt tài khoản */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/setting-profile" className="nav-link collapsed">
                                     <i className="fa-solid fa-user"></i>
                                     <span className="item-name">Cài Đặt Tài Khoản</span>
                                 </a>

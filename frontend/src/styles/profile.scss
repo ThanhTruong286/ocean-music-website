@@ -1,0 +1,71 @@
+.profile-header {
+    text-align: center; // Căn giữa nội dung bên trong
+    padding: 50px 0; // Khoảng cách trên-dưới
+}
+
+.profile-header img {
+    width: 250px; // Chiều rộng avatar
+    height: 250px; // Chiều cao avatar
+    border-radius: 50%; // Làm tròn để tạo hình tròn
+    border: 5px solid #fff; // Viền trắng xung quanh
+}
+
+.profile-header h1 {
+    font-size: 48px; // Kích thước chữ tiêu đề
+    margin: 10px 0; // Khoảng cách trên-dưới
+}
+
+.profile-header p {
+    font-size: 16px; // Kích thước chữ đoạn văn
+    color: #b3b3b3; // Màu chữ xám nhạt
+}
+
+.section {
+    padding: 20px 50px; // Khoảng cách trong (trên-dưới: 20px, trái-phải: 50px)
+}
+
+.section h2 {
+    font-size: 24px; // Kích thước chữ tiêu đề của mỗi section
+    margin-bottom: 10px; // Khoảng cách dưới tiêu đề
+}
+
+.section p {
+    font-size: 14px; // Kích thước chữ đoạn văn nhỏ
+    color: #b3b3b3; // Màu chữ xám nhạt
+    margin-bottom: 20px; // Khoảng cách dưới đoạn văn
+}
+
+.artists, .songs {
+    display: flex; // Hiển thị các nghệ sĩ và bài hát theo hàng ngang
+    overflow-x: auto; // Tạo thanh cuộn ngang khi nội dung tràn
+}
+
+.artist, .song {
+    text-align: center; // Căn giữa nội dung bên trong
+    margin-right: 20px; // Khoảng cách giữa các item
+}
+
+.artist img, .song img {
+    width: 150px; // Chiều rộng ảnh
+    height: 150px; // Chiều cao ảnh
+    border-radius: 50%; // Làm tròn ảnh
+}
+
+.artist p, .song p {
+    margin: 5px 0; // Khoảng cách giữa các đoạn text
+}
+
+.artist p.name, .song p.name {
+    font-size: 14px; // Kích thước chữ tên
+}
+
+.artist p.role, .song p.role {
+    font-size: 12px; // Kích thước chữ vai trò (nhỏ hơn tên)
+    color: #b3b3b3; // Màu chữ xám nhạt
+}
+
+.show-all {
+    text-align: right; // Căn phải
+    font-size: 14px; // Kích thước chữ
+    color: #b3b3b3; // Màu chữ xám nhạt
+}

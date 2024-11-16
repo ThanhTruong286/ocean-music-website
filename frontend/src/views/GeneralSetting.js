@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/setting.scss';
 
 const GeneralSetting = () => {
-    const [explicitContent, setExplicitContent] = useState(true);
+    const [explicitContent, setExplicitContent] = useState(() => {
+        // Lấy trạng thái từ localStorage, mặc định là false
+        return JSON.parse(localStorage.getItem('isDarkMode')) || false;
+    });
     const [autoplay, setAutoplay] = useState(true);
     const [autoAdjust, setAutoAdjust] = useState(true);
     const [normalizeVolume, setNormalizeVolume] = useState(true);
+
+    useEffect(() => {
+        // Cập nhật class cho body khi chế độ ban đêm thay đổi
+        if (explicitContent) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+        // Lưu trạng thái vào localStorage
+        localStorage.setItem('isDarkMode', JSON.stringify(explicitContent));
+    }, [explicitContent]);
 
     return (
         <div>
@@ -31,16 +45,16 @@ const GeneralSetting = () => {
                             </div>
                         </div>
                         <div className="section">
-                            <h2>Nội dung phản cảm</h2>
-                            <p>Cho phép phát nội dung được đánh giá là phản cảm.</p>
+                            <h2>Chế độ tối</h2>
+                            <p>Chế độ ban đêm</p>
                             <div className="toggle-switch">
                                 <input 
                                     type="checkbox" 
-                                    id="explicit-content" 
+                                    id="dark-mode" 
                                     checked={explicitContent}
                                     onChange={() => setExplicitContent(!explicitContent)}
                                 />
-                                <label htmlFor="explicit-content"></label>
+                                <label htmlFor="dark-mode"></label>
                             </div>
                         </div>
                         <div className="section">
@@ -99,6 +113,6 @@ const GeneralSetting = () => {
             <Footer />
         </div>
     );
-}
+};
 
 export default GeneralSetting;
