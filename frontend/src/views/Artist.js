@@ -6,7 +6,7 @@ import { fetchArtists } from '../api/api'; // Import hàm fetchArtists
 import faker from "../assets/images/artists/faker.jpg"; // Hình ảnh mặc định
 import { Swiper, SwiperSlide } from 'swiper/react'; // Import Swiper
 import 'swiper/css'; // Import Swiper CSS
-import ArtistList from "../components/ArtistList";
+import ArtistList from "../components/ArtistList"; 
 import Footer from "../components/Footer";
 const Artist = () => {
   const [artists, setArtists] = useState([]); // Chỉ cần một state duy nhất để chứa danh sách nghệ sĩ
