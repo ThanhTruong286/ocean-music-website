@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import 'swiper/css';
 import "../styles/playlist.scss";
-import { getPlaylistById, deleteSongFromPlaylist } from '../api/api'; // Đảm bảo đã import deleteSongFromPlaylist
+import { getPlaylistById, deleteSongFromPlaylist, getRecommendSongByArtistIds } from '../api/api';
 import { useParams, useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import faker from "../assets/images/artists/faker.jpg";
@@ -17,7 +17,7 @@ const encryptId = (id) => {
     return encodeURIComponent(encrypted);
 };
 
-// Load all images from the songs folder
+// Load tất cả hình ảnh từ thư mục songs
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
@@ -29,19 +29,56 @@ const PlaylistDetail = () => {
     const { id: playlistId } = useParams();
     const [playList, setPlaylist] = useState(null);
     const navigate = useNavigate();
+    const [recommendedSongs, setRecommendedSongs] = useState([]);
 
     useEffect(() => {
         const loadPlaylist = async () => {
             try {
                 const data = await getPlaylistById(playlistId);
                 setPlaylist(data);
+
+                // Lấy danh sách artistId của các bài hát trong playlist
+                const artistIds = data.songs.flatMap(song => song.artists.map(artist => artist.artistId));
+
+                // Nếu không có artistIds, không gọi API gợi ý
+                if (artistIds.length === 0) {
+                    console.log("No artistIds in playlist, skipping recommendations.");
+                    return; // Không gọi API gợi ý nếu không có artistId
+                }
+
+                // Gọi hàm gợi ý bài hát sau khi playlist đã được tải
+                loadRecommendSong(artistIds, data.songs);
             } catch (e) {
                 console.error("Error fetching playlist:", e);
-                throw new Error("Error fetching playlist");
             }
         };
+
         loadPlaylist();
-    }, [playlistId]);
+    }, [playlistId]); // Đảm bảo useEffect chỉ chạy lại khi playlistId thay đổi
+
+    // Chỉnh sửa hàm loadRecommendSong để thêm điều kiện kiểm tra playlist có dữ liệu hay không
+    const loadRecommendSong = async (artistIds, playlistSongs) => {
+        try {
+            const response = await getRecommendSongByArtistIds(artistIds);
+
+            if (response && response.recommendedSongs && response.recommendedSongs.length > 0) {
+                // Giới hạn danh sách gợi ý tối đa 10 bài
+                let recommendedSongs = response.recommendedSongs.slice(0, 10);
+
+                // Lọc những bài hát đã có trong playlist (dựa trên songId)
+                const songIdsInPlaylist = playlistSongs.map(song => song.songId);
+                recommendedSongs = recommendedSongs.filter(song => !songIdsInPlaylist.includes(song.songId));
+
+                setRecommendedSongs(recommendedSongs);
+            } else {
+                setRecommendedSongs([]); // Nếu không có bài hát gợi ý, set mảng rỗng
+            }
+        } catch (e) {
+            console.error("Error fetching recommended songs:", e);
+            alert("Error fetching recommended songs.");
+        }
+    };
+
 
     if (!playList) {
         return <div>Loading...</div>;
@@ -64,18 +101,16 @@ const PlaylistDetail = () => {
     const handleDeleteSong = (songId) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this song from the playlist?");
         if (confirmDelete) {
-            // Gọi API hoặc hàm xóa bài hát (lấy userId từ đâu đó, có thể từ context hoặc props)
             deleteSongFromPlaylist(playlistId, songId)
                 .then(response => {
                     if (response.success) {
                         alert('Song deleted successfully');
-                        // Cập nhật lại playlist sau khi xóa bài hát
                         setPlaylist(prevState => ({
                             ...prevState,
                             songs: prevState.songs.filter(song => song.songId !== songId)
                         }));
                     } else {
-                        alert('Failed to delete the song: ' + response.message); // Hiển thị lý do lỗi
+                        alert('Failed to delete the song: ' + response.message);
                     }
                 })
                 .catch(err => {
@@ -84,7 +119,6 @@ const PlaylistDetail = () => {
                 });
         }
     };
-
 
     return (
         <div>
@@ -105,7 +139,7 @@ const PlaylistDetail = () => {
                             <div className="details">
                                 <p>Playlist</p>
                                 <h1>{playList.title}</h1>
-                                <p>{`${playList.songs.length} song(s)`}</p>
+                                <p>{`${playList.songs.length} bài hát`}</p>
                             </div>
                         </div>
                         <div className="controls">
@@ -118,7 +152,7 @@ const PlaylistDetail = () => {
                                 <tr>
                                     <th>#</th>
                                     <th>Tên Bài Hát</th>
-                                    <th>Nghệ Sĩ(s)</th>
+                                    <th>Nghệ Sĩ</th>
                                     <th>Ngày Thêm</th>
                                     <th><i className="far fa-clock"></i></th>
                                     <th>Hành Động</th>
@@ -132,7 +166,7 @@ const PlaylistDetail = () => {
                                             <img
                                                 alt="Album cover image"
                                                 height="40"
-                                                src={getSongImage(song.coverImageUrl)} // Sử dụng hàm getSongImage
+                                                src={getSongImage(song.coverImageUrl)}
                                                 width="40"
                                                 style={{ marginRight: '10px', borderRadius: "5px" }}
                                             />
@@ -144,18 +178,23 @@ const PlaylistDetail = () => {
                                                 {song.title}
                                             </span>
                                         </td>
+
                                         <td>
-                                            {song.artists.map((artist, artistIndex) => (
-                                                <span key={artistIndex}>
-                                                    {artist.name}
-                                                    {artistIndex < song.artists.length - 1 ? ', ' : ''}
-                                                </span>
-                                            ))}
+                                            {song.artists?.length > 0 ? (
+                                                song.artists.map((artist, artistIndex) => (
+                                                    <span key={artistIndex}>
+                                                        {artist.name}
+                                                        {artistIndex < song.artists.length - 1 ? ', ' : ''}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span>No artist</span>
+                                            )}
                                         </td>
+
                                         <td>{new Date().toLocaleDateString()}</td>
                                         <td>{convertSecondsToMinutes(song.duration)}</td>
                                         <td className="actions">
-                                            {/* Nút Xóa bài hát */}
                                             <a href="#" className="delete" onClick={() => handleDeleteSong(song.songId)}>Xóa</a>
                                         </td>
                                     </tr>
@@ -163,26 +202,32 @@ const PlaylistDetail = () => {
                             </tbody>
                         </table>
                         <div className="recommended">
-                            <h2>Recommended</h2>
-                            <p>Based on what's in this playlist</p>
-                            {playList.songs.slice(0, 2).map((song, index) => (
-                                <div key={index} className="song">
-                                    <div className="details">
-                                        <img
-                                            alt="Album cover image"
-                                            height="40"
-                                            src={getSongImage(song.coverImageUrl)} // Sử dụng hàm getSongImage
-                                            width="40"
-                                            style={{ marginRight: '10px', borderRadius: "5px" }}
-                                        />
-                                        <div>
-                                            <p className="title">{song.title}</p>
-                                            <p className="artist">{song.artists[0]?.name}</p>
+                            <h2>Gợi Ý</h2>
+                            <p>Dựa trên các bài hát trong playlist này</p>
+                            {recommendedSongs.length > 0 ? (
+                                recommendedSongs.map((song, index) => (
+                                    <div key={index} className="song">
+                                        <div className="details">
+                                            <img
+                                                alt="Album cover image"
+                                                height="40"
+                                                src={getSongImage(song.coverImageUrl)} // Sử dụng hàm getSongImage
+                                                width="40"
+                                                style={{ marginRight: '10px', borderRadius: "5px" }}
+                                            />
+                                            <div>
+                                                <p className="title">{song.title}</p>
+                                                {/* Hiển thị tên nghệ sĩ */}
+                                                <p className="artist">{song.artist}</p>
+                                            </div>
                                         </div>
+                                        <button className="add-button">Add</button>
                                     </div>
-                                    <button className="add-button">Add</button>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <p>No recommendations available.</p>
+                            )}
+
                         </div>
                     </div>
                 </div>

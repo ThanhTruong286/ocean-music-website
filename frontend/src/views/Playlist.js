@@ -140,7 +140,7 @@ const Playlist = () => {
                                                         {/* Các nút hành động với playlistId đã mã hóa */}
                                                         <a href={`/playlist/${encodedId}`} className="watch">Xem</a>
                                                         <a href="#" className="play" onClick={() => handlePlay(playlist.id)}>Nghe</a>
-                                                        <a href="#" className="edit" onClick={() => handleEdit(playlist.id)}>Sửa</a>
+                                                        <a className="edit" onClick={() => handleEdit(playlist.id)}>Sửa</a>
                                                         <a href="#" className="delete" onClick={() => handleDelete(playlist.id)}>Xóa</a>
                                                     </td>
                                                 </tr>

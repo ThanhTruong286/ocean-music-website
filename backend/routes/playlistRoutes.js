@@ -13,13 +13,15 @@ router.post('/', authenticateToken, playlistController.createPlaylist);
 router.get('/:id', authenticateToken, playlistController.getPlaylistById);
 
 // Route cập nhật playlist theo ID
-router.put('/:id', playlistController.updatePlaylist);
+router.put('/:id', authenticateToken, playlistController.updatePlaylist);
 
 // Route xóa playlist theo ID
-router.delete('/:id', playlistController.deletePlaylist);
+router.delete('/:id', authenticateToken, playlistController.deletePlaylist);
 
+//Thêm nhạc vào playlist
 router.post('/songs', authenticateToken, playlistController.addSongToPlaylist);
 
+//Xóa nhạc khỏi playlist
 router.post('/songs/delete', authenticateToken, playlistController.deleteSongFromPlaylist);
 
 module.exports = router;

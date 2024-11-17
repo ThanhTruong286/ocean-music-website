@@ -122,31 +122,31 @@ class Playlist {
 
     static findById(playlistId, userId, callback) {
         const query = `
-        SELECT 
-            p.playlist_id,
-            p.title AS playlist_title,
-            p.user_id,
-            s.song_id,
-            s.duration,
-            s.title AS song_title,
-            s.cover_image_url,  -- Hình ảnh của bài hát
-            a.artist_id,
-            u.user_id,
-            CONCAT(
-                COALESCE(u.first_name, ''), 
-                CASE 
-                    WHEN u.first_name IS NOT NULL AND u.last_name IS NOT NULL THEN ' ' 
-                    ELSE '' 
-                END,
-                COALESCE(u.last_name, '')
-            ) AS artist_name
-        FROM playlists p
-        LEFT JOIN playlist_songs ps ON p.playlist_id = ps.playlist_id
-        LEFT JOIN songs s ON ps.song_id = s.song_id
-        LEFT JOIN artist_songs ats ON s.song_id = ats.song_id
-        LEFT JOIN artists a ON ats.artist_id = a.artist_id
-        LEFT JOIN users u ON a.user_id = u.user_id
-        WHERE p.playlist_id = ? AND p.user_id = ?
+    SELECT 
+        p.playlist_id,
+        p.title AS playlist_title,
+        p.user_id,
+        s.song_id,
+        s.duration,
+        s.title AS song_title,
+        s.cover_image_url,
+        a.artist_id,
+        u.user_id,
+        CONCAT(
+            COALESCE(u.first_name, ''), 
+            CASE 
+                WHEN u.first_name IS NOT NULL AND u.last_name IS NOT NULL THEN ' ' 
+                ELSE '' 
+            END,
+            COALESCE(u.last_name, '')
+        ) AS artist_name
+    FROM playlists p
+    LEFT JOIN playlist_songs ps ON p.playlist_id = ps.playlist_id
+    LEFT JOIN songs s ON ps.song_id = s.song_id
+    LEFT JOIN artist_songs ats ON s.song_id = ats.song_id
+    LEFT JOIN artists a ON ats.artist_id = a.artist_id
+    LEFT JOIN users u ON a.user_id = u.user_id
+    WHERE p.playlist_id = ? AND p.user_id = ?
     `;
 
         // Thực hiện truy vấn với playlistId và userId
@@ -155,7 +155,6 @@ class Playlist {
 
             if (results.length === 0) return callback(null, null);
 
-            // Khởi tạo thông tin playlist
             const playlistInfo = {
                 playlistId: results[0].playlist_id,
                 title: results[0].playlist_title,
@@ -166,7 +165,6 @@ class Playlist {
             // Duyệt qua kết quả truy vấn và xây dựng danh sách bài hát
             results.forEach(row => {
                 if (row.song_id) {
-                    // Kiểm tra xem bài hát đã tồn tại trong danh sách bài hát chưa
                     const existingSongIndex = playlistInfo.songs.findIndex(song => song.songId === row.song_id);
 
                     if (existingSongIndex !== -1) {
@@ -181,21 +179,51 @@ class Playlist {
                             songId: row.song_id,
                             title: row.song_title,
                             duration: row.duration,
-                            coverImageUrl: row.cover_image_url, // Thêm hình ảnh bìa bài hát
+                            coverImageUrl: row.cover_image_url,
                             artists: row.artist_id ? [{
                                 artistId: row.artist_id,
                                 name: row.artist_name
-                            }] : [] // Thêm nghệ sĩ nếu có
+                            }] : []
                         });
                     }
                 }
             });
+
+            // Trích xuất tất cả artistId từ các bài hát trong playlist
+            const artistIds = playlistInfo.songs
+                .map(song => song.artists.map(artist => artist.artistId))
+                .flat();  // Làm phẳng mảng các artistId
 
             // Trả về thông tin playlist kèm danh sách bài hát và nghệ sĩ
             callback(null, playlistInfo);
         });
     }
 
+
+    static update(playlistId, newPlaylistData, userId, callback) {
+        // Kiểm tra xem playlistId và dữ liệu cập nhật có hợp lệ không
+        if (!playlistId || !newPlaylistData) {
+            return callback({ message: 'Invalid input data' }, null);
+        }
+
+        // Truy vấn cập nhật playlist trong cơ sở dữ liệu
+        const updateQuery = `
+            UPDATE playlists
+            SET title = ?
+            WHERE playlist_id = ? AND user_id = ?;
+        `;
+
+        db.query(updateQuery, [newPlaylistData, playlistId, userId], (err, result) => {
+            if (err) return callback(err, null);
+
+            if (result.affectedRows === 0) {
+                return callback({ message: 'Playlist not found or no changes made' }, null);
+            }
+
+            // Trả về kết quả nếu cập nhật thành công
+            return callback(null, { message: 'Playlist updated successfully', playlistId });
+        });
+    }
 
     save(callback) {
         if (this.id) {

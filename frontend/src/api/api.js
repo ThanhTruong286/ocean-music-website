@@ -2,6 +2,19 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getRecommendSongByArtistIds = async (artistIds) => {
+    try {
+        const response = await axios.post(`${API_URL}/song/recommend`, {
+            artistIds: artistIds // Gửi danh sách artistIds trong body của request
+        });
+        return response.data; // Trả về dữ liệu bài hát gợi ý
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách bài hát gợi ý:', error);
+        throw error; // Ném lỗi ra ngoài nếu có vấn đề
+    }
+};
+
+
 export const deleteSongFromPlaylist = async (playlistId, songId) => {
     const accessToken = localStorage.getItem('userToken');
 
@@ -68,7 +81,28 @@ export const getPlaylistById = async (playlistId) => {
     }
 }
 export const updatePlaylist = async (playlistId, newPlaylist) => {
+    const accessToken = localStorage.getItem('userToken');
+
+    if (!accessToken) {
+        throw new Error("User is not authenticated");
+    }
+
+    try {
+        console.log('Sending data:', { newPlaylist });
+        const response = await axios.put(`${API_URL}/playlist/${playlistId}`, { newPlaylist: newPlaylist }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        return response.data;
+    } catch (e) {
+        console.error('Error editing playlist:', e);
+        throw new Error(`Error updating playlist: ${e.message}`);
+    }
 }
+
 export const deletePlaylist = async (playlistId) => {
 
 }

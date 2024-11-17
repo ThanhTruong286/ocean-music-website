@@ -111,20 +111,23 @@ exports.getPlaylistById = (req, res) => {
 // Cập nhật playlist theo ID
 exports.updatePlaylist = (req, res) => {
     const playlistId = parseInt(req.params.id, 10);
-    const { title } = req.body;
+    const { newPlaylist } = req.body;
+    const userId = req.user.userId;
 
-    Playlist.findById(playlistId, (err, playlist) => {
-        if (err) return res.status(500).json({ message: 'Error fetching playlist', error: err.message });
-        if (!playlist) return res.status(404).json({ message: 'Playlist not found' });
+    if (!playlistId || !newPlaylist || !userId) {
+        return res.status(400).json({ message: 'Invalid request' });
+    }
 
-        playlist.title = title || playlist.title;
+    Playlist.update(playlistId, newPlaylist, userId, (err, result) => {
+        if (err) {
+            console.error('Error updating playlist:', err);
+            return res.status(500).json({ message: 'Error updating playlist', error: err.message });
+        }
 
-        playlist.save(err => {
-            if (err) return res.status(500).json({ message: 'Error updating playlist', error: err.message });
-            res.json({ message: 'Playlist updated', playlist });
-        });
+        return res.status(200).json(result);
     });
 };
+
 
 // Xóa playlist theo ID
 exports.deletePlaylist = (req, res) => {

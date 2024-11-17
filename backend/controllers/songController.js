@@ -1,5 +1,22 @@
 const Song = require('../models/Song');
 
+exports.getRecommendedSongs = (req, res) => {
+    const { artistIds } = req.body;  // Lấy danh sách artistIds từ request body
+
+    // Gọi phương thức trong model để lấy bài hát gợi ý
+    Song.getRecommendedSongsByArtistIds(artistIds, (err, recommendedSongs) => {
+        if (err) {
+            return res.status(500).json({ message: 'Lỗi khi lấy bài hát gợi ý', error: err.message });
+        }
+
+        if (recommendedSongs.length === 0) {
+            return res.status(200).json({ message: 'No recommendations available.' });
+        }
+
+        res.json({ recommendedSongs });
+    });
+};
+
 exports.getAllSongs = (req, res) => {
     Song.getAll((err, songs) => {
         if (err) {
