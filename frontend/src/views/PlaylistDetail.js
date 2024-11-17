@@ -4,11 +4,10 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import 'swiper/css';
 import "../styles/playlist.scss";
-import { getPlaylistById } from '../api/api';
+import { getPlaylistById, deleteSongFromPlaylist } from '../api/api'; // Đảm bảo đã import deleteSongFromPlaylist
 import { useParams, useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import faker from "../assets/images/artists/faker.jpg";
-
 
 const SECRET_KEY = 'MIKASA';
 
@@ -17,6 +16,7 @@ const encryptId = (id) => {
     const encrypted = CryptoJS.AES.encrypt(id.toString(), SECRET_KEY).toString();
     return encodeURIComponent(encrypted);
 };
+
 // Load all images from the songs folder
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
@@ -53,6 +53,39 @@ const PlaylistDetail = () => {
         navigate(`/song-detail/${encryptedId}`);
     };
 
+    // Chuyển giây thành phút:giây
+    const convertSecondsToMinutes = (seconds) => {
+        const minutes = Math.floor(seconds / 60); // Tính số phút
+        const remainingSeconds = seconds % 60; // Tính số giây còn lại
+        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
+
+    // Hàm xóa bài hát khỏi playlist
+    const handleDeleteSong = (songId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this song from the playlist?");
+        if (confirmDelete) {
+            // Gọi API hoặc hàm xóa bài hát (lấy userId từ đâu đó, có thể từ context hoặc props)
+            deleteSongFromPlaylist(playlistId, songId)
+                .then(response => {
+                    if (response.success) {
+                        alert('Song deleted successfully');
+                        // Cập nhật lại playlist sau khi xóa bài hát
+                        setPlaylist(prevState => ({
+                            ...prevState,
+                            songs: prevState.songs.filter(song => song.songId !== songId)
+                        }));
+                    } else {
+                        alert('Failed to delete the song: ' + response.message); // Hiển thị lý do lỗi
+                    }
+                })
+                .catch(err => {
+                    console.error("Error deleting song:", err);
+                    alert('An error occurred while deleting the song. Please try again.');
+                });
+        }
+    };
+
+
     return (
         <div>
             <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -88,6 +121,7 @@ const PlaylistDetail = () => {
                                     <th>Nghệ Sĩ(s)</th>
                                     <th>Ngày Thêm</th>
                                     <th><i className="far fa-clock"></i></th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,11 +134,11 @@ const PlaylistDetail = () => {
                                                 height="40"
                                                 src={getSongImage(song.coverImageUrl)} // Sử dụng hàm getSongImage
                                                 width="40"
-                                                style={{ marginRight: '10px' }}
+                                                style={{ marginRight: '10px', borderRadius: "5px" }}
                                             />
                                             <span
                                                 className="song-title"
-                                                style={{ cursor: 'pointer', color: 'blue' }}
+                                                style={{ cursor: 'pointer', color: 'black' }}
                                                 onClick={() => handleOnclickSong(song.songId)}
                                             >
                                                 {song.title}
@@ -119,11 +153,14 @@ const PlaylistDetail = () => {
                                             ))}
                                         </td>
                                         <td>{new Date().toLocaleDateString()}</td>
-                                        <td>3:51</td>
+                                        <td>{convertSecondsToMinutes(song.duration)}</td>
+                                        <td className="actions">
+                                            {/* Nút Xóa bài hát */}
+                                            <a href="#" className="delete" onClick={() => handleDeleteSong(song.songId)}>Xóa</a>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
-
                         </table>
                         <div className="recommended">
                             <h2>Recommended</h2>
@@ -134,8 +171,9 @@ const PlaylistDetail = () => {
                                         <img
                                             alt="Album cover image"
                                             height="40"
-                                            src="https://storage.googleapis.com/a1aa/image/qAdhwvaYqposKVmv7oUfnfDL6utHe7Q5eELtOR2FUrmDtwEPB.jpg"
+                                            src={getSongImage(song.coverImageUrl)} // Sử dụng hàm getSongImage
                                             width="40"
+                                            style={{ marginRight: '10px', borderRadius: "5px" }}
                                         />
                                         <div>
                                             <p className="title">{song.title}</p>

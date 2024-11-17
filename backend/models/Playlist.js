@@ -11,10 +11,52 @@ class Playlist {
         this.image = image
     }
 
+    static deleteSongFromPlaylist(userId, playlistId, songId, callback) {
+        console.log(`${userId},${playlistId},${songId}`);
+        // 1. Kiểm tra xem playlist có thuộc về userId hay không
+        const checkPlaylistQuery = `
+        SELECT * FROM playlists 
+        WHERE playlist_id = ? AND user_id = ?
+    `;
+        db.query(checkPlaylistQuery, [playlistId, userId], (err, playlistResult) => {
+            if (err) return callback(err, null);  // Nếu có lỗi xảy ra trong truy vấn
+
+            if (playlistResult.length === 0) {
+                return callback(null, { success: false, message: 'Playlist not found or access denied' });
+            }
+
+            // 2. Kiểm tra xem bài hát có tồn tại trong playlist không
+            const checkSongQuery = `
+            SELECT * FROM playlist_songs 
+            WHERE playlist_id = ? AND song_id = ?
+        `;
+            db.query(checkSongQuery, [playlistId, songId], (err, songResult) => {
+                if (err) return callback(err, null);  // Nếu có lỗi xảy ra trong truy vấn
+
+                if (songResult.length === 0) {
+                    return callback(null, { success: false, message: 'Song not found in the playlist' });
+                }
+
+                // 3. Xóa bài hát khỏi playlist
+                const deleteSongQuery = `
+                DELETE FROM playlist_songs 
+                WHERE playlist_id = ? AND song_id = ?
+            `;
+                db.query(deleteSongQuery, [playlistId, songId], (err, deleteResult) => {
+                    if (err) return callback(err, null);  // Nếu có lỗi xảy ra trong truy vấn
+
+                    if (deleteResult.affectedRows > 0) {
+                        return callback(null, { success: true, message: 'Song removed from playlist successfully' });
+                    } else {
+                        return callback(null, { success: false, message: 'Failed to remove song from playlist' });
+                    }
+                });
+            });
+        });
+    }
+
     // Hàm thêm bài hát vào playlist
     static addSongToPlaylist(userId, playlistId, songId, callback) {
-        console.log(`${userId},${playlistId},${songId}`);  // Log input params
-
         // 1. Kiểm tra xem playlist có thuộc về userId hay không
         const checkPlaylistQuery = `
         SELECT * FROM playlists 
@@ -80,31 +122,32 @@ class Playlist {
 
     static findById(playlistId, userId, callback) {
         const query = `
-            SELECT 
-                p.playlist_id,
-                p.title AS playlist_title,
-                p.user_id,
-                s.song_id,
-                s.title AS song_title,
-                s.cover_image_url, -- Lấy hình ảnh của bài hát
-                a.artist_id,
-                u.user_id,
-                CONCAT(
-                    COALESCE(u.first_name, ''), 
-                    CASE 
-                        WHEN u.first_name IS NOT NULL AND u.last_name IS NOT NULL THEN ' ' 
-                        ELSE '' 
-                    END,
-                    COALESCE(u.last_name, '')
-                ) AS artist_name
-            FROM playlists p
-            LEFT JOIN playlist_songs ps ON p.playlist_id = ps.playlist_id
-            LEFT JOIN songs s ON ps.song_id = s.song_id
-            LEFT JOIN artist_songs ats ON s.song_id = ats.song_id
-            LEFT JOIN artists a ON ats.artist_id = a.artist_id
-            LEFT JOIN users u ON a.user_id = u.user_id -- Lấy thông tin nghệ sĩ từ bảng users
-            WHERE p.playlist_id = ? AND p.user_id = ?
-        `;
+        SELECT 
+            p.playlist_id,
+            p.title AS playlist_title,
+            p.user_id,
+            s.song_id,
+            s.duration,
+            s.title AS song_title,
+            s.cover_image_url,  -- Hình ảnh của bài hát
+            a.artist_id,
+            u.user_id,
+            CONCAT(
+                COALESCE(u.first_name, ''), 
+                CASE 
+                    WHEN u.first_name IS NOT NULL AND u.last_name IS NOT NULL THEN ' ' 
+                    ELSE '' 
+                END,
+                COALESCE(u.last_name, '')
+            ) AS artist_name
+        FROM playlists p
+        LEFT JOIN playlist_songs ps ON p.playlist_id = ps.playlist_id
+        LEFT JOIN songs s ON ps.song_id = s.song_id
+        LEFT JOIN artist_songs ats ON s.song_id = ats.song_id
+        LEFT JOIN artists a ON ats.artist_id = a.artist_id
+        LEFT JOIN users u ON a.user_id = u.user_id
+        WHERE p.playlist_id = ? AND p.user_id = ?
+    `;
 
         // Thực hiện truy vấn với playlistId và userId
         db.query(query, [playlistId, userId], (err, results) => {
@@ -112,7 +155,7 @@ class Playlist {
 
             if (results.length === 0) return callback(null, null);
 
-            // Lấy thông tin playlist từ kết quả
+            // Khởi tạo thông tin playlist
             const playlistInfo = {
                 playlistId: results[0].playlist_id,
                 title: results[0].playlist_title,
@@ -120,14 +163,14 @@ class Playlist {
                 songs: []
             };
 
-            // Duyệt qua các bài hát và thêm vào danh sách `songs`
+            // Duyệt qua kết quả truy vấn và xây dựng danh sách bài hát
             results.forEach(row => {
                 if (row.song_id) {
-                    // Kiểm tra xem bài hát đã tồn tại trong danh sách hay chưa
+                    // Kiểm tra xem bài hát đã tồn tại trong danh sách bài hát chưa
                     const existingSongIndex = playlistInfo.songs.findIndex(song => song.songId === row.song_id);
 
                     if (existingSongIndex !== -1) {
-                        // Nếu bài hát đã tồn tại, thêm nghệ sĩ vào danh sách nghệ sĩ
+                        // Nếu bài hát đã tồn tại, thêm nghệ sĩ vào danh sách nghệ sĩ của bài hát đó
                         playlistInfo.songs[existingSongIndex].artists.push({
                             artistId: row.artist_id,
                             name: row.artist_name
@@ -137,19 +180,22 @@ class Playlist {
                         playlistInfo.songs.push({
                             songId: row.song_id,
                             title: row.song_title,
-                            coverImageUrl: row.cover_image_url, // Thêm cover_image_url vào đối tượng bài hát
+                            duration: row.duration,
+                            coverImageUrl: row.cover_image_url, // Thêm hình ảnh bìa bài hát
                             artists: row.artist_id ? [{
                                 artistId: row.artist_id,
                                 name: row.artist_name
-                            }] : []
+                            }] : [] // Thêm nghệ sĩ nếu có
                         });
                     }
                 }
             });
 
+            // Trả về thông tin playlist kèm danh sách bài hát và nghệ sĩ
             callback(null, playlistInfo);
         });
     }
+
 
     save(callback) {
         if (this.id) {

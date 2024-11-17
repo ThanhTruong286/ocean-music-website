@@ -20,4 +20,6 @@ router.delete('/:id', playlistController.deletePlaylist);
 
 router.post('/songs', authenticateToken, playlistController.addSongToPlaylist);
 
+router.post('/songs/delete', authenticateToken, playlistController.deleteSongFromPlaylist);
+
 module.exports = router;

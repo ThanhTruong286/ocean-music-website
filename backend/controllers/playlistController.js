@@ -1,9 +1,42 @@
 const Playlist = require('../models/Playlist');
+const CryptoJS = require('crypto-js');
 
 const decodeBase64 = (id) => {
     return Buffer.from(id, 'base64').toString('utf-8');
 }
 
+const decryptPlaylistId = (encryptedId) => {
+    // Giải mã base64 thành UTF8
+    const decrypted = CryptoJS.enc.Base64.parse(encryptedId).toString(CryptoJS.enc.Utf8);
+    return decrypted;
+};
+
+exports.deleteSongFromPlaylist = (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const { playlistId, songId } = req.body;
+        const decryptedPlaylistId = decryptPlaylistId(playlistId);
+
+        // Kiểm tra xem các trường cần thiết có đầy đủ không
+        if (!userId || !playlistId || !songId) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        // Gọi hàm addSongToPlaylist
+        Playlist.deleteSongFromPlaylist(userId, decryptedPlaylistId, songId, (err, result) => {
+            if (err) {
+                console.error('Error delete song from playlist:', err);
+                return res.status(500).json({ message: 'Error delete song from playlist' });
+            }
+
+            // Nếu thành công, trả về phản hồi cho client
+            return res.status(200).json(result);
+        });
+    } catch (err) {
+        console.error('Error delete song from playlist:', err);
+        return res.status(500).json({ message: 'Error delete song from playlist' });
+    }
+}
 exports.addSongToPlaylist = (req, res) => {
     try {
         const userId = req.user.userId;
