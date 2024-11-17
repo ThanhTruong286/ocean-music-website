@@ -2,21 +2,44 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const addSongToPlaylist = async (playlistId, songId) => {
+    const accessToken = localStorage.getItem('userToken');
+
+    if (!accessToken) {
+        throw new Error('No access token found');
+    }
+    try {
+        const response = await axios.post(`${API_URL}/playlist/songs`, {
+            playlistId: playlistId,
+            songId: songId
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+        return response.data;
+    } catch (e) {
+        throw new Error(`Error adding song to playlist: ${e.message}`)
+    }
+}
+
 export const getPlaylistById = async (playlistId) => {
     const accessToken = localStorage.getItem('userToken');
 
-    if(!accessToken){
+    if (!accessToken) {
         throw new Error("user is not authenticated");
     }
-    try{
-        const response = await axios.get(`${API_URL}/playlist/${playlistId}`,{
+    try {
+        const response = await axios.get(`${API_URL}/playlist/${playlistId}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}` 
+                'Authorization': `Bearer ${accessToken}`
             }
         })
         return response.data;
-    } catch (e){
+    } catch (e) {
         throw new Error("error get playlist by id");
     }
 }

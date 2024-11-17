@@ -3,6 +3,33 @@ const Playlist = require('../models/Playlist');
 const decodeBase64 = (id) => {
     return Buffer.from(id, 'base64').toString('utf-8');
 }
+
+exports.addSongToPlaylist = (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const { playlistId, songId } = req.body;
+
+        // Kiểm tra xem các trường cần thiết có đầy đủ không
+        if (!userId || !playlistId || !songId) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        // Gọi hàm addSongToPlaylist
+        Playlist.addSongToPlaylist(userId, playlistId, songId, (err, result) => {
+            if (err) {
+                console.error('Error adding song to playlist:', err);
+                return res.status(500).json({ message: 'Error adding song to playlist' });
+            }
+
+            // Nếu thành công, trả về phản hồi cho client
+            return res.status(200).json(result);
+        });
+    } catch (err) {
+        console.error('Error adding song to playlist:', err);
+        return res.status(500).json({ message: 'Error adding song to playlist' });
+    }
+};
+
 // Lấy tất cả các playlist
 exports.getAllPlaylists = (req, res) => {
     const userId = req.user.userId;
@@ -37,7 +64,7 @@ exports.getPlaylistById = (req, res) => {
     const decodePlaylistId = decodeBase64(playlistId);
     const userId = req.user.userId;
 
-    Playlist.findById(decodePlaylistId,userId, (err, playlist) => {
+    Playlist.findById(decodePlaylistId, userId, (err, playlist) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching playlist', error: err.message });
         }

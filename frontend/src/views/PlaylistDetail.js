@@ -34,7 +34,6 @@ const PlaylistDetail = () => {
         const loadPlaylist = async () => {
             try {
                 const data = await getPlaylistById(playlistId);
-                console.log(data);
                 setPlaylist(data);
             } catch (e) {
                 console.error("Error fetching playlist:", e);

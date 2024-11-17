@@ -4,9 +4,10 @@ import Footer from "../components/Footer";
 import "../styles/global.scss";
 import faker from "../assets/images/artists/faker.jpg";
 import { useEffect, useState } from "react";
-import { getSong } from "../api/api";
 import { useParams } from "react-router-dom";
 import CryptoJS from "crypto-js";
+import AddToPlaylistPopup from "../components/PlaylistPopup";
+import { getAllUserPlaylist, getSong, addSongToPlaylist } from "../api/api";
 
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
@@ -15,13 +16,10 @@ const getSongImage = (imageName) => {
 };
 
 const formatLyrics = (lyrics) => {
-    // Regular expression to split text by common punctuation marks, keeping punctuation as separate elements.
-    const sentences = lyrics.split(/([.!?]+)/).filter(Boolean); // Split by punctuation (., ?, !)
-
-    // Map through the sentences and add <br /> after each sentence.
+    const sentences = lyrics.split(/([.!?]+)/).filter(Boolean);
     return sentences.map((sentence, index) => (
         <span key={index}>
-            {sentence.trim()} {/* Trim extra spaces */}
+            {sentence.trim()}
             <br />
         </span>
     ));
@@ -32,8 +30,10 @@ const SongDetail = () => {
     const [song, setSong] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const [playlists, setPlaylists] = useState([]);
 
-    // Function to decrypt the encrypted id
+    // Giải mã ID bài hát
     const decryptId = (encryptedId) => {
         const decoded = decodeURIComponent(encryptedId);
         const bytes = CryptoJS.AES.decrypt(decoded, "MIKASA");
@@ -43,8 +43,8 @@ const SongDetail = () => {
     useEffect(() => {
         const loadSong = async () => {
             try {
-                const decryptedId = decryptId(id); // Decrypt the captured id
-                const response = await getSong(decryptedId); // Fetch song details using the decrypted id
+                const decryptedId = decryptId(id);
+                const response = await getSong(decryptedId);
                 setSong(response);
             } catch (error) {
                 setError(true);
@@ -52,20 +52,55 @@ const SongDetail = () => {
                 setLoading(false);
             }
         };
+
+        const loadUserPlaylists = async () => {
+            try {
+                const userPlaylists = await getAllUserPlaylist();
+                setPlaylists(userPlaylists);
+            } catch (error) {
+                console.error('Error fetching playlists:', error);
+            }
+        };
+
         if (id) {
             loadSong();
+            loadUserPlaylists();
         }
     }, [id]);
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const handleAddPlaylistClick = () => {
+        setShowPopup(true);
+    };
 
-    if (loading) {
-        return <div>Loading ...</div>;
-    }
+    const handleAddToPlaylist = async (playlistId) => {
+        try {
+            const decryptedSongId = decryptId(id); // Giải mã song ID
+            await addSongToPlaylist(playlistId, decryptedSongId);
+            alert('Thêm bài hát vào playlist thành công!');
+        } catch (error) {
+            console.error('Error adding song to playlist:', error);
+            alert('Có lỗi xảy ra khi thêm bài hát vào playlist');
+        } finally {
+            setShowPopup(false);
+        }
+    };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading song data</div>;
+
     const songImage = getSongImage(song.coverImageUrl);
     const formattedLyrics = formatLyrics(song.lyric);
+
+    // Tạo link chia sẻ
+    const createShareLink = () => {
+        const currentUrl = window.location.href;
+        navigator.clipboard.writeText(currentUrl).then(() => {
+            alert("Link copied to clipboard!");
+        }).catch((err) => {
+            console.error("Failed to copy link: ", err);
+        });
+    };
+
     return (
         <div>
             <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -97,9 +132,14 @@ const SongDetail = () => {
                                                         </div>
 
                                                         <div className="d-flex align-items-center">
-                                                            <a href="javascript:void(0);" className="play-btn btn btn-primary">Play music</a>
-                                                            <a href="javascript:void(0);" className="add-playlist-btn btn btn-outline-secondary ms-3">Add Playlist</a>
-                                                            <a href="javascript:void(0);" className="add-playlist-btn btn btn-outline-secondary ms-3">Share</a>
+                                                            <a href="#" className="play-btn btn btn-primary">Play music</a>
+                                                            <button onClick={handleAddPlaylistClick} className="share-btn btn btn-outline-secondary ms-3">Add Playlist</button>
+                                                            <button
+                                                                onClick={createShareLink}
+                                                                className="share-btn btn btn-outline-secondary ms-3"
+                                                            >
+                                                                Share
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -111,10 +151,18 @@ const SongDetail = () => {
 
                         </div>
                     </div>
-                </div >
+                </div>
             </main>
+            {showPopup && (
+                <AddToPlaylistPopup
+                    playlists={playlists}
+                    onClose={() => setShowPopup(false)}
+                    onAddToPlaylist={handleAddToPlaylist}
+                />
+            )}
             <Footer />
         </div>
-    )
-}
-export default SongDetail
+    );
+};
+
+export default SongDetail;

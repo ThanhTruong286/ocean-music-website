@@ -11,6 +11,52 @@ class Playlist {
         this.image = image
     }
 
+    // Hàm thêm bài hát vào playlist
+    static addSongToPlaylist(userId, playlistId, songId, callback) {
+        console.log(`${userId},${playlistId},${songId}`);  // Log input params
+
+        // 1. Kiểm tra xem playlist có thuộc về userId hay không
+        const checkPlaylistQuery = `
+        SELECT * FROM playlists 
+        WHERE playlist_id = ? AND user_id = ?
+    `;
+        db.query(checkPlaylistQuery, [playlistId, userId], (err, playlistResult) => {
+            if (err) return callback(err, null);  // Nếu có lỗi xảy ra trong truy vấn
+
+            if (playlistResult.length === 0) {
+                return callback(null, { success: false, message: 'Playlist not found or access denied' });
+            }
+
+            // 2. Kiểm tra xem bài hát đã tồn tại trong playlist chưa
+            const checkSongQuery = `
+            SELECT * FROM playlist_songs 
+            WHERE playlist_id = ? AND song_id = ?
+        `;
+            db.query(checkSongQuery, [playlistId, songId], (err, songResult) => {
+                if (err) return callback(err, null);  // Nếu có lỗi xảy ra trong truy vấn
+
+                if (songResult.length > 0) {
+                    return callback(null, { success: false, message: 'Song already exists in the playlist' });
+                }
+
+                // 3. Nếu bài hát chưa tồn tại, thêm mới vào bảng playlist_songs
+                const insertQuery = `
+                INSERT INTO playlist_songs (playlist_id, song_id) 
+                VALUES (?, ?)
+            `;
+                db.query(insertQuery, [playlistId, songId], (err, insertResult) => {
+                    if (err) return callback(err, null);  // Nếu có lỗi xảy ra trong truy vấn
+
+                    if (insertResult.affectedRows > 0) {
+                        return callback(null, { success: true, message: 'Song added successfully', songId });
+                    } else {
+                        return callback(null, { success: false, message: 'Failed to add song to playlist' });
+                    }
+                });
+            });
+        });
+    }
+
     static getUserPlaylist(userId, callback) {
         db.query('SELECT * FROM playlists WHERE user_id = ?', [userId], (err, results) => {
             if (err) return callback(err, null);
@@ -59,13 +105,13 @@ class Playlist {
             LEFT JOIN users u ON a.user_id = u.user_id -- Lấy thông tin nghệ sĩ từ bảng users
             WHERE p.playlist_id = ? AND p.user_id = ?
         `;
-        
+
         // Thực hiện truy vấn với playlistId và userId
         db.query(query, [playlistId, userId], (err, results) => {
             if (err) return callback(err, null);
-    
+
             if (results.length === 0) return callback(null, null);
-    
+
             // Lấy thông tin playlist từ kết quả
             const playlistInfo = {
                 playlistId: results[0].playlist_id,
@@ -73,13 +119,13 @@ class Playlist {
                 userId: results[0].user_id,
                 songs: []
             };
-    
+
             // Duyệt qua các bài hát và thêm vào danh sách `songs`
             results.forEach(row => {
                 if (row.song_id) {
                     // Kiểm tra xem bài hát đã tồn tại trong danh sách hay chưa
                     const existingSongIndex = playlistInfo.songs.findIndex(song => song.songId === row.song_id);
-    
+
                     if (existingSongIndex !== -1) {
                         // Nếu bài hát đã tồn tại, thêm nghệ sĩ vào danh sách nghệ sĩ
                         playlistInfo.songs[existingSongIndex].artists.push({
@@ -100,11 +146,11 @@ class Playlist {
                     }
                 }
             });
-    
+
             callback(null, playlistInfo);
         });
     }
-    
+
     save(callback) {
         if (this.id) {
             db.query('UPDATE playlists SET title = ? WHERE playlist_id = ?', [this.title, this.id], callback);

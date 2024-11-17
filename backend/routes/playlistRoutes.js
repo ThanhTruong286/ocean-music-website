@@ -10,12 +10,14 @@ router.get('/', authenticateToken, playlistController.getAllPlaylists);
 router.post('/', authenticateToken, playlistController.createPlaylist);
 
 // Route lấy playlist theo ID
-router.get('/:id',authenticateToken, playlistController.getPlaylistById);
+router.get('/:id', authenticateToken, playlistController.getPlaylistById);
 
 // Route cập nhật playlist theo ID
 router.put('/:id', playlistController.updatePlaylist);
 
 // Route xóa playlist theo ID
 router.delete('/:id', playlistController.deletePlaylist);
+
+router.post('/songs', authenticateToken, playlistController.addSongToPlaylist);
 
 module.exports = router;
