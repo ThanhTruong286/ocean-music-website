@@ -55,8 +55,10 @@ const Footer = () => {
                 if (audioRef.current) {
                     audioRef.current.currentTime = savedCurrentTime;
                     audioRef.current.volume = savedVolume / 100;
+
+                    // Không tự động phát nhạc sau khi tải lại trang, nhưng đảm bảo audio không bị đơ
                     if (savedIsPlaying) {
-                        audioRef.current.play();
+                        audioRef.current.play().catch((err) => console.error("Play error:", err));
                     }
                 }
             } catch (error) {
@@ -141,6 +143,24 @@ const Footer = () => {
         }
     };
 
+    useEffect(() => {
+        // Lắng nghe sự kiện chuyển trang để đảm bảo audio vẫn tiếp tục phát
+        const handleBeforeUnload = (event) => {
+            if (isPlaying) {
+                // Nếu audio đang phát, lưu lại trạng thái
+                localStorage.setItem("audioCurrentTime", audioRef.current.currentTime);
+                localStorage.setItem("audioIsPlaying", "true");
+            }
+        };
+
+        // Thêm sự kiện khi rời khỏi trang
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [isPlaying]);
+
     if (loading) return <div>Đang tải...</div>;
     if (error) return <div>Lỗi khi tải bài hát</div>;
 
@@ -162,12 +182,7 @@ const Footer = () => {
                     onTimeUpdate={handleTimeUpdate}
                     onLoadedMetadata={handleLoadedMetadata}
                     onEnded={handleEnded}
-                    autoPlay={isPlaying}
-                    onCanPlay={() => {
-                        if (!isPlaying) {
-                            audioRef.current.play().catch((err) => console.error("Play error:", err));
-                        }
-                    }}
+                    autoPlay={false}  // Không tự động phát nhạc
                 />
 
                 {/* Controls */}

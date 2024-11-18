@@ -32,6 +32,13 @@ const PlaylistDetail = () => {
     const [recommendedSongs, setRecommendedSongs] = useState([]);
 
     useEffect(() => {
+        if (playList?.songs?.length > 0) {
+            // Lưu danh sách nhạc vào localStorage
+            localStorage.setItem('playlistSongs', JSON.stringify(playList.songs));
+        }
+    }, [playList]);
+
+    useEffect(() => {
         const loadPlaylist = async () => {
             try {
                 const data = await getPlaylistById(playlistId);

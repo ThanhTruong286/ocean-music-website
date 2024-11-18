@@ -32,6 +32,8 @@ const SongDetail = () => {
     const [error, setError] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [playlists, setPlaylists] = useState([]);
+    const [isPlaying, setIsPlaying] = useState(false); // New state to track play status
+    const [audio] = useState(new Audio()); // Create a new Audio instance for playback
 
     // Giải mã ID bài hát
     const decryptId = (encryptedId) => {
@@ -46,6 +48,7 @@ const SongDetail = () => {
                 const decryptedId = decryptId(id);
                 const response = await getSong(decryptedId);
                 setSong(response);
+                audio.src = response.url;  // Set the audio source to the song URL
             } catch (error) {
                 setError(true);
             } finally {
@@ -66,7 +69,22 @@ const SongDetail = () => {
             loadSong();
             loadUserPlaylists();
         }
-    }, [id]);
+
+        // Clean up the audio when the component unmounts
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
+        };
+    }, [id, audio]);
+
+    const handlePlayPause = () => {
+        if (isPlaying) {
+            audio.pause();  // Pause the audio if it's currently playing
+        } else {
+            audio.play();   // Play the audio if it's currently paused
+        }
+        setIsPlaying(!isPlaying); // Toggle the play/pause state
+    };
 
     const handleAddPlaylistClick = () => {
         setShowPopup(true);
@@ -132,7 +150,9 @@ const SongDetail = () => {
                                                         </div>
 
                                                         <div className="d-flex align-items-center">
-                                                            <a href="#" className="play-btn btn btn-primary">Play music</a>
+                                                            <button onClick={handlePlayPause} className="play-btn btn btn-primary">
+                                                                {isPlaying ? 'Pause' : 'Play'} Music
+                                                            </button>
                                                             <button onClick={handleAddPlaylistClick} className="share-btn btn btn-outline-secondary ms-3">Add Playlist</button>
                                                             <button
                                                                 onClick={createShareLink}

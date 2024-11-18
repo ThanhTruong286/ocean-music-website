@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import '../styles/App.scss';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AudioProvider } from '../context/AudioContext';  // Import AudioProvider
 
 // Import các trang
 import Home from './Home';
@@ -18,6 +18,7 @@ import PlaylistDetail from './PlaylistDetail';
 import GeneralSetting from './GeneralSetting';
 import Chart from './Chart';
 import SettingProfile from './SettingProfile';
+import Footer from '../components/Footer';  // Import Footer
 
 const App = () => {
   useEffect(() => {
@@ -32,26 +33,31 @@ const App = () => {
 
   return (
     <div id="main">
-      <Router>
-        <Routes>
-          {/* Các Route không có Header và Footer */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/albums" element={<Album />} />
-          <Route path="/artist" element={<Artist />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/change-password" element={<ChangePasswordView />} />
-          <Route path="/subcribe" element={<Subcribe />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/song-detail/:id" element={<SongDetail />} />
-          <Route path="/playlist" element={<Playlist />} />
-          <Route path="/playlist/:id" element={<PlaylistDetail />} />
-          <Route path="/general-setting" element={<GeneralSetting />} />
-          <Route path="/chart" element={<Chart />} />
-          <Route path="/setting-profile" element={<SettingProfile />} />
-        </Routes>
-      </Router>
+      <AudioProvider>
+        <Router>
+          <Routes>
+            {/* Các Route không có Header và Footer */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/albums" element={<Album />} />
+            <Route path="/artist" element={<Artist />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/change-password" element={<ChangePasswordView />} />
+            <Route path="/subcribe" element={<Subcribe />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/song-detail/:id" element={<SongDetail />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route path="/playlist/:id" element={<PlaylistDetail />} />
+            <Route path="/general-setting" element={<GeneralSetting />} />
+            <Route path="/chart" element={<Chart />} />
+            <Route path="/setting-profile" element={<SettingProfile />} />
+          </Routes>
+
+          {/* Footer luôn hiển thị và không bị render lại khi chuyển trang */}
+          <Footer />
+        </Router>
+      </AudioProvider>
     </div>
   );
 }
