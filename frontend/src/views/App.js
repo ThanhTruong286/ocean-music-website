@@ -16,7 +16,7 @@ import SongDetail from './SongDetail';
 import Playlist from './Playlist';
 import PlaylistDetail from './PlaylistDetail';
 import GeneralSetting from './GeneralSetting';
-import Chart from './chart';
+import Chart from './Chart';
 import SettingProfile from './SettingProfile';
 
 const App = () => {
@@ -51,7 +51,6 @@ const App = () => {
           <Route path="/chart" element={<Chart />} />
           <Route path="/setting-profile" element={<SettingProfile />} />
         </Routes>
-        <Footer /> {/* Nếu muốn Footer xuất hiện ở mọi trang */}
       </Router>
     </div>
   );

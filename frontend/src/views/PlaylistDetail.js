@@ -216,9 +216,9 @@ const PlaylistDetail = () => {
                                                 style={{ marginRight: '10px', borderRadius: "5px" }}
                                             />
                                             <div>
-                                                <p className="title">{song.title}</p>
+                                                <p id='song-detail-title'>{song.title}</p>
                                                 {/* Hiển thị tên nghệ sĩ */}
-                                                <p className="artist">{song.artist}</p>
+                                                <p id='song-detail-artist'>{song.artist}</p>
                                             </div>
                                         </div>
                                         <button className="add-button">Add</button>

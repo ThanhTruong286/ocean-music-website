@@ -4,45 +4,54 @@ body {
   margin: 0;
   padding: 0;
 }
-.container {
+
+.ocean-container {
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
 }
-.header {
+
+.ocean-header {
   text-align: left;
   margin-bottom: 20px;
 }
-.header h1 {
+
+.ocean-header h1 {
   font-size: 24px;
   font-weight: 500;
   margin: 0;
 }
-.tabs {
+
+.ocean-tabs {
   display: flex;
   margin-bottom: 20px;
 }
-.tab {
+
+.ocean-tab {
   padding: 10px 20px;
   margin-right: 10px;
   border-radius: 20px;
   cursor: pointer;
   font-weight: 500;
 }
-.tab.active {
+
+.ocean-active {
   background-color: #ff4b4b;
   color: white;
 }
-.tab:not(.active) {
+
+.ocean-tab:not(.ocean-active) {
   background-color: #f1f1f1;
   color: #333;
 }
-.grid {
+
+.ocean-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
-.card {
+
+.ocean-card {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -50,19 +59,23 @@ body {
   overflow: hidden;
   text-align: center;
 }
-.card img {
+
+.ocean-card img {
   width: 100%;
   height: auto;
 }
-.card .info {
+
+.ocean-info {
   padding: 10px;
 }
-.card .info h3 {
+
+.ocean-info h3 {
   font-size: 16px;
   font-weight: 500;
   margin: 10px 0 5px;
 }
-.card .info p {
+
+.ocean-info p {
   font-size: 14px;
   color: #666;
   margin: 0;

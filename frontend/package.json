@@ -6,6 +6,7 @@
     "@babel/core": "^7.25.8",
     "@babel/preset-env": "^7.25.8",
     "@babel/preset-react": "^7.25.7",
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
@@ -17,6 +18,8 @@
     "crypto-js": "^4.2.0",
     "css-loader": "^7.1.2",
     "font-awesome": "^4.7.0",
+    "install": "^0.13.0",
+    "npm": "^10.9.0",
     "postcss-loader": "^8.1.1",
     "react": "^18.3.1",
     "react-audio-player": "^0.17.0",
@@ -28,7 +31,9 @@
     "sass-loader": "^16.0.2",
     "scss": "^0.2.4",
     "swiper": "^11.1.14",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zingchart": "^2.9.15-3",
+    "zingchart-react": "^3.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
