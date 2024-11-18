@@ -79,4 +79,132 @@ body {
   font-size: 14px;
   color: #666;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artist-detail__header {
+  position: relative;
+  background-image: url('https://placehold.co/800x400');
+  background-size: cover;
+  background-position: center;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.artist-detail__verified {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.artist-detail__verified i {
+  color: red;
+  margin-right: 5px;
+}
+
+.artist-detail__name {
+  font-size: 72px;
+  margin: 0;
+}
+
+.artist-detail__listeners {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.artist-detail__content-section {
+  padding: 20px;
+}
+
+.artist-detail__actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.artist-detail__play-button {
+  background-color: red;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.artist-detail__play-button i {
+  font-size: 24px;
+  color: #FFFFFF;
+}
+
+.artist-detail__follow-button {
+  background-color: transparent;
+  border: 1px solid #FFFFFF;
+  border-radius: 20px;
+  padding: 8px 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.artist-detail__more-options {
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.artist-detail__section-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.artist-detail__popular-songs,
+.artist-detail__artist-pick {
+  display: flex;
+  justify-content: space-between;
+}
+
+.artist-detail__song,
+.artist-detail__pick {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.artist-detail__song img,
+.artist-detail__pick img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.artist-detail__song-details,
+.artist-detail__pick-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.artist-detail__song-title,
+.artist-detail__pick-title {
+  font-size: 16px;
+}
+
+.artist-detail__song-plays,
+.artist-detail__pick-description {
+  font-size: 14px;
+  color: #B3B3B3;
+}
+
+.artist-detail__song-duration {
+  margin-left: auto;
+  font-size: 14px;
+  color: #B3B3B3;
 }

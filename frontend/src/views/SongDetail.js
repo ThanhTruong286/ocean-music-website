@@ -38,7 +38,7 @@ const SongDetail = () => {
     // Giải mã ID bài hát
     const decryptId = (encryptedId) => {
         const decoded = decodeURIComponent(encryptedId);
-        const bytes = CryptoJS.AES.decrypt(decoded, "MIKASA");
+        const bytes = CryptoJS.AES.decrypt(decoded, 'MIKASA');
         return bytes.toString(CryptoJS.enc.Utf8);
     };
 

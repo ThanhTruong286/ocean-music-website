@@ -20,7 +20,7 @@ const Footer = () => {
         if (!encryptedId) return null;
         try {
             const decoded = decodeURIComponent(encryptedId);
-            const bytes = CryptoJS.AES.decrypt(decoded, "MIKASA");
+            const bytes = CryptoJS.AES.decrypt(decoded, 'MIKASA');
             return bytes.toString(CryptoJS.enc.Utf8);
         } catch (error) {
             console.error("Decrypt error:", error);
