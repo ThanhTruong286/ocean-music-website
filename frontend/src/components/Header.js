@@ -105,7 +105,7 @@ const Header = () => {
                             <ul className="iq-nav-menu list-unstyled d-flex mb-0">
                                 <li className="nav-item">
                                     <a className="nav-link active" href="/" onClick={goToHome}>
-                                        <span className="item-name">Home</span>
+                                        <span className="item-name">Trang Chủ</span>
                                     </a>
                                 </li>
                                 <li className="nav-item">

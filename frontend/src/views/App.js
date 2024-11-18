@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/App.scss';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -15,8 +15,21 @@ import Payment from './Payment';
 import SongDetail from './SongDetail';
 import Playlist from './Playlist';
 import PlaylistDetail from './PlaylistDetail';
+import GeneralSetting from './GeneralSetting';
+import Chart from './chart';
+import SettingProfile from './SettingProfile';
 
 const App = () => {
+  useEffect(() => {
+    // Lấy trạng thái dark mode từ localStorage
+    const isDarkMode = JSON.parse(localStorage.getItem('isDarkMode'));
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, []); // Chạy một lần khi ứng dụng khởi động
+
   return (
     <div id="main">
       <Router>
@@ -34,7 +47,11 @@ const App = () => {
           <Route path="/song-detail/:id" element={<SongDetail />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/playlist/:id" element={<PlaylistDetail />} />
+          <Route path="/general-setting" element={<GeneralSetting />} />
+          <Route path="/chart" element={<Chart />} />
+          <Route path="/setting-profile" element={<SettingProfile />} />
         </Routes>
+        <Footer /> {/* Nếu muốn Footer xuất hiện ở mọi trang */}
       </Router>
     </div>
   );

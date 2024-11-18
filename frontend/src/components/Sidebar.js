@@ -37,7 +37,7 @@ const Sidebar = () => {
                             </li>
                             {/* Charts */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/chart" className="nav-link collapsed">
                                     <i className="fa-solid fa-chart-line"></i>
                                     <span className="item-name">Biểu Đồ</span>
                                 </a>
@@ -57,14 +57,14 @@ const Sidebar = () => {
                             </li>
                             {/* Cài đặt chung */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/general-setting" className="nav-link collapsed">
                                     <i className="fa-solid fa-gear"></i>
                                     <span className="item-name">Cài Đặt Chung</span>
                                 </a>
                             </li>
                             {/* Cài đặt tài khoản */}
                             <li className="nav-item">
-                                <a href="#" className="nav-link collapsed">
+                                <a href="/setting-profile" className="nav-link collapsed">
                                     <i className="fa-solid fa-user"></i>
                                     <span className="item-name">Cài Đặt Tài Khoản</span>
                                 </a>
