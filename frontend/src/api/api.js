@@ -2,6 +2,19 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getArtistById = async (artistId) => {
+    if(!artistId) {
+        throw new Error("no artist id found");
+    }
+    try{
+        const response = await axios.get(`${API_URL}/artist/${artistId}`);
+        return response.data;
+    }
+    catch (e) {
+        throw new Error("error get artist by id");
+    }
+}
+
 export const getRecommendSongByArtistIds = async (artistIds) => {
     try {
         const response = await axios.post(`${API_URL}/song/recommend`, {

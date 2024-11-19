@@ -3,8 +3,10 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/artist.scss';
-import { fetchArtists } from "../api/api";
 import faker from "../assets/images/artists/faker.jpg";
+import { useParams } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
+import { getArtistById } from '../api/api';
 
 // Load all images from the songs folder
 const images = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
@@ -15,16 +17,24 @@ const getSongImage = (imageName) => {
 };
 
 const ArtistDetail = () => {
+    const artist_id = useParams();
     const [artist, setArtist] = useState(null);
     const [err, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const decryptId = (encryptedId) => {
+        const decoded = decodeURIComponent(encryptedId);
+        const bytes = CryptoJS.AES.decrypt(decoded, 'MIKASA');
+        return bytes.toString(CryptoJS.enc.Utf8);
+    };
+
+    const decrypt = decryptId(artist_id.id);
+
     useEffect(() => {
         const loadArtist = async () => {
             try {
-                const response = await fetchArtists();
-                setArtist(response); // Giả sử API trả về dữ liệu nghệ sĩ
-                console.log(response); // Bạn có thể kiểm tra cấu trúc dữ liệu ở đây
+                const response = await getArtistById(decrypt);
+                setArtist(response);
             } catch (error) {
                 setError("Error loading artist");
             } finally {
@@ -41,6 +51,9 @@ const ArtistDetail = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
+
+    console.log(artist);
+    const ArtistImage = getSongImage(artist.profile_url);
 
     // Cấu trúc dữ liệu giả định cho bài hát của nghệ sĩ này
     const songs = [
@@ -79,13 +92,13 @@ const ArtistDetail = () => {
                 <div id="home">
                     <Header />
                     <div className="artist-detail__content container-fluid" id="page_layout">
-                        <div className="artist-detail__header">
+                        <div className="artist-detail__header" style={{ backgroundImage: `url(${ArtistImage})` }}>
                             <div className="artist-detail__verified">
                                 <i className="fas fa-check-circle"></i>
-                                <span>Verified Artist</span>
+                                <span style={{color: "white"}} >Verified Artist</span>
                             </div>
-                            <h1 className="artist-detail__name">Taylor Swift</h1>
-                            <div className="artist-detail__listeners">
+                            <h1 style={{color: "white"}} className="artist-detail__name">{artist.first_name} {artist.last_name}</h1>
+                            <div style={{color: "white"}}  className="artist-detail__listeners">
                                 90,370,250 monthly listeners
                             </div>
                         </div>

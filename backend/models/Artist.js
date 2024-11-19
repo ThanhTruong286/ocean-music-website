@@ -28,7 +28,12 @@ class ArtistModel {
     }
 
     static async getArtistById(artistId) {
-        const query = 'SELECT * FROM artists WHERE artist_id = ?';
+        const query = `
+            SELECT artists.*, users.*
+            FROM artists
+            LEFT JOIN users ON artists.user_id = users.user_id
+            WHERE artists.artist_id = ?;
+        `;
         return new Promise((resolve, reject) => {
             db.query(query, [artistId], (err, results) => {
                 if (err) return reject(err);
@@ -36,6 +41,7 @@ class ArtistModel {
             });
         });
     }
+    
 
     static async updateArtist(artistId, artistData) {
         const query = `

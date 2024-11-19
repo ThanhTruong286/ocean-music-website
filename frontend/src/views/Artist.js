@@ -6,6 +6,7 @@ import '../styles/artist.scss';
 import { fetchArtists } from "../api/api"
 import faker from "../assets/images/artists/faker.jpg";
 import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
 // Load all images from the songs folder
 const images = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
@@ -28,13 +29,13 @@ const Artist = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [artistsPerPage] = useState(8);
+  const navigate = useNavigate();  // Dùng useNavigate để điều hướng
 
   useEffect(() => {
     const loadArtist = async () => {
       try {
         const response = await fetchArtists();
         setArtist(response);
-        console.log(response);
       } catch (error) {
         setError("Error loading artist");
       } finally {
@@ -43,6 +44,9 @@ const Artist = () => {
     }
     loadArtist();
   }, []);
+  const handleOnclickArtist = (encryptedId) => {
+    navigate(`/artist/${encryptedId}`);
+}
 
   if (err) {
     return <div>{err}</div>;
@@ -84,11 +88,14 @@ const Artist = () => {
             <div className="ocean-grid">
               {currentArtists.map((data, index) => {
                 const artistImage = getSongImage(data.profile_url);
+                const decryptId = encryptId(data.artist_id);
                 return (
                   <div className="ocean-card" key={index}>
                     <img alt="Artist" height="200" src={artistImage} width="200" />
                     <div className="ocean-info">
-                      <h3>{data.first_name} {data.last_name}</h3>
+                      <h3
+                      style={{ cursor: "pointer" }} 
+                      onClick={() => handleOnclickArtist(decryptId)}>{data.first_name} {data.last_name}</h3>
                       <p>{data.bio}</p>
                     </div>
                   </div>
