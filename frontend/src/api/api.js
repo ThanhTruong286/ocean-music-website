@@ -2,6 +2,18 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getSongByArtist = async (artistId) => {
+    if(!artistId) {
+        throw new Error("no artist id found");
+    }
+    try{
+        const response = await axios.get(`${API_URL}/artist/${artistId}/songs`);
+        return response.data
+    } catch (e){
+        throw new Error("error get artist's songs");
+    }
+}
+
 export const getArtistById = async (artistId) => {
     if(!artistId) {
         throw new Error("no artist id found");
@@ -301,17 +313,6 @@ export const fetchAlbums = async () => {
         return response.data;
     } catch (error) {
         console.error('Error fetching albums:', error);
-        throw error;
-    }
-};
-
-// Fetch all songs
-export const fetchSongs = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/songs`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching songs:', error);
         throw error;
     }
 };

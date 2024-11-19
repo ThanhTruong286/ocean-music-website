@@ -11,6 +11,9 @@ router.post('/', artistController.createArtist);
 // Route lấy nghệ sĩ theo ID
 router.get('/:id', artistController.getArtistById);
 
+//Lấy danh sách nhạc của nghệ sĩ
+router.get('/:id/songs', artistController.getSongByArtist);
+
 // Route cập nhật nghệ sĩ theo ID
 router.put('/:id', artistController.updateArtist);
 

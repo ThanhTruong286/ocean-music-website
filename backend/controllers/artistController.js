@@ -1,5 +1,21 @@
 const ArtistModel = require('../models/Artist');
 
+exports.getSongByArtist = async (req, res) => {
+    try {
+        const artistId = req.params.id; // Lấy artistId từ params
+        const songs = await ArtistModel.getSongByArtist(artistId); // Gọi hàm model để lấy bài hát
+        
+        if (!songs || songs.length === 0) {
+            return res.status(404).json({ message: "No songs found for this artist" });
+        }
+
+        res.status(200).json(songs); // Trả về danh sách bài hát
+    } catch (e) {
+        console.error("Error in getSongByArtist:", e); // Log lỗi để dễ debug
+        res.status(500).json({ message: "Error getting artist's songs" });
+    }
+};
+
 exports.getAllArtists = async (req, res) => {
     try {
         const artists = await ArtistModel.getAllArtists();

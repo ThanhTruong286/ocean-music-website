@@ -6,22 +6,42 @@ import '../styles/artist.scss';
 import faker from "../assets/images/artists/faker.jpg";
 import { useParams } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
-import { getArtistById } from '../api/api';
+import { getArtistById, getSongByArtist } from '../api/api';
+import { useNavigate } from 'react-router-dom';
 
 // Load all images from the songs folder
-const images = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
+const songImages = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
-// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getSongImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    return songImages.keys().includes(`./${imageName}`) ? songImages(`./${imageName}`) : faker;
 };
 
+const artistImages = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
+
+const getArtistImage = (imageName) => {
+    return artistImages.keys().includes(`./${imageName}`) ? artistImages(`./${imageName}`) : faker;
+};
+
+const SECRET_KEY = 'MIKASA';
+
+const encryptId = (id) => {
+    const encrypted = CryptoJS.AES.encrypt(id.toString(), SECRET_KEY).toString();
+    return encodeURIComponent(encrypted);
+};
 const ArtistDetail = () => {
     const artist_id = useParams();
     const [artist, setArtist] = useState(null);
+    const [artistSongs, setArtistSongs] = useState([]);
     const [err, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+    const songsPerPage = 4; // Số lượng bài hát trên mỗi trang
+    const navigate = useNavigate();
 
+    const handleOnclickSong = (encryptedId) => {
+        navigate(`/song-detail/${encryptedId}`);  // Chuyển hướng sang trang chi tiết
+    }
+    
     const decryptId = (encryptedId) => {
         const decoded = decodeURIComponent(encryptedId);
         const bytes = CryptoJS.AES.decrypt(decoded, 'MIKASA');
@@ -41,8 +61,21 @@ const ArtistDetail = () => {
                 setLoading(false);
             }
         };
+
+        const loadArtistSongs = async () => {
+            try {
+                const response = await getSongByArtist(decrypt);
+                setArtistSongs(response || []); // Đảm bảo dữ liệu luôn là mảng
+            } catch (e) {
+                setError("Không tải được danh sách nhạc của nghệ sĩ");
+            } finally {
+                setLoading(false);
+            }
+        };
+
         loadArtist();
-    }, []);
+        loadArtistSongs();
+    }, [decrypt]);
 
     if (err) {
         return <div>{err}</div>;
@@ -52,36 +85,13 @@ const ArtistDetail = () => {
         return <div>Loading...</div>;
     }
 
-    console.log(artist);
-    const ArtistImage = getSongImage(artist.profile_url);
+    // Tính toán dữ liệu cho từng trang
+    const indexOfLastSong = currentPage * songsPerPage;
+    const indexOfFirstSong = indexOfLastSong - songsPerPage;
+    const currentSongs = artistSongs.slice(indexOfFirstSong, indexOfLastSong);
 
-    // Cấu trúc dữ liệu giả định cho bài hát của nghệ sĩ này
-    const songs = [
-        {
-            title: "Cruel Summer",
-            plays: "2,600,974,388",
-            duration: "2:58",
-            image: "https://storage.googleapis.com/a1aa/image/LbUSIalx4apuNFZL89csedE5ZbbrDePp8VwXby3B4ViDAPyTA.jpg"
-        },
-        {
-            title: "Fortnight (feat. Post)",
-            plays: "732,885,479",
-            duration: "3:48",
-            image: "https://storage.googleapis.com/a1aa/image/fxYl30Wgm5RqXqV4Gu3xhoSEawxw0wFe7fXBw4N89wKKAeIPB.jpg"
-        },
-        {
-            title: "I Can Do It With a B",
-            plays: "512,099,995",
-            duration: "3:38",
-            image: "https://storage.googleapis.com/a1aa/image/yJiInaWZcJopCJ7CkxnnTatpYYfhNhtRBTuzbZROFscBgH5JA.jpg"
-        },
-        {
-            title: "august",
-            plays: "1,304,566,094",
-            duration: "4:21",
-            image: "https://storage.googleapis.com/a1aa/image/K2280JEGtSqVPx4hbwfSOEnnLfOfsgvWl6zulG40p9RAAeIPB.jpg"
-        }
-    ];
+    // Chuyển đổi trang
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="artist-detail">
@@ -92,13 +102,13 @@ const ArtistDetail = () => {
                 <div id="home">
                     <Header />
                     <div className="artist-detail__content container-fluid" id="page_layout">
-                        <div className="artist-detail__header" style={{ backgroundImage: `url(${ArtistImage})` }}>
+                        <div className="artist-detail__header" style={{ backgroundImage: `url(${getArtistImage(artist.profile_url)})` }}>
                             <div className="artist-detail__verified">
                                 <i className="fas fa-check-circle"></i>
-                                <span style={{color: "white"}} >Verified Artist</span>
+                                <span style={{ color: "white" }}>Verified Artist</span>
                             </div>
-                            <h1 style={{color: "white"}} className="artist-detail__name">{artist.first_name} {artist.last_name}</h1>
-                            <div style={{color: "white"}}  className="artist-detail__listeners">
+                            <h1 style={{ color: "white" }} className="artist-detail__name">{artist.first_name} {artist.last_name}</h1>
+                            <div style={{ color: "white" }} className="artist-detail__listeners">
                                 90,370,250 monthly listeners
                             </div>
                         </div>
@@ -114,15 +124,29 @@ const ArtistDetail = () => {
                             </div>
                             <div className="artist-detail__section-title">Popular Songs</div>
                             <div className="artist-detail__popular-songs">
-                                {songs.map((song, index) => (
-                                    <div className="artist-detail__song" key={index}>
-                                        <img alt={song.title} height="50" src={song.image} width="50" />
-                                        <div className="artist-detail__song-details">
-                                            <span className="artist-detail__song-title">{song.title}</span>
-                                            <span className="artist-detail__song-plays">{song.plays}</span>
+                                {currentSongs.map((song) => {
+                                    const songImage = getSongImage(song.cover_image_url);
+                                    const songEncryptId = encryptId(song.song_id);
+                                    return (
+                                        <div className="artist-detail__song" key={song.song_id}>
+                                            <img style={{borderRadius: "10px"}} alt={song.title} height="50" src={songImage} width="50" />
+                                            <div className="artist-detail__song-details">
+                                                <span style={{cursor: "pointer"}} onClick={() => handleOnclickSong(songEncryptId)} className="artist-detail__song-title">{song.title}</span>
+                                            </div>
                                         </div>
-                                        <span className="artist-detail__song-duration">{song.duration}</span>
-                                    </div>
+                                    );
+                                })}
+                            </div>
+                            {/* Phân trang */}
+                            <div className="pagination">
+                                {Array.from({ length: Math.ceil(artistSongs.length / songsPerPage) }, (_, index) => (
+                                    <button
+                                        key={index + 1}
+                                        onClick={() => paginate(index + 1)}
+                                        className={currentPage === index + 1 ? 'active' : ''}
+                                    >
+                                        {index + 1}
+                                    </button>
                                 ))}
                             </div>
                         </div>
