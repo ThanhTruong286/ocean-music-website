@@ -142,7 +142,7 @@ const Home = () => {
                                         <SwiperSlide key={i}>
                                             <div className="new-release-group">
                                                 {filteredNewReleases.slice(i * 3, i * 3 + 3).map((song, index) => {
-                                                    const songImage = getSongImage(song.coverImageUrl || '');
+                                                    const songImage = getSongImage(song.coverImageUrl);
                                                     return (
                                                         <div key={index} className="new-release-item">
                                                             {/* Hình ảnh bài hát */}
