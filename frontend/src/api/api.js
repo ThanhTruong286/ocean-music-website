@@ -2,23 +2,59 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const ZaloPayment = async (price, userPlan) => {
+    try {
+        // Lấy userId từ localStorage
+        const accessToken = localStorage.getItem('userToken');
+
+        // Kiểm tra xem userId có tồn tại không
+        if (!accessToken) {
+            console.log("User ID không được tìm thấy trong localStorage.");
+            return;
+        }
+
+        const response = await axios.post(`${API_URL}/payment/zalopay`,
+            {
+                amount: price,
+                orderInfo: "Thanh toán qua MoMo",
+                userPlan: userPlan
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+
+        const result = response.data;
+        console.log(result);
+        if (result && result.order_url) {
+            window.location.href = result.order_url; //chuyen huong toi trang thanh toan
+        } else {
+            console.log("Lỗi khi khởi tạo thanh toán.");
+        }
+    } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+    }
+}
 export const getSongByArtist = async (artistId) => {
-    if(!artistId) {
+    if (!artistId) {
         throw new Error("no artist id found");
     }
-    try{
+    try {
         const response = await axios.get(`${API_URL}/artist/${artistId}/songs`);
         return response.data
-    } catch (e){
+    } catch (e) {
         throw new Error("error get artist's songs");
     }
 }
 
 export const getArtistById = async (artistId) => {
-    if(!artistId) {
+    if (!artistId) {
         throw new Error("no artist id found");
     }
-    try{
+    try {
         const response = await axios.get(`${API_URL}/artist/${artistId}`);
         return response.data;
     }
@@ -225,11 +261,10 @@ export const getSong = async (id) => {
 export const MoMoPayment = async (price, userPlan) => {
     try {
         // Lấy userId từ localStorage
-        const user = JSON.parse(localStorage.getItem('user'));
-        const userId = user.userId;
+        const accessToken = localStorage.getItem('userToken');
 
         // Kiểm tra xem userId có tồn tại không
-        if (!userId) {
+        if (!accessToken) {
             console.log("User ID không được tìm thấy trong localStorage.");
             return;
         }
@@ -238,14 +273,15 @@ export const MoMoPayment = async (price, userPlan) => {
             {
                 amount: price,
                 orderInfo: "Thanh toán qua MoMo",
-                userId: userId,
                 userPlan: userPlan
             },
             {
                 headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
 
         const result = response.data;
         console.log(result);

@@ -18,7 +18,6 @@ const Login = () => {
         try {
             // Gửi yêu cầu đăng nhập
             const response = await loginUser(userData);
-            console.log('Login successful:', response);
             navigate('/', { replace: true });
         } catch (error) {
             console.error('Login failed:', error);

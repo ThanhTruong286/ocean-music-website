@@ -6,7 +6,7 @@ import momo from "../assets/images/payment/momo.svg"
 import visa from "../assets/images/payment/visa.svg"
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { MoMoPayment } from "../api/api";
+import { MoMoPayment, ZaloPayment } from "../api/api";
 
 const Payment = () => {
     const location = useLocation();
@@ -37,7 +37,7 @@ const Payment = () => {
     };
     const methods = [
         { name: "MoMo wallet" },
-        { name: "Visa" },
+        { name: "Zalopay" },
     ];
     const handlePaymentMomo = async () => {
         try {
@@ -53,6 +53,20 @@ const Payment = () => {
             console.log("Lỗi thanh toán:", e);
         }
     };
+    const handlePaymentZaloPay = async () => {
+        try {
+            const response = await ZaloPayment(price, userPlan);
+            if (response.ok) {
+                window.location.href = response.redirectUrl;
+            } else {
+                // Xử lý lỗi nếu thanh toán không thành công
+                console.log("Lỗi thanh toán:", response.message);
+                alert(response.message || "Thanh toán không thành công");
+            }
+        } catch (e) {
+            console.log("Lỗi thanh toán:", e);
+        }
+    }
     return (
         <div>
             <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -130,31 +144,16 @@ const Payment = () => {
                                     ))}
                                 </ul>
                             </form>
-                            {methods[activeIndex]?.name === "Visa" && (
-                                <div className="visa-method">
+                            {methods[activeIndex]?.name === "Zalopay" && (
+                                <div className="momo-method">
                                     <div className="card">
                                         <div className="icon">
-                                            <img src={visa} width={24} height={24} />
+                                            <img src={momo} width={24} height={24} />
                                         </div>
-                                        <form action="">
-                                            <div className="form-group">
-                                                <label htmlFor="cardName">Tên chủ thẻ</label>
-                                                <input type="text" id="cardName" placeholder="Nhập tên chủ thẻ" required />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="cardNumber">Số thẻ</label>
-                                                <input type="text" id="cardNumber" placeholder="Nhập số thẻ" required />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="expiryDate">Ngày hết hạn (MM/YY)</label>
-                                                <input type="text" id="expiryDate" placeholder="MM/YY" required />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="cvv">CVV</label>
-                                                <input type="text" id="cvv" placeholder="Nhập CVV" required />
-                                            </div>
-                                            <button type="submit" className="submit-button">Thanh Toán</button>
-                                        </form>
+                                        <span>You'll be redirected to MoMo Wallet to complete your purchase.</span>
+                                        <button id="checkout_submit" onClick={handlePaymentZaloPay}>
+                                            <span>Continue purchase</span>
+                                        </button>
                                     </div>
                                 </div>
                             )}
