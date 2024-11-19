@@ -43,10 +43,6 @@ const TrendingList = () => {
     }, []);
 
     const handleOnclickSong = (encryptedId) => {
-        const currentId = localStorage.getItem('currentTrack');
-        if (!currentId || currentId !== encryptedId) {
-            localStorage.setItem('currentTrack', encryptedId);  // Lưu bài hát vào localStorage
-        }
         navigate(`/song-detail/${encryptedId}`);  // Chuyển hướng sang trang chi tiết
     }
 
@@ -90,7 +86,7 @@ const TrendingList = () => {
                                     </div>
 
                                     {/* Tên nghệ sĩ */}
-                                    <small className="artist fw-light text-muted text-capitalize d-block line-count-1">
+                                    <small id='artist__name' className="artist fw-light text-muted text-capitalize d-block line-count-1">
                                         {song.artist}
                                     </small>
                                 </div>
