@@ -1,0 +1,326 @@
+.main-view-container {
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    min-height: 0;
+
+    .main-content {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin: 0;
+        padding: 40px 16px;
+
+        h1 {
+            padding-bottom: 8px;
+            font-size: 32px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 18px;
+            color: #000;
+            font-weight: 400;
+
+            span {
+                display: flex;
+                justify-content: center;
+
+                a {
+                    text-decoration: underline;
+                    font-size: 13px;
+                }
+            }
+        }
+
+        .main-button {
+            display: flex;
+            justify-content: center;
+            margin: 24px 0;
+
+            button {
+                margin: 8px;
+                font-weight: 700;
+                border: 0px;
+                border-radius: 30px;
+                background-color: #000;
+                color: #fff;
+                cursor: pointer;
+                position: relative;
+                width: fit-content;
+                height: 50px;
+
+                span {
+                    padding: 8px 32px;
+
+                    a {
+                        color: #000;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .affordable {
+        padding: 32px 16px;
+        justify-content: center;
+        display: flex;
+        width: 100%;
+
+        .content {
+            padding: 0 100px;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+
+            h1 {
+                color: #000;
+                font-weight: 700;
+                display: flex;
+                justify-content: center;
+            }
+
+            p {
+                font-size: 18px;
+            }
+        }
+    }
+
+    .payment {
+        display: flex;
+        justify-content: center;
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: flex;
+
+            li {
+                background-color: black;
+                border-radius: 5px;
+                margin-right: 8px;
+                padding: 4px;
+
+                .payment-icon {
+                    background-position: 50%;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    display: inline-block;
+                    height: 30px;
+                    vertical-align: middle;
+                    width: 45px;
+                }
+
+                #momoIcon {
+                    background-image: url('../assets/images/payment/momo.svg');
+                }
+
+                #visaIcon {
+                    background-image: url('../assets/images/payment/visa.svg');
+                }
+
+                #masterCardIcon {
+                    background-image: url('../assets/images/payment/mastercard.svg');
+                }
+
+                #expressIcon {
+                    background-image: url('../assets/images/payment/amex.svg');
+                }
+            }
+        }
+    }
+
+    .plan {
+        display: inline;
+        width: 100%;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+
+        .description {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin: 48px auto;
+            max-width: 100%;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+
+            h2 {
+                font-size: 32px;
+                font-weight: 700;
+            }
+
+            .include {
+                margin-top: 12px;
+                text-align: center;
+
+                ul {
+                    color: #000;
+                    display: inline-block;
+                    text-align: left;
+                    box-sizing: border-box;
+                    -webkit-tap-highlight-color: transparent;
+                    padding-inline: 32px 0px;
+                    margin-block: 0px;
+                    overflow-wrap: break-word;
+
+                    .include-item {
+                        display: flex;
+
+                        svg {
+                            height: 24px;
+                            width: 24px;
+                        }
+
+                        li {
+                            list-style-type: none;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .plan-list {
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+
+        .content {
+            flex-wrap: wrap;
+            gap: 32px;
+            margin: 0 32px 72px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+
+            .plan-card {
+                display: flex;
+                flex-direction: column;
+                background-color: #000;
+                border-radius: 8px;
+                padding: 12px 16px;
+                width: 320px;
+
+                .head-card {
+                    display: flex;
+                    flex-direction: column;
+                    align-self: flex-start;
+                    width: 100%;
+                    color: #fff;
+                    justify-content: space-between;
+                    padding-left: 10px;
+
+                    h3 {
+                        color: white;
+                        font-size: 2rem !important;
+                        line-height: 145%;
+                        margin-top: 10px;
+                        font-family: var(--encore-title-font-stack);
+                        font-weight: 700;
+                        text-wrap: balance;
+                    }
+
+                    p {
+                        color: #fff;
+                        margin-bottom: 0;
+                    }
+
+                    .logo {
+                        display: inline-flex;
+                        -webkit-box-align: center;
+                        -ms-flex-align: center;
+                        align-items: center;
+                        -webkit-box-orient: horizontal;
+                        -webkit-box-direction: reverse;
+                        -ms-flex-direction: row-reverse;
+                        flex-direction: row-reverse;
+                        -webkit-box-pack: end;
+                        -ms-flex-pack: end;
+                        justify-content: flex-end;
+
+                        img {
+                            width: 30px;
+                            height: 20px;
+                        }
+
+                        .type {
+                            margin: 4px;
+                        }
+                    }
+                }
+
+                .subcribe-btn {
+                    border-radius: 20px;
+                    background-color: red;
+                    color: #fff;
+                    border: none;
+                    padding: 10px;
+                    text-decoration: none;
+                    color: #fff;
+                    text-align: center;
+                }
+
+                .terms {
+                    height: 38px;
+                    color: #b3b3b3;
+                    font-size: .6875rem;
+                    margin-top: 12px;
+                    text-align: center;
+
+                    a {
+                        color: inherit;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+
+                .description {
+                    padding-left: 16px;
+                    color: #fff;
+                    font-size: 1rem;
+                    padding-left: 32px;
+                    flex-grow: 1;
+                    list-style-type: disc;
+                    margin: 20px 0 24px;
+
+                }
+            }
+        }
+    }
+
+    .bottom-content {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 32px 16px;
+
+        .header {
+            flex-direction: column;
+            align-items: center;
+            max-width: 680px;
+            text-align: center;
+
+            h1 {
+                font-weight: 700;
+                text-wrap: balance;
+            }
+
+            p {
+                font-weight: 400;
+            }
+        }
+    }
+}

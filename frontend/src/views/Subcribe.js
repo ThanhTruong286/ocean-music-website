@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-import "../styles/global.scss";
+import "../styles/subcribe.scss";
 import logo from "../assets/images/logo.png";
 import { useHref } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const Subcribe = () => {
                                 </p>
                                 <div className="main-button">
                                     <button>
-                                        <span><a style={{color: 'white'}} href="/payment?type=individual">Get Premium Individual</a></span>
+                                        <span><a style={{ color: 'white' }} href="/payment?type=individual">Get Premium Individual</a></span>
                                     </button>
                                     <button style={{ border: "1px solid #000", backgroundColor: "transparent", color: "#000" }}>
                                         <span><a href="#planList">View All Plan</a></span>
@@ -112,7 +112,7 @@ const Subcribe = () => {
                                             <li>One-time payment</li>
                                             <li>Basic audio quality</li>
                                         </ul>
-                                            <a className="subcribe-btn" href="/payment?type=mini">Get Premium Mini</a>
+                                        <a className="subcribe-btn" href="/payment?type=mini">Get Premium Mini</a>
                                         <div className="terms">
                                             <a>Terms apply.</a>
                                             <br />
@@ -133,7 +133,7 @@ const Subcribe = () => {
                                             <li>Cancel anytime</li>
                                             <li>Subscribe or one-time payment</li>
                                         </ul>
-                                            <a className="subcribe-btn" href="/payment?type=individual">Get Premium Individual</a>
+                                        <a className="subcribe-btn" href="/payment?type=individual">Get Premium Individual</a>
                                         <div className="terms">
                                             <a>Terms apply.</a>
                                             <br />
@@ -155,8 +155,8 @@ const Subcribe = () => {
                                             <li>Cancel anytime</li>
                                             <li>Subscribe or one-time payment</li>
                                         </ul>
-                                       
-                                            <a className="subcribe-btn" href="/payment?type=student">Get Premium Student</a>
+
+                                        <a className="subcribe-btn" href="/payment?type=student">Get Premium Student</a>
 
                                         <div className="terms">
                                             <a>Terms apply.</a>

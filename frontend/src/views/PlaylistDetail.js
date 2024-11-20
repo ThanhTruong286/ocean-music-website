@@ -8,6 +8,7 @@ import { getPlaylistById, deleteSongFromPlaylist, getRecommendSongByArtistIds } 
 import { useParams, useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import faker from "../assets/images/artists/faker.jpg";
+import Swal from 'sweetalert2';
 
 const SECRET_KEY = 'MIKASA';
 
@@ -106,25 +107,56 @@ const PlaylistDetail = () => {
 
     // Hàm xóa bài hát khỏi playlist
     const handleDeleteSong = (songId) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this song from the playlist?");
-        if (confirmDelete) {
-            deleteSongFromPlaylist(playlistId, songId)
-                .then(response => {
-                    if (response.success) {
-                        alert('Song deleted successfully');
-                        setPlaylist(prevState => ({
-                            ...prevState,
-                            songs: prevState.songs.filter(song => song.songId !== songId)
-                        }));
-                    } else {
-                        alert('Failed to delete the song: ' + response.message);
-                    }
-                })
-                .catch(err => {
-                    console.error("Error deleting song:", err);
-                    alert('An error occurred while deleting the song. Please try again.');
-                });
-        }
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Bài hát sẽ bị xóa khỏi danh sách phát và không thể khôi phục!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gọi hàm xóa bài hát
+                deleteSongFromPlaylist(playlistId, songId)
+                    .then(response => {
+                        if (response.success) {
+                            // Thông báo thành công
+                            Swal.fire({
+                                title: 'Đã xóa!',
+                                text: 'Bài hát đã được xóa khỏi danh sách phát.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+
+                            // Cập nhật lại danh sách phát
+                            setPlaylist(prevState => ({
+                                ...prevState,
+                                songs: prevState.songs.filter(song => song.songId !== songId)
+                            }));
+                        } else {
+                            // Thông báo lỗi từ API
+                            Swal.fire({
+                                title: 'Lỗi!',
+                                text: `Không thể xóa bài hát: ${response.message}`,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error deleting song:", err);
+                        // Thông báo lỗi ngoại lệ
+                        Swal.fire({
+                            title: 'Lỗi!',
+                            text: 'Đã xảy ra lỗi khi xóa bài hát. Vui lòng thử lại.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+            }
+        });
     };
 
     return (

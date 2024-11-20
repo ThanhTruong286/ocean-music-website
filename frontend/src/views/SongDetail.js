@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import AddToPlaylistPopup from "../components/PlaylistPopup";
 import { getAllUserPlaylist, getSong, addSongToPlaylist } from "../api/api";
+import Swal from "sweetalert2";
 
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
 
@@ -32,7 +33,6 @@ const SongDetail = () => {
     const [error, setError] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [playlists, setPlaylists] = useState([]);
-    const [isPlaying, setIsPlaying] = useState(false); // New state to track play status
     const [audio] = useState(new Audio()); // Create a new Audio instance for playback
 
     // Giải mã ID bài hát
@@ -41,6 +41,15 @@ const SongDetail = () => {
         const bytes = CryptoJS.AES.decrypt(decoded, 'MIKASA');
         return bytes.toString(CryptoJS.enc.Utf8);
     };
+
+    const handleOnclickSong = (encryptedId) => {
+        const currentId = localStorage.getItem('currentTrack');
+        if (!currentId || currentId !== encryptedId) {
+            localStorage.setItem('currentTrack', encryptedId);  // Lưu bài hát vào localStorage
+        }
+        const event = new Event("trackUpdated");
+        window.dispatchEvent(event);
+    }
 
     useEffect(() => {
         const loadSong = async () => {
@@ -77,15 +86,6 @@ const SongDetail = () => {
         };
     }, [id, audio]);
 
-    const handlePlayPause = () => {
-        if (isPlaying) {
-            audio.pause();  // Pause the audio if it's currently playing
-        } else {
-            audio.play();   // Play the audio if it's currently paused
-        }
-        setIsPlaying(!isPlaying); // Toggle the play/pause state
-    };
-
     const handleAddPlaylistClick = () => {
         setShowPopup(true);
     };
@@ -94,10 +94,19 @@ const SongDetail = () => {
         try {
             const decryptedSongId = decryptId(id); // Giải mã song ID
             await addSongToPlaylist(playlistId, decryptedSongId);
-            alert('Thêm bài hát vào playlist thành công!');
+            Swal.fire({
+                title: "Thêm bài hát vào playlist thành công",
+                icon: "success",
+                confirmButtonText: "OK",
+            });
         } catch (error) {
             console.error('Error adding song to playlist:', error);
-            alert('Có lỗi xảy ra khi thêm bài hát vào playlist');
+            Swal.fire({
+                title: "Error",
+                text: "Có lỗi xảy ra khi thêm bài hát vào playlist",
+                icon: "error",
+                confirmButtonText: "Retry",
+            });
         } finally {
             setShowPopup(false);
         }
@@ -113,7 +122,12 @@ const SongDetail = () => {
     const createShareLink = () => {
         const currentUrl = window.location.href;
         navigator.clipboard.writeText(currentUrl).then(() => {
-            alert("Link copied to clipboard!");
+            Swal.fire({
+                title: "Copy link chia sẻ thành công",
+                text: `Link: ${currentUrl}`,
+                icon: "success",
+                confirmButtonText: "OK",
+            });
         }).catch((err) => {
             console.error("Failed to copy link: ", err);
         });
@@ -141,24 +155,24 @@ const SongDetail = () => {
                                             <div className="col-lg-8">
                                                 <div className="d-flex align-items-top justify-content-between">
                                                     <div className="music-detail">
-                                                        <h3 className="mb-3">{song.title}</h3>
+                                                        <h3 className="mb-3">Bài hát: {song.title}</h3>
                                                         <p className="mb-3">{formattedLyrics}</p>
                                                         <div className="d-flex align-items-center mb-4">
-                                                            <h6 className="mb-1 fw-bold me-3">{song.artist}</h6>
+                                                            <h6 className="mb-1 fw-bold me-3">Tác giả: {song.artist}</h6>
                                                             <h6 className="ps-3 fw-bold me-3 border-start">15 Tracks</h6>
                                                             <h6 className="ps-3 fw-bold border-start">{song.duration}s</h6>
                                                         </div>
 
                                                         <div className="d-flex align-items-center">
-                                                            <button onClick={handlePlayPause} className="play-btn btn btn-primary">
-                                                                {isPlaying ? 'Pause' : 'Play'} Music
+                                                            <button onClick={() => handleOnclickSong(id)} className="play-btn btn btn-danger">
+                                                                Phát Nhạc
                                                             </button>
-                                                            <button onClick={handleAddPlaylistClick} className="share-btn btn btn-outline-secondary ms-3">Add Playlist</button>
+                                                            <button onClick={handleAddPlaylistClick} className="share-btn btn btn-outline-secondary ms-3">Thêm Vào Playlist</button>
                                                             <button
                                                                 onClick={createShareLink}
                                                                 className="share-btn btn btn-outline-secondary ms-3"
                                                             >
-                                                                Share
+                                                                Chia Sẻ
                                                             </button>
                                                         </div>
                                                     </div>
@@ -175,7 +189,7 @@ const SongDetail = () => {
             </main>
             {showPopup && (
                 <AddToPlaylistPopup
-                    playlists={playlists}
+                    playlists={playlists || []}
                     onClose={() => setShowPopup(false)}
                     onAddToPlaylist={handleAddToPlaylist}
                 />

@@ -259,3 +259,19 @@ table .actions .delete {
 table .actions .delete:hover {
     background-color: #c82333;
 }
+
+#song-detail-title {
+    display: flex;
+    align-self: flex-start;
+}
+
+#song-detail-artist {
+    color: #b3b3b3;
+    font-size: 14px;
+    display: flex;
+    align-self: flex-start !important;
+}
+
+#artist__name {
+    margin: 0;
+}

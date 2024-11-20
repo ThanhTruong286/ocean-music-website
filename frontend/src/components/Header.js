@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUser } from "../api/api";
 import faker from "../assets/images/artists/faker.jpg";
 import logo from "../assets/images/logo.png";
+import "../styles/header.scss";
 
 const Header = () => {
     const [user, setUser] = useState(null);
@@ -91,15 +92,6 @@ const Header = () => {
             <nav className="nav navbar navbar-expand-xl navbar-light iq-navbar">
                 <div className="container-fluid navbar-inner">
                     <div className="d-flex align-items-center justify-content-between w-100">
-                        {/* Logo section */}
-                        <div className="sidebar-header d-flex align-items-center me-5">
-                            <a href="#" className="navbar-brand" onClick={goToHome}>
-                                <div className="logo-main">
-                                    <img src={logo} alt="Logo" className="logo-img" />
-                                </div>
-                            </a>
-                        </div>
-
                         {/* Navigation menu */}
                         <div className="collapse navbar-collapse flex-grow-1">
                             <ul className="iq-nav-menu list-unstyled d-flex mb-0">

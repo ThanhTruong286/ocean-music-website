@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-import "../styles/global.scss";
+import "../styles/payment.scss";
 import momo from "../assets/images/payment/momo.svg"
 import visa from "../assets/images/payment/visa.svg"
 import React, { useState } from "react";

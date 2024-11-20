@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-import "../styles/global.scss";
+import "../styles/profile.scss";
 import faker from "../assets/images/artists/faker.jpg";
 import peanut from "../assets/images/artists/peanut.jpg";
 import { useEffect, useState } from "react";

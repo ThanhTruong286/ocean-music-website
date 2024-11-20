@@ -1,10 +1,18 @@
-import "../styles/global.scss";
-import logo from '../assets/images/logo.png';
+import "../styles/sidebar.scss";
+import logo from "../assets/images/logo.png";
 
 const Sidebar = () => {
     return (
         <div>
             <div className="sidebar-body pt-0 data-scrollbar">
+                {/* Logo section */}
+                <div className="sidebar-header d-flex align-items-center">
+                    <a href="#" className="navbar-brand">
+                        <div className="logo-main">
+                            <img src={logo} alt="Logo" className="logo-img" />
+                        </div>
+                    </a>
+                </div>
                 <div className="scroll-content">
                     <div className="sidebar-list">
                         {/* sidebar-menu start */}

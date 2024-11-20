@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { getSong } from "../api/api";
 import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
+import "../styles/footer.scss";
 
 const Footer = () => {
     const audioRef = useRef(null);
@@ -28,39 +29,54 @@ const Footer = () => {
         }
     };
 
+    useEffect(() => {
+        const handleTrackUpdate = () => {
+            const updatedTrack = localStorage.getItem("currentTrack");
+            if (updatedTrack && updatedTrack !== currentTrack) {
+                setLoading(true);
+                setSong(null); // Reset song state
+                setError(false);
+                setIsPlaying(false); // Dừng phát nhạc
+
+                // Reload song data
+                setTimeout(() => {
+                    // Fake delay to ensure UI updates smoothly
+                    window.location.reload(); // Hoặc dùng cách bạn load lại dữ liệu
+                }, 100);
+            }
+        };
+
+        // Lắng nghe sự kiện khi track thay đổi
+        window.addEventListener("trackUpdated", handleTrackUpdate);
+
+        return () => {
+            window.removeEventListener("trackUpdated", handleTrackUpdate);
+        };
+    }, [currentTrack]);
+
     // Tải thông tin bài hát từ API
     useEffect(() => {
         const loadSong = async () => {
-            if (!currentTrack) {
+            const updatedTrack = localStorage.getItem("currentTrack");
+            if (!updatedTrack) {
                 setLoading(false);
                 return;
             }
 
             try {
-                const decryptedId = decryptId(currentTrack);
+                const decryptedId = decryptId(updatedTrack);
                 if (!decryptedId) throw new Error("Invalid ID");
 
                 const response = await getSong(decryptedId);
                 setSong(response);
 
-                // Khôi phục trạng thái từ localStorage
-                const savedCurrentTime = parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
-                const savedIsPlaying = localStorage.getItem("audioIsPlaying") === "true";
-                const savedVolume = parseInt(localStorage.getItem("audioVolume")) || 100;
-
-                setCurrentTime(savedCurrentTime);
-                setIsPlaying(savedIsPlaying);
-                setVolume(savedVolume);
-
                 if (audioRef.current) {
-                    audioRef.current.currentTime = savedCurrentTime;
-                    audioRef.current.volume = savedVolume / 100;
-
-                    // Không tự động phát nhạc sau khi tải lại trang, nhưng đảm bảo audio không bị đơ
-                    if (savedIsPlaying) {
-                        audioRef.current.play().catch((err) => console.error("Play error:", err));
-                    }
+                    audioRef.current.pause(); // Dừng bài hát cũ
+                    audioRef.current.currentTime = 0; // Reset thời gian
+                    audioRef.current.load(); // Tải lại audio
                 }
+
+                setIsPlaying(false); // Để người dùng tự phát nhạc
             } catch (error) {
                 setError(true);
                 console.error("Failed to load song:", error);
@@ -70,7 +86,8 @@ const Footer = () => {
         };
 
         loadSong();
-    }, [currentTrack]);
+    }, [currentTrack]); // Lắng nghe sự thay đổi của currentTrack
+
 
     // Cập nhật trạng thái khi phát/dừng nhạc
     const togglePlayPause = () => {

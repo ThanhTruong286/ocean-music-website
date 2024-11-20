@@ -1,0 +1,98 @@
+.footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    z-index: 999;
+    background-color: black !important;
+    margin: 0;
+    transition: all .45s ease 0s;
+    color: #fff;
+
+    .track-art {
+        img {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            flex-shrink: 0;
+            height: 50px;
+            width: 50px;
+            border-radius: 4px;
+        }
+    }
+
+    .player-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: black;
+    }
+
+    .song-info {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .song-info .title {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .song-info .artist {
+        font-size: 14px;
+        color: red;
+    }
+
+    .controls {
+        display: flex;
+        align-items: center;
+    }
+
+    .controls i {
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .play-button {
+        margin: 0;
+        width: 40px;
+        height: 40px;
+        background-color: red;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .play-button i {
+        color: white;
+        font-size: 20px;
+    }
+
+    .volume-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .volume-container input[type="range"] {
+        margin: 0 10px;
+    }
+
+    .time {
+        margin-left: 10px;
+    }
+
+    .extra-controls {
+        display: flex;
+        align-items: center;
+    }
+
+    .extra-controls i {
+        margin-left: 10px;
+        cursor: pointer;
+    }
+}

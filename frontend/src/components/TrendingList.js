@@ -5,6 +5,7 @@ import faker from "../assets/images/artists/faker.jpg";
 import { fetchingSongs } from "../api/api";
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import "../styles/trendingList.scss";
 
 // Load all images from the songs folder
 const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
