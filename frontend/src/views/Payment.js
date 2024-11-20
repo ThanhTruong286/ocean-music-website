@@ -4,7 +4,6 @@ import Footer from "../components/Footer";
 import "../styles/payment.scss";
 import momo from "../assets/images/payment/momo.svg"
 import zalo from "../assets/images/payment/zalo.png"
-import vnpay from "../assets/images/payment/vnpay.png"
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MoMoPayment, ZaloPayment } from "../api/api";
@@ -35,13 +34,12 @@ const Payment = () => {
     const images = {
         "MoMo wallet": momo,
         "Zalopay": zalo,
-        "VNPAY": vnpay
     };
     const methods = [
         { name: "MoMo wallet" },
         { name: "Zalopay" },
-        { name: "VNPAY" }
     ];
+
     const handlePaymentMomo = async () => {
         try {
             const response = await MoMoPayment(price, userPlan);
@@ -147,19 +145,6 @@ const Payment = () => {
                                     ))}
                                 </ul>
                             </form>
-                            {methods[activeIndex]?.name === "VNPAY" && (
-                                <div className="vnpay-method">
-                                    <div className="card">
-                                        <div className="icon">
-                                            <img src={vnpay} width={24} height={24} />
-                                        </div>
-                                        <span>Bạn sẽ chuyển hướng tới VN Pay để thanh toán</span>
-                                        <button id="checkout_submit" onClick={handlePaymentZaloPay}>
-                                            <span>Tiếp tục thanh toán</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
                             {methods[activeIndex]?.name === "Zalopay" && (
                                 <div className="zalo-method">
                                     <div className="card">

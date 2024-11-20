@@ -3,7 +3,6 @@ const axios = require('axios');
 const crypto = require('crypto');
 const UserModel = require('../models/User');
 const moment = require('moment');
-const qs = require('qs');
 
 const config = {
     app_id: '2553',
@@ -24,7 +23,7 @@ exports.ZaloPayment = async (req, res) => {
     } else if (userPlan === "individual") {
         amount = 59000;
     } else if (userPlan === "student") {
-        subscription_id = 29500;
+        amount = 29500;
     }
 
     const embed_data = {
@@ -47,7 +46,7 @@ exports.ZaloPayment = async (req, res) => {
         amount: amount,
         //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
         //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-        callback_url: 'https://89b5-1-53-27-130.ngrok-free.app/api/payment/zalopay/callback',
+        callback_url: 'https://b09d-1-53-27-130.ngrok-free.app/api/payment/zalopay/callback',
         description: `Lazada - Payment for the order #${transID}`,
         bank_code: '',
     };
@@ -144,7 +143,6 @@ exports.ZaloPaymentCallback = async (req, res) => {
     }
 };
 
-
 exports.MoMoPayment = async (req, res) => {
     const data = req.body;
     const userIdString = String(req.user.userId);
@@ -156,7 +154,7 @@ exports.MoMoPayment = async (req, res) => {
     const orderInfo = data.orderInfo;
     const partnerCode = 'MOMO';
     const redirectUrl = 'http://localhost:3000/profile';
-    const ipnUrl = 'https://89b5-1-53-27-130.ngrok-free.app/api/payment/momo/callback';
+    const ipnUrl = 'https://b09d-1-53-27-130.ngrok-free.app/api/payment/momo/callback';
     const requestType = "payWithMethod";
     const amount = data.amount;
     const orderId = partnerCode + new Date().getTime();

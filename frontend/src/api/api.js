@@ -16,7 +16,7 @@ export const ZaloPayment = async (price, userPlan) => {
         const response = await axios.post(`${API_URL}/payment/zalopay`,
             {
                 amount: price,
-                orderInfo: "Thanh toán qua MoMo",
+                orderInfo: "Thanh toán qua Zalo Pay",
                 userPlan: userPlan
             },
             {
