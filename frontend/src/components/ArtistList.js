@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import faker from "../assets/images/artists/faker.jpg";
 import { fetchArtists } from '../api/api';
+import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
 // Hàm lấy hình ảnh của nghệ sĩ hoặc trả về ảnh mặc định
 const images = require.context('../assets/images/artists', false, /\.(jpg|jpeg|png|gif)$/);
@@ -10,16 +12,29 @@ const getArtistImage = (imageName) => {
     return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
 };
 
+const SECRET_KEY = 'MIKASA';
+
+const encryptId = (id) => {
+    const encrypted = CryptoJS.AES.encrypt(id.toString(), SECRET_KEY).toString();
+    return encodeURIComponent(encrypted);
+};
+
 const ArtistList = () => {
     const [artists, setArtists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();  // Dùng useNavigate để điều hướng
+
+    const handleOnclickArtist = (encryptedId) => {
+        navigate(`/artist/${encryptedId}`);
+    }
 
     useEffect(() => {
         const loadArtists = async () => {
             try {
                 const data = await fetchArtists();
                 setArtists(data);
+                console.log(data);
             } catch (err) {
                 setError('Không thể tải danh sách nghệ sĩ');
             } finally {
@@ -44,7 +59,8 @@ const ArtistList = () => {
                 loop={true}
             >
                 {artists.map((artist) => {
-                    const artistImage = getArtistImage(artist.image);
+                    const artistImage = getArtistImage(artist.profile_url);
+                    const decryptId = encryptId(artist.artist_id);
                     return (
                         <SwiperSlide key={artist.artist_id}>
                             <div className="swiper-slide card">
@@ -60,9 +76,9 @@ const ArtistList = () => {
 
                                     {/* Tên nghệ sĩ */}
                                     <a
-                                        href={`/artist/${artist.artist_id}`}
                                         className="title text-capitalize line-count-1 h6 d-block text-truncate"
-                                        style={{ maxWidth: '150px', margin: '0 auto' }}
+                                        style={{ maxWidth: '150px', margin: '0 auto', cursor: "pointer" }}
+                                        onClick={() => handleOnclickArtist(decryptId)}
                                     >
                                         {artist.username}
                                     </a>

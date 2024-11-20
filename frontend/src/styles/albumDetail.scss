@@ -1,0 +1,163 @@
+/* AlbumDetail Component Styles */
+$primary-color: red;
+/* Red */
+$secondary-color: #000;
+/* Dark Black */
+$accent-color: #fff;
+/* White */
+$hover-color: #a02a2a;
+/* Lighter Red on Hover */
+
+/* Sidebar */
+.album-detail__sidebar {
+    width: 250px;
+    background-color: $secondary-color;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* Main content area */
+.album-detail__main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: $secondary-color;
+}
+
+/* Header Section (Kept as it is) */
+.album-detail__header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    background: red;
+    border-bottom: 2px solid $primary-color;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.album-detail__header img {
+    border-radius: 10px;
+    border: 2px solid $accent-color;
+}
+
+.album-detail__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: $accent-color;
+}
+
+.album-detail__info p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.album-detail__info h1 {
+    font-size: 2rem;
+    margin: 5px 0;
+    color: $accent-color;
+}
+
+.album-detail__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.album-detail__user img {
+    border-radius: 50%;
+}
+
+.album-detail__user p {
+    font-size: 1rem;
+    color: #ccc;
+}
+
+/* Action buttons (Returned to previous style) */
+.album-detail__action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.album-detail__action-button {
+    background-color: #333;
+    color: $accent-color;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.album-detail__action-button:hover {
+    background-color: $primary-color;
+    color: white;
+}
+
+/* Song List Table (Returned to previous style) */
+.album-detail__table-container {
+    table {
+        border: none !important;
+    }
+
+    width: 100%;
+    margin-top: 30px;
+}
+
+.album-detail__table-container table {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: $secondary-color;
+}
+
+.album-detail__table-container th,
+.album-detail__table-container td {
+    padding: 10px;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.album-detail__table-container th {
+    background-color: $primary-color;
+    color: $accent-color;
+}
+
+.album-detail__table-container tr:nth-child(even) {
+    background-color: #333;
+}
+
+.album-detail__song-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.album-detail__song-title img {
+    border-radius: 5px;
+}
+
+.album-detail__song-title .title {
+    font-size: 1.1rem;
+    color: $accent-color;
+}
+
+.album-detail__song-title .title span {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.album-detail__table-container td {
+    font-size: 1rem;
+    color: $accent-color;
+}
+
+.album-detail__table-container i {
+    font-size: 1.2rem;
+    color: #aaa;
+}

@@ -264,3 +264,47 @@
 .main-content {
   margin-left: 16.2rem;
 }
+
+.album-header {
+  display: flex;
+  justify-content: space-between;
+  /* Distribute space between title and buttons */
+  align-items: center;
+  /* Align items vertically in the center */
+  margin: 0 20px;
+  /* Add some horizontal margin for spacing */
+}
+
+.card-title {
+  margin: 0;
+  /* Remove default margin */
+}
+
+.album-actions {
+  display: flex;
+  gap: 10px;
+  /* Adds space between buttons */
+}
+
+.album-actions .button {
+  padding: 8px 16px;
+  /* Add padding to buttons */
+  font-size: 14px;
+  /* Make the font size a bit smaller */
+  cursor: pointer;
+  border: none;
+  background-color: red;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.album-actions .button:hover {
+  background-color: red;
+  /* Darker blue when hovering */
+}
+
+.album-actions .button:focus {
+  outline: none;
+  /* Remove the focus outline */
+}

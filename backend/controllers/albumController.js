@@ -22,12 +22,18 @@ exports.createAlbum = (req, res) => {
 
 exports.getAlbumById = (req, res) => {
     const albumId = req.params.id;
-    AlbumModel.getAlbumById(albumId, (err, result) => {
-        if (err || result.length === 0) {
-            return res.status(404).json({ message: 'Album not found' });
+    AlbumModel.findById(albumId, (err, album) => {
+        if (err) {
+            console.error("Database Error:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
         }
-        res.json(result[0]);
+        if (!album) {
+            console.log("No album found for ID:", albumId);
+            return res.status(404).json(null); // Trả về null nếu không tìm thấy album
+        }
+        res.json(album); // Đảm bảo trả về dữ liệu album
     });
+
 };
 
 exports.updateAlbum = (req, res) => {

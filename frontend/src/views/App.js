@@ -19,7 +19,8 @@ import GeneralSetting from './GeneralSetting';
 import Chart from './Chart';
 import SettingProfile from './SettingProfile';
 import Footer from '../components/Footer';
-import ArtistDetail from "./ArtistDetail"
+import ArtistDetail from "./ArtistDetail";
+import AlbumDetail from "./AlbumDetail";
 
 const App = () => {
   useEffect(() => {
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/albums" element={<Album />} />
+            <Route path="/albums/:id" element={<AlbumDetail />} />
             <Route path="/artist" element={<Artist />} />
             <Route path="/artist/:id" element={<ArtistDetail />} />
             <Route path="/profile" element={<Profile />} />

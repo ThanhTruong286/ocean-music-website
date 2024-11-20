@@ -2,8 +2,15 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getAlbumById = async (id) => {
+    try {
+        const response = await axios.get(`${API_URL}/album/${id}`);
+        return response.data;
+    } catch (e) {
+        throw new Error("error get album by id", e);
+    }
+}
 export const getArtistAlbums = async (userId) => {
-    console.log(userId);
     try {
         const accessToken = localStorage.getItem('userToken');
 

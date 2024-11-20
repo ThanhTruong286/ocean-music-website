@@ -106,10 +106,11 @@ const Playlist = () => {
                                     <i
                                         className="fas fa-plus"
                                         onClick={handleAddPlaylist}
-                                        style={{ cursor: 'pointer' }}
+                                        style={{ cursor: 'pointer', color: 'black' }}
                                     ></i>
-                                    <i className="fas fa-arrow-right"></i>
+                                    <i className="fas fa-arrow-right" style={{ color: 'black' }}></i>
                                 </div>
+
                             </div>
                             <div className="filters">
                                 <button className="active">Danh Sách Playlists</button>
