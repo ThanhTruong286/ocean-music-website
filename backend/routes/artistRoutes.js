@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const artistController = require('../controllers/artistController');
+const authenticateToken = require('../middlewares/authMiddleware');
 
 // Route lấy tất cả nghệ sĩ
 router.get('/', artistController.getAllArtists);
@@ -21,6 +22,8 @@ router.put('/:id', artistController.updateArtist);
 router.delete('/:id', artistController.deleteArtist);
 
 // Route lấy username của nghệ sĩ theo ID
-router.get('/:id/username', artistController.getUsernameByArtistId); // Thêm route này
+router.get('/:id/username', artistController.getUsernameByArtistId);
+
+router.get('/:id/albums', artistController.getArtistAlbums);
 
 module.exports = router;

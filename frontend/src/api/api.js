@@ -2,6 +2,23 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getArtistAlbums = async (userId) => {
+    console.log(userId);
+    try {
+        const accessToken = localStorage.getItem('userToken');
+
+        if (!accessToken) {
+            console.log("User ID không được tìm thấy trong localStorage.");
+            return;
+        }
+        const response = await axios.get(`${API_URL}/artist/${userId}/albums`)
+        if (response) {
+            return response.data;
+        }
+    } catch (e) {
+        throw new Error("Error get artist album");
+    }
+}
 export const ZaloPayment = async (price, userPlan) => {
     try {
         // Lấy userId từ localStorage

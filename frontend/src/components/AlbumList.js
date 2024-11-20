@@ -1,31 +1,73 @@
 import faker from "../assets/images/artists/faker.jpg";
 import React, { useEffect, useState } from 'react';
-import { fetchAlbums } from '../api/api';
 import '../styles/album.scss';
+import { getUser, getArtistAlbums } from "../api/api";
+
+// Load all images from the songs folder
+const images = require.context('../assets/images/albums', false, /\.(jpg|jpeg|png|gif)$/);
+
+// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
+const getAlbumsImage = (imageName) => {
+    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+};
 
 const AlbumList = () => {
     const [albums, setAlbums] = useState([]);
     const [loadingAlbums, setLoadingAlbums] = useState(true);
     const [albumError, setAlbumError] = useState(null);
+    const [user, setUser] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            console.error('No access token found');
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (accessToken) {
+                try {
+                    const data = await getUser();
+                    setUser(data);  // Set user state with the fetched data
+                } catch (error) {
+                    console.error('Error fetching user:', error);
+                }
+            }
+        };
+
+        if (accessToken) {
+            fetchUser();
+        }
+    }, [accessToken]); // Only run this effect when accessToken changes
+
+    useEffect(() => {
+        const fetchAlbums = async () => {
+            if (user && user.user_id) {  // Ensure user is not null before calling the API
+                try {
+                    const data = await getArtistAlbums(user.user_id);
+                    setAlbums(data);
+                    console.log(data);
+                } catch (error) {
+                    setAlbumError('Error fetching albums:', error);
+                } finally {
+                    setLoadingAlbums(false);
+                }
+            }
+        };
+
+        // Only call fetchAlbums if user has been successfully fetched
+        if (user && user.user_id) {
+            fetchAlbums();
+        }
+    }, [user]); // This effect will run when user state changes
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 6; // Number of albums per page
-
-    useEffect(() => {
-        const loadAlbums = async () => {
-            try {
-                const data = await fetchAlbums();
-                setAlbums(data);
-            } catch (err) {
-                setAlbumError('Unable to load albums.');
-            } finally {
-                setLoadingAlbums(false);
-            }
-        };
-
-        loadAlbums();
-    }, []);
 
     // Calculate total pages
     const totalPages = Math.ceil(albums.length / itemsPerPage);
@@ -54,6 +96,7 @@ const AlbumList = () => {
 
     return (
         <div>
+            <h4 className="card-title text-capitalize ms-5">Albums</h4>
             <div className="album-list">
                 {/* Album Loading & Error State */}
                 {loadingAlbums ? (
@@ -61,17 +104,20 @@ const AlbumList = () => {
                 ) : albumError ? (
                     <div>Error: {albumError}</div>
                 ) : (
-                    currentAlbums.map(album => (
-                        <div key={album.album_id} className="album-item">
-                            <img
-                                src={album.image || faker}
-                                alt={album.title}
-                                className="album-image"
-                            />
-                            <h2 className="album-title">{album.title}</h2>
-                            <p className="album-artist">John Faker</p>
-                        </div>
-                    ))
+                    currentAlbums.map(album => {
+                        const albumsImage = getAlbumsImage(album.cover_image_url);
+                        return (
+                            <div key={album.album_id} className="album-item">
+                                <img
+                                    src={albumsImage || faker}
+                                    alt={album.title}
+                                    className="album-image"
+                                />
+                                <h2 style={{ cursor: "pointer" }} className="album-title">{album.title}</h2>
+                                <p className="album-artist">{user?.first_name} {user?.last_name}</p>
+                            </div>
+                        )
+                    })
                 )}
             </div>
 

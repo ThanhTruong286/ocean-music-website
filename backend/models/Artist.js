@@ -3,14 +3,13 @@ const UserModel = require('./User'); // Để truy xuất tên người dùng t�
 
 class ArtistModel {
 
-    static async getSongByArtist(artistId) {
+    static async getArtistAlbums(artistId) {
         const query = `
-            SELECT songs.* 
-            FROM artist_songs 
-            JOIN songs ON artist_songs.song_id = songs.song_id
-            WHERE artist_songs.artist_id = ?
+            SELECT *
+            FROM albums
+            JOIN artists ON albums.artist_id = artists.artist_id
+            WHERE artists.user_id = ?
         `;
-    
         return new Promise((resolve, reject) => {
             db.query(query, [artistId], (err, result) => {
                 if (err) {
@@ -21,7 +20,26 @@ class ArtistModel {
             });
         });
     }
-    
+
+    static async getSongByArtist(artistId) {
+        const query = `
+            SELECT songs.* 
+            FROM artist_songs 
+            JOIN songs ON artist_songs.song_id = songs.song_id
+            WHERE artist_songs.artist_id = ?
+        `;
+
+        return new Promise((resolve, reject) => {
+            db.query(query, [artistId], (err, result) => {
+                if (err) {
+                    console.error('Database query error:', err);
+                    return reject(err); // Trả về lỗi nếu xảy ra
+                }
+                resolve(result); // Trả về kết quả nếu thành công
+            });
+        });
+    }
+
     static async getAllArtists() {
         const query = `
             SELECT artists.artist_id, artists.bio, artists.user_id, users.*
@@ -61,7 +79,7 @@ class ArtistModel {
             });
         });
     }
-    
+
 
     static async updateArtist(artistId, artistData) {
         const query = `

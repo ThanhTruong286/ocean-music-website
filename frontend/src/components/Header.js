@@ -4,6 +4,14 @@ import { getUser } from "../api/api";
 import faker from "../assets/images/artists/faker.jpg";
 import "../styles/header.scss";
 
+// Load all images from the songs folder
+const images = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
+
+// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
+const getProfileImage = (imageName) => {
+    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+};
+
 const Header = () => {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
@@ -86,6 +94,21 @@ const Header = () => {
         }
     }, []);
 
+    const renderAlbumLink = () => {
+        if (user && user.role_id === 3) {
+            return (
+                <li className="nav-item">
+                    <a className="nav-link" href="/albums" onClick={goToAlbums}>
+                        <span className="item-name">Albums</span>
+                    </a>
+                </li>
+            );
+        }
+        return null;
+    };
+
+    const ProfileImage = user?.profile_url ? getProfileImage(user.profile_url) : faker;
+
     return (
         <div className="position-relative">
             <nav className="nav navbar navbar-expand-xl navbar-light iq-navbar">
@@ -99,11 +122,7 @@ const Header = () => {
                                         <span className="item-name">Trang Chủ</span>
                                     </a>
                                 </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/albums" onClick={goToAlbums}>
-                                        <span className="item-name">Albums</span>
-                                    </a>
-                                </li>
+                                {renderAlbumLink()}
                                 <li className="nav-item">
                                     <a className="nav-link" href="/subcribe" onClick={goToSubscribe}>
                                         <span className="item-name">Get Premium</span>
@@ -134,7 +153,7 @@ const Header = () => {
                         {accessToken ? (
                             <div className="avatar-container" onClick={togglePopup} ref={avatarRef}>
                                 <img
-                                    src={user && user.images && user.images.length > 0 ? user.images[0].url : faker}
+                                    src={user && user.profile_url ? ProfileImage : faker}
                                     alt="User-Profile"
                                     className="theme-color-default-img img-fluid avatar avatar-40 avatar-rounded"
                                     loading="lazy"

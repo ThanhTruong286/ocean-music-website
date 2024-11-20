@@ -232,7 +232,10 @@ exports.loginUser = async (req, res) => {
     if (passwordMatch) {
       // Tạo token
       const token = jwt.sign(
-        { userId: user.user_id }, // Payload
+        {
+          userId: user.user_id,
+          userRole: user.role_id
+        }, // Payload
         "MIKASA",
         { expiresIn: '30d' } // Thời hạn token là 30 ngày
       );
