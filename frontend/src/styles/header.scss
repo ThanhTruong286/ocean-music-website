@@ -186,6 +186,26 @@
             list-style: none;
             margin: 0;
             padding: 10px 0;
+
+            li {
+                padding: 8px;
+                text-align: left;
+
+                a {
+                    text-decoration: none;
+                    color: #333;
+                    font-weight: bold;
+                    display: block;
+                    padding: 5px;
+                    border-radius: 5px;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: #e63946;
+                        color: #fff;
+                    }
+                }
+            }
         }
     }
 }

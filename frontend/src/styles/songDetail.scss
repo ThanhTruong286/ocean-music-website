@@ -1,0 +1,144 @@
+.song-detail-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    .song-detail-content {
+
+        .song-detail-card {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
+            .song-detail-body {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .song-info {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .song-image {
+                        width: 250px;
+                        height: 250px;
+                        overflow: hidden;
+                        border-radius: 15px;
+                        margin-right: 30px;
+
+                        img {
+                            width: 100%;
+                            object-fit: cover;
+                        }
+                    }
+
+                    .song-description {
+                        flex: 1;
+
+                        .song-title {
+                            color: #f44336;
+                            font-size: 2rem;
+                            font-weight: bold;
+                            margin-bottom: 15px;
+                        }
+
+                        .song-lyrics {
+                            color: #fff;
+                            font-size: 1.1rem;
+                            margin-bottom: 20px;
+                            line-height: 1.6;
+                        }
+
+                        .song-meta {
+                            color: #bbb;
+                            margin-bottom: 20px;
+
+                            .artist {
+                                margin-right: 20px;
+                            }
+
+                            .duration {
+                                font-weight: bold;
+                            }
+                        }
+
+                        .song-actions {
+                            display: flex;
+                            gap: 15px;
+
+                            button {
+                                padding: 10px 20px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                font-weight: 600;
+                                transition: 0.3s;
+
+                                &.play-btn {
+                                    background-color: #f44336;
+                                    color: white;
+
+                                    &:hover {
+                                        background-color: #d32f2f;
+                                    }
+                                }
+
+                                &.add-to-playlist-btn {
+                                    background-color: #8e24aa;
+                                    color: white;
+
+                                    &:hover {
+                                        background-color: #7b1fa2;
+                                    }
+                                }
+
+                                &.share-btn {
+                                    background-color: #2196f3;
+                                    color: white;
+
+                                    &:hover {
+                                        background-color: #1976d2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .song-detail-page {
+        padding: 20px;
+
+        .song-detail-content {
+            .song-detail-card {
+                padding: 20px;
+
+                .song-detail-body {
+                    flex-direction: column;
+                    align-items: center;
+
+                    .song-info {
+                        flex-direction: column;
+                        align-items: center;
+
+                        .song-image {
+                            width: 200px;
+                            height: 200px;
+                        }
+
+                        .song-description {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

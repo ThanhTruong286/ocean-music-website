@@ -32,6 +32,7 @@
 
         .description {
             .header {
+                margin: 0;
                 background: red;
                 color: #fff;
                 padding: 16px;
@@ -262,7 +263,9 @@
             }
         }
 
-        .momo-method {
+        .momo-method,
+        .vnpay-method,
+        .zalo-method {
             margin-top: 20px;
             background-color: #ffffff;
             padding: 20px;
@@ -287,81 +290,87 @@
                     font-size: 17.5px;
                     font-weight: 400;
                 }
+            }
+        }
 
-                #checkout_submit {
-                    height: 56px;
-                    margin: 15px;
-                    border: none;
-                    border-radius: 30px;
-                    background-color: pink;
-                    vertical-align: middle;
-                    color: black;
-                    transition: background-color 0.3s;
+        .momo-method {
+            #checkout_submit {
+                height: 56px;
+                margin: 15px;
+                border: none;
+                border-radius: 30px;
+                background-color: pink;
+                vertical-align: middle;
+                color: black;
+                transition: background-color 0.3s;
 
-                    span {
-                        font-weight: bold;
-                    }
+                span {
+                    font-weight: bold;
+                }
 
-                    &:hover {
-                        background-color: #D82D8B !important;
-                        color: #fff;
-                    }
+                &:hover {
+                    background-color: #D82D8B !important;
+                    color: #fff;
+                }
 
-                    span {
-                        padding: 10px 30px;
-                    }
+                span {
+                    padding: 10px 30px;
                 }
             }
         }
-    }
-}
 
-.visa-method {
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .zalo-method {
 
-    .card {
-        border: none;
-    }
+            #checkout_submit {
+                height: 56px;
+                margin: 15px;
+                border: none;
+                border-radius: 30px;
+                background-color: #00B4FF;
+                vertical-align: middle;
+                color: white;
+                transition: background-color 0.3s;
 
-    .form-group {
-        margin-bottom: 15px;
+                span {
+                    font-weight: bold;
+                }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
+                &:hover {
+                    background-color: #0033c9 !important;
+                    color: #fff;
+                }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-
-            &:focus {
-                border-color: red;
-                outline: none;
+                span {
+                    padding: 10px 30px;
+                }
             }
+
         }
-    }
 
-    .submit-button {
-        background-color: #1a1f71;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 30px;
-        cursor: pointer;
-        font-size: 16px;
-        transition-duration: .3s;
+        .vnpay-method {
+            #checkout_submit {
+                height: 56px;
+                margin: 15px;
+                border: none;
+                border-radius: 30px;
+                background-color: #428BCA;
+                vertical-align: middle;
+                color: white;
+                transition: background-color 0.3s;
 
-        &:hover {
-            background-color: #f7b600;
+                span {
+                    font-weight: bold;
+                }
+
+                &:hover {
+                    background-color: #005BAA !important;
+                    color: #fff;
+                }
+
+                span {
+                    padding: 10px 30px;
+                }
+            }
         }
     }
 }

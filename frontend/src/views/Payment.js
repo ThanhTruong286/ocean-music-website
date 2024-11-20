@@ -3,7 +3,8 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../styles/payment.scss";
 import momo from "../assets/images/payment/momo.svg"
-import visa from "../assets/images/payment/visa.svg"
+import zalo from "../assets/images/payment/zalo.png"
+import vnpay from "../assets/images/payment/vnpay.png"
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MoMoPayment, ZaloPayment } from "../api/api";
@@ -33,11 +34,13 @@ const Payment = () => {
     };
     const images = {
         "MoMo wallet": momo,
-        "Visa": visa,
+        "Zalopay": zalo,
+        "VNPAY": vnpay
     };
     const methods = [
         { name: "MoMo wallet" },
         { name: "Zalopay" },
+        { name: "VNPAY" }
     ];
     const handlePaymentMomo = async () => {
         try {
@@ -78,20 +81,20 @@ const Payment = () => {
                     <section className="offer-card">
                         <div className="offer-card-container">
                             <div className="plan">
-                                <span>Your Plan</span>
-                                <a href="/subcribe"><span>Change Plan</span></a>
+                                <span>Gói của bạn</span>
+                                <a href="/subcribe"><span>Đổi gói</span></a>
                             </div>
                             <article className="description">
                                 <div className="header">
                                     <div>
                                         <h1>{userPlan}</h1>
-                                        <h3>1 Premium account</h3>
+                                        <h3>1 Tài khoản Premium</h3>
                                     </div>
                                 </div>
                                 <div className="body">
                                     <div className="description">
-                                        <p className="encore-text">Total</p>
-                                        <p className="encore-text">One time payment of ₫{price.toLocaleString("vi-VN")} for 1 month</p>
+                                        <p className="encore-text">Tổng cộng</p>
+                                        <p className="encore-text">Thanh toán 1 lần cho 1 tháng:  ₫{price.toLocaleString("vi-VN")}</p>
                                     </div>
                                     <ul>
                                         <li>
@@ -144,15 +147,28 @@ const Payment = () => {
                                     ))}
                                 </ul>
                             </form>
-                            {methods[activeIndex]?.name === "Zalopay" && (
-                                <div className="momo-method">
+                            {methods[activeIndex]?.name === "VNPAY" && (
+                                <div className="vnpay-method">
                                     <div className="card">
                                         <div className="icon">
-                                            <img src={momo} width={24} height={24} />
+                                            <img src={vnpay} width={24} height={24} />
                                         </div>
-                                        <span>You'll be redirected to MoMo Wallet to complete your purchase.</span>
+                                        <span>Bạn sẽ chuyển hướng tới VN Pay để thanh toán</span>
                                         <button id="checkout_submit" onClick={handlePaymentZaloPay}>
-                                            <span>Continue purchase</span>
+                                            <span>Tiếp tục thanh toán</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            {methods[activeIndex]?.name === "Zalopay" && (
+                                <div className="zalo-method">
+                                    <div className="card">
+                                        <div className="icon">
+                                            <img src={zalo} width={24} height={24} />
+                                        </div>
+                                        <span>Bạn sẽ chuyển hướng tới Zalo Pay để thanh toán</span>
+                                        <button id="checkout_submit" onClick={handlePaymentZaloPay}>
+                                            <span>Tiếp tục thanh toán</span>
                                         </button>
                                     </div>
                                 </div>
@@ -163,9 +179,9 @@ const Payment = () => {
                                         <div className="icon">
                                             <img src={momo} width={24} height={24} />
                                         </div>
-                                        <span>You'll be redirected to MoMo Wallet to complete your purchase.</span>
+                                        <span>Bạn sẽ chuyển hướng tới MoMo để thanh toán</span>
                                         <button id="checkout_submit" onClick={handlePaymentMomo}>
-                                            <span>Continue purchase</span>
+                                            <span>Tiếp tục thanh toán</span>
                                         </button>
                                     </div>
                                 </div>

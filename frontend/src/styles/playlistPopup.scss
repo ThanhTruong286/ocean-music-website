@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7); // Darker overlay
+    background: rgba(0, 0, 0, 0.8); // Overlay tối hơn với màu đen
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,12 +13,16 @@
 }
 
 .popup-content {
-    background: linear-gradient(135deg, #ffffff, #f3f4f6);
+    li {
+        color: #fff;
+    }
+
+    background: #000; // Tone màu đen xám cho popup
     padding: 25px;
     border-radius: 15px;
     width: 90%;
     max-width: 450px;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
     text-align: center;
     animation: slideDown 0.5s ease-out;
 
@@ -26,7 +30,7 @@
         margin-bottom: 20px;
         font-size: 1.8rem;
         font-weight: 600;
-        color: #3f51b5;
+        color: #fff; // Màu đỏ cho tiêu đề
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
@@ -38,16 +42,16 @@
         .playlist-item {
             padding: 12px 18px;
             margin-bottom: 12px;
-            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
-            border: 1px solid #80deea;
+            background: red;
+            border: 1px solid #c62828;
             border-radius: 8px;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
 
             &:hover {
                 transform: scale(1.05);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-                background: linear-gradient(135deg, #b2ebf2, #4dd0e1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                background: linear-gradient(135deg, #b71c1c, #d32f2f); // Màu đỏ đậm khi hover
             }
         }
     }
@@ -59,7 +63,7 @@
         margin-top: 20px;
 
         .pagination-btn {
-            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            background: linear-gradient(135deg, #ff1744, #d50000); // Đỏ sáng cho nút phân trang
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -70,8 +74,8 @@
             transition: background 0.3s ease, box-shadow 0.3s ease;
 
             &:hover {
-                background: linear-gradient(135deg, #feb47b, #ff7e5f);
-                box-shadow: 0 5px 15px rgba(255, 126, 95, 0.3);
+                background: linear-gradient(135deg, #d50000, #ff1744); // Đổi màu khi hover
+                box-shadow: 0 5px 15px rgba(255, 23, 68, 0.3);
             }
 
             &:disabled {
@@ -84,13 +88,13 @@
 
         .pagination-info {
             font-size: 1rem;
-            color: #555;
+            color: #ccc; // Màu xám cho thông tin phân trang
         }
     }
 
     .close-btn {
         margin-top: 20px;
-        background: linear-gradient(135deg, #ff5252, #ff1744);
+        background: linear-gradient(135deg, #ff1744, #d50000); // Màu đỏ cho nút đóng
         color: #fff;
         border: none;
         padding: 10px 20px;
@@ -103,7 +107,7 @@
         &:hover {
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(255, 23, 68, 0.4);
-            background: linear-gradient(135deg, #ff1744, #d50000);
+            background: linear-gradient(135deg, #d50000, #ff1744); // Đổi màu khi hover
         }
     }
 }
@@ -115,7 +119,7 @@
     }
 
     to {
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.8); // Overlay với tone đen đậm
     }
 }
 

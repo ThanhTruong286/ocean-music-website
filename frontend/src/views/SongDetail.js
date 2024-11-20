@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-import "../styles/global.scss";
+import "../styles/songDetail.scss";
 import faker from "../assets/images/artists/faker.jpg";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -112,8 +112,8 @@ const SongDetail = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error loading song data</div>;
+    if (loading) return <div className="text-center">Loading...</div>;
+    if (error) return <div className="text-center text-danger">Error loading song data</div>;
 
     const songImage = getSongImage(song.coverImageUrl);
     const formattedLyrics = formatLyrics(song.lyric);
@@ -124,7 +124,6 @@ const SongDetail = () => {
         navigator.clipboard.writeText(currentUrl).then(() => {
             Swal.fire({
                 title: "Copy link chia sẻ thành công",
-                text: `Link: ${currentUrl}`,
                 icon: "success",
                 confirmButtonText: "OK",
             });
@@ -134,55 +133,34 @@ const SongDetail = () => {
     };
 
     return (
-        <div>
-            <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
+        <div className="song-detail-page">
+            <aside className="sidebar sidebar-base">
                 <Sidebar />
             </aside>
             <main className="main-content">
-                <div id="song-detail">
+                <div className="song-detail-content">
                     <Header />
-                    <div className="content-inner pb-0 container-fluid" id="page_layout">
-                        <div className="row">
-                            <div className="col-lg-12 mb-3">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col-lg-4">
-                                                <div className="card mb-0 bg-soft-secondary">
-                                                    <img src={songImage} className="img-fluid w-100" alt="" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-8">
-                                                <div className="d-flex align-items-top justify-content-between">
-                                                    <div className="music-detail">
-                                                        <h3 className="mb-3">Bài hát: {song.title}</h3>
-                                                        <p className="mb-3">{formattedLyrics}</p>
-                                                        <div className="d-flex align-items-center mb-4">
-                                                            <h6 className="mb-1 fw-bold me-3">Tác giả: {song.artist}</h6>
-                                                            <h6 className="ps-3 fw-bold me-3 border-start">15 Tracks</h6>
-                                                            <h6 className="ps-3 fw-bold border-start">{song.duration}s</h6>
-                                                        </div>
-
-                                                        <div className="d-flex align-items-center">
-                                                            <button onClick={() => handleOnclickSong(id)} className="play-btn btn btn-danger">
-                                                                Phát Nhạc
-                                                            </button>
-                                                            <button onClick={handleAddPlaylistClick} className="share-btn btn btn-outline-secondary ms-3">Thêm Vào Playlist</button>
-                                                            <button
-                                                                onClick={createShareLink}
-                                                                className="share-btn btn btn-outline-secondary ms-3"
-                                                            >
-                                                                Chia Sẻ
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div className="content-inner">
+                        <div className="song-detail-card">
+                            <div className="song-detail-body">
+                                <div className="song-info">
+                                    <div className="song-image">
+                                        <img src={songImage} className="img-fluid rounded" alt="Song Cover" />
+                                    </div>
+                                    <div className="song-description">
+                                        <h3 className="song-title">{song.title}</h3>
+                                        <p className="song-lyrics">{formattedLyrics}</p>
+                                        <div className="song-meta">
+                                            <span className="artist">{song.artist}</span>
+                                        </div>
+                                        <div className="song-actions">
+                                            <button onClick={() => handleOnclickSong(id)} className="play-btn">Phát Nhạc</button>
+                                            <button onClick={handleAddPlaylistClick} className="add-to-playlist-btn">Thêm vào Playlist</button>
+                                            <button onClick={createShareLink} className="share-btn">Chia sẻ</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

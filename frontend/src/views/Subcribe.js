@@ -3,7 +3,6 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../styles/subcribe.scss";
 import logo from "../assets/images/logo.png";
-import { useHref } from "react-router-dom";
 
 const Subcribe = () => {
 
@@ -51,10 +50,10 @@ const Subcribe = () => {
 
                                 </li>
                                 <li>
-                                    <div id="visaIcon" role="img" class="payment-icon" aria-label="visa"></div>
+                                    <div id="zaloIcon" role="img" class="payment-icon" aria-label="visa"></div>
                                 </li>
                                 <li>
-                                    <div id="masterCardIcon" role="img" class="payment-icon" aria-label="card"></div>
+                                    <div id="vnpayIcon" role="img" class="payment-icon" aria-label="card"></div>
                                 </li>
                                 <li>
                                     <div id="expressIcon" role="img" class="payment-icon" aria-label="momo"></div>
@@ -101,7 +100,6 @@ const Subcribe = () => {
                                         <div className="head-card">
                                             <div className="logo">
                                                 <span className="type">Premium</span>
-                                                <img src={logo} />
                                             </div>
                                             <h3 className="encore-text encore-text-title-medium">Mini</h3>
                                             <p className="encore-text encore-text-body-medium-bold">₫10,500 for 1 week</p>
@@ -122,7 +120,6 @@ const Subcribe = () => {
                                         <div className="head-card">
                                             <div className="logo">
                                                 <span className="type">Premium</span>
-                                                <img src={logo} />
                                             </div>
                                             <h3 className="encore-text encore-text-title-medium">Individual</h3>
                                             <p className="encore-text encore-text-body-medium-bold">₫59,000 / month</p>
@@ -143,7 +140,6 @@ const Subcribe = () => {
                                         <div className="head-card">
                                             <div className="logo">
                                                 <span className="type">Premium</span>
-                                                <img src={logo} />
                                             </div>
                                             <h3 className="encore-text encore-text-title-medium">Student</h3>
                                             <p className="encore-text encore-text-body-medium-bold">₫29,500 / month</p>

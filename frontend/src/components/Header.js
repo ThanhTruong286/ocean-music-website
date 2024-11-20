@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../api/api";
 import faker from "../assets/images/artists/faker.jpg";
-import logo from "../assets/images/logo.png";
 import "../styles/header.scss";
 
 const Header = () => {
