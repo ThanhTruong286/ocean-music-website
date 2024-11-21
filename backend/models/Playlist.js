@@ -111,7 +111,6 @@ class Playlist {
         });
     }
 
-
     static getAll(callback) {
         db.query('SELECT playlists.*, users.* FROM playlists LEFT JOIN users ON playlists.user_id = users.user_id', (err, results) => {
             if (err) return callback(err, null);
@@ -199,7 +198,6 @@ class Playlist {
         });
     }
 
-
     static update(playlistId, newPlaylistData, userId, callback) {
         // Kiểm tra xem playlistId và dữ liệu cập nhật có hợp lệ không
         if (!playlistId || !newPlaylistData) {
@@ -243,6 +241,22 @@ class Playlist {
 
     delete(callback) {
         db.query('DELETE FROM playlists WHERE playlist_id = ?', [this.id], callback);
+    }
+
+    static deleteByIdAndUserId(playlistId, userId, callback) {
+        const deleteQuery = 'DELETE FROM playlists WHERE playlist_id = ? AND user_id = ?';
+        db.query(deleteQuery, [playlistId, userId], (err, result) => {
+            if (err) {
+                return callback(err, null); // Trả lỗi nếu có vấn đề với query
+            }
+
+            if (result.affectedRows === 0) {
+                return callback(null, { success: false, message: 'Playlist not found or access denied' });
+            }
+
+            // Nếu xóa thành công
+            callback(null, { success: true, message: 'Playlist deleted successfully' });
+        });
     }
 }
 

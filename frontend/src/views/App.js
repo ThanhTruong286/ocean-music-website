@@ -22,6 +22,7 @@ import Footer from '../components/Footer';
 import ArtistDetail from "./ArtistDetail";
 import AlbumDetail from "./AlbumDetail";
 import ArtistSong from './ArtistSong';
+import Help from "./Help";
 
 const App = () => {
   useEffect(() => {
@@ -58,6 +59,7 @@ const App = () => {
             <Route path="/chart" element={<Chart />} />
             <Route path="/setting-profile" element={<SettingProfile />} />
             <Route path="/songs" element={<ArtistSong />} />
+            <Route path="/help" element={<Help />} />
           </Routes>
 
           {/* Footer luôn hiển thị và không bị render lại khi chuyển trang */}

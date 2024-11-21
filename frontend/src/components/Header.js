@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 import { getUser } from "../api/api";
 import faker from "../assets/images/artists/faker.jpg";
 import "../styles/header.scss";
@@ -18,6 +18,7 @@ const Header = () => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const popupRef = useRef(null);
     const avatarRef = useRef(null);
+    const location = useLocation(); 
     const navigate = useNavigate();
 
     const goToHome = () => {
@@ -85,14 +86,17 @@ const Header = () => {
         };
     }, []);
     useEffect(() => {
-        const token = localStorage.getItem('userToken');
-        if (token) {
-            setAccessToken(token);
-        } else {
-            // Nếu không có token, điều hướng về trang đăng nhập
-            navigate('/login');
+        // Exclude the "Help" page from the token check
+        if (location.pathname !== '/help') {
+            const token = localStorage.getItem('userToken');
+            if (token) {
+                setAccessToken(token);
+            } else {
+                // Nếu không có token, điều hướng về trang đăng nhập
+                navigate('/login');
+            }
         }
-    }, []);
+    }, [location.pathname, navigate]);
 
     const renderAlbumLink = () => {
         if (user && user.role_id === 3) {

@@ -1,0 +1,75 @@
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main container */
+.container {
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Section Styles */
+.section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+    position: relative;
+    padding-left: 30px;
+}
+
+.section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background-color: #ff6b6b;
+}
+
+/* List Styles */
+.section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.section ul li {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for list items */
+.section ul li:hover {
+    color: #ff6b6b;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .section h2 {
+        font-size: 22px;
+    }
+
+    .section ul li {
+        font-size: 14px;
+    }
+}

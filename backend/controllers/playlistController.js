@@ -128,18 +128,28 @@ exports.updatePlaylist = (req, res) => {
     });
 };
 
-
 // Xóa playlist theo ID
 exports.deletePlaylist = (req, res) => {
-    const playlistId = parseInt(req.params.id, 10);
+    const playlistId = req.params.id;
+    const userId = req.user.userId; // Giả sử `userId` được lấy từ middleware xác thực
 
-    Playlist.findById(playlistId, (err, playlist) => {
-        if (err) return res.status(500).json({ message: 'Error fetching playlist', error: err.message });
-        if (!playlist) return res.status(404).json({ message: 'Playlist not found' });
+    if (isNaN(playlistId)) {
+        return res.status(400).json({ message: 'Invalid playlist ID' });
+    }
 
-        playlist.delete(err => {
-            if (err) return res.status(500).json({ message: 'Error deleting playlist', error: err.message });
-            res.json({ message: 'Playlist deleted' });
-        });
+    // Gọi phương thức xóa playlist từ model
+    Playlist.deleteByIdAndUserId(playlistId, userId, (err, result) => {
+        if (err) {
+            console.error('Error deleting playlist:', err);
+            return res.status(500).json({ message: 'Error deleting playlist', error: err.message });
+        }
+
+        // Trả về kết quả xóa playlist
+        if (!result.success) {
+            return res.status(404).json({ message: result.message });
+        }
+
+        return res.status(200).json({ message: result.message });
     });
 };
+

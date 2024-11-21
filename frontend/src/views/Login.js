@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api/api';
 import '../styles/login.scss';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -65,6 +65,9 @@ const Login = () => {
                             <a href="/email" className="forgot-password">Forgot Password?</a>
                         </div>
                         <button type="submit" className="login-button">Sign In</button>
+                        <button className="login-button" onClick={() => {
+                            navigate('/help')
+                        }}>Contact for help</button>
                     </form>
                     <p className="or-sign-in">or sign in with other accounts?</p>
                     <div className="social-login">

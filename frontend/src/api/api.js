@@ -209,8 +209,24 @@ export const updatePlaylist = async (playlistId, newPlaylist) => {
 }
 
 export const deletePlaylist = async (playlistId) => {
-
+    const accessToken = localStorage.getItem('userToken');
+    if(!accessToken) {
+        throw new Error("access token not found")
+    }
+    try {
+        const response = await axios.delete(`${API_URL}/playlist/${playlistId}`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        return response.data; // Trả về dữ liệu từ API nếu cần
+    } catch (error) {
+        console.error('Error deleting playlist:', error);
+        throw error; // Ném lỗi ra ngoài để component xử lý
+    }
 }
+
 export const getAllUserPlaylist = async () => {
     const accessToken = localStorage.getItem('userToken');  // Lấy accessToken từ localStorage
 

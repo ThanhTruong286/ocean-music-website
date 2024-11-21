@@ -6,6 +6,7 @@ import 'swiper/css';
 import "../styles/playlist.scss";
 import CryptoJS from 'crypto-js';
 import { addPlaylist, getAllUserPlaylist, deletePlaylist, updatePlaylist } from "../api/api"; // Giả sử bạn đã có API cho xóa và sửa
+import Swal from 'sweetalert2';
 
 const encryptPlaylistId = (id) => {
     return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(id));
@@ -21,11 +22,26 @@ const Playlist = () => {
     const handleAddPlaylist = async () => {
         try {
             const newPlaylist = await addPlaylist();
-            setPlaylists([...playlists, newPlaylist]);  // Thêm playlist mới vào danh sách
+            setPlaylists([...playlists, newPlaylist]);
+    
+            // Hiển thị thông báo thành công
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Playlist đã được tạo.',
+                timer: 2000,
+                showConfirmButton: false,
+            });
         } catch (error) {
             console.error('Error adding playlist:', error);
+            // Hiển thị thông báo lỗi
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể tạo playlist. Vui lòng thử lại.',
+            });
         }
-    };
+    }
 
     // Hàm tải tất cả playlist của người dùng
     useEffect(() => {
@@ -49,32 +65,78 @@ const Playlist = () => {
 
     // Hàm xóa playlist
     const handleDelete = (playlistId) => {
-        // Xóa playlist bằng API
-        deletePlaylist(playlistId)
-            .then(() => {
-                setUserPlaylists(userPlaylist.filter(p => p.id !== playlistId));  // Cập nhật lại danh sách playlist sau khi xóa
-            })
-            .catch((error) => {
-                console.error("Error deleting playlist", error);
-            });
-    };
+        Swal.fire({
+            title: 'Bạn có chắc không?',
+            text: 'Playlist này sẽ bị xóa và không thể khôi phục!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deletePlaylist(playlistId)
+                    .then(() => {
+                        setUserPlaylists(userPlaylist.filter((p) => p.id !== playlistId)); // Cập nhật danh sách playlist
+                        // Hiển thị thông báo thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã xóa!',
+                            text: 'Playlist đã được xóa.',
+                            timer: 2000,
+                            showConfirmButton: false,
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting playlist:', error);
+                        // Hiển thị thông báo lỗi
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Không thể xóa playlist. Vui lòng thử lại.',
+                        });
+                    });
+            }
+        });
+    };  
 
     // Hàm sửa playlist
-    const handleEdit = (playlistId) => {
-        const newTitle = prompt("Nhập tiêu đề mới cho playlist:");
+    const handleEdit = async (playlistId) => {
+        const { value: newTitle } = await Swal.fire({
+            title: 'Sửa Playlist',
+            input: 'text',
+            inputLabel: 'Nhập tiêu đề mới:',
+            inputPlaceholder: 'Tiêu đề mới',
+            showCancelButton: true,
+        });
+    
         if (newTitle) {
-            updatePlaylist(playlistId, newTitle)
-                .then(() => {
-                    // Cập nhật lại tên playlist trong danh sách
-                    setUserPlaylists(userPlaylist.map(playlist =>
-                        playlist.id === playlistId ? { ...playlist, title: newTitle } : playlist
-                    ));
-                })
-                .catch((error) => {
-                    console.error("Error editing playlist", error);
+            try {
+                await updatePlaylist(playlistId, newTitle);
+                setUserPlaylists(userPlaylist.map(playlist =>
+                    playlist.id === playlistId ? { ...playlist, title: newTitle } : playlist
+                ));
+    
+                // Hiển thị thông báo thành công
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: 'Playlist đã được cập nhật.',
+                    timer: 2000,
+                    showConfirmButton: false,
                 });
+            } catch (error) {
+                console.error('Error editing playlist', error);
+                // Hiển thị thông báo lỗi
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể cập nhật playlist. Vui lòng thử lại.',
+                });
+            }
         }
-    };
+    };    
 
     // Hàm nghe playlist (giả sử bạn có một cách để mở playlist)
     const handlePlay = (playlistId) => {
