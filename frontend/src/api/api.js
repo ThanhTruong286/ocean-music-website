@@ -2,6 +2,26 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const getOwnSong = async () => {
+    const accessToken = localStorage.getItem('userToken');
+
+    if (!accessToken) {
+        throw new Error('No access token found');
+    }
+    try {
+        const response = await axios.get(`${API_URL}/song/own-song`, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+        return response.data;
+    } catch (e) {
+        throw new Error(`Error adding song to playlist: ${e.message}`)
+    }
+}
+
 export const getAlbumById = async (id) => {
     try {
         const response = await axios.get(`${API_URL}/album/${id}`);

@@ -34,7 +34,7 @@ const ArtistList = () => {
             try {
                 const data = await fetchArtists();
                 setArtists(data);
-                console.log(data);
+                
             } catch (err) {
                 setError('Không thể tải danh sách nghệ sĩ');
             } finally {

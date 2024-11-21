@@ -1,5 +1,21 @@
 const Song = require('../models/Song');
 
+exports.getOwnSong = (req, res) => {
+    const userId = req.user.userId; 
+
+    Song.getSongsByUserId(userId, (err, song) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error fetching song', error: err });
+        }
+
+        if (!song) {
+            return res.status(404).json({ message: 'Song not found' });
+        }
+
+        res.status(200).json(song); // Trả về bài hát dưới dạng JSON
+    });
+}
+
 exports.getRecommendedSongs = (req, res) => {
     const { artistIds } = req.body;  // Lấy danh sách artistIds từ request body
 

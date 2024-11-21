@@ -113,6 +113,9 @@ const AlbumList = () => {
         const encryptedId = encryptId(albumId);  // Encrypt the albumId
         navigate(`/albums/${encryptedId}`);  // Redirect to the album detail page with encrypted ID
     };
+    const handleNavigateSongs = () => {
+        navigate('/songs');
+    }
 
     return (
         <div>
@@ -125,6 +128,9 @@ const AlbumList = () => {
                     </button>
                     <button className="button">
                         Add Album
+                    </button>
+                    <button onClick={() => handleNavigateSongs()} className="button">
+                        Add New Songs
                     </button>
                 </div>
             </div>

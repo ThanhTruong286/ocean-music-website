@@ -1,9 +1,12 @@
 const express = require('express');
 const songController = require('../controllers/songController');
+const authenticateToken = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 // Route to get all songs
 router.get('/', songController.getAllSongs);
+
+router.get('/own-song',authenticateToken, songController.getOwnSong);
 
 // Route to add a new song
 router.post('/', songController.createSong);

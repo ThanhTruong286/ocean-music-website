@@ -251,12 +251,15 @@ table .actions .edit:hover {
 }
 
 /* "Xóa" link */
-table .actions .delete {
+table .delete {
     background-color: #dc3545;
     color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 10px;
 }
 
-table .actions .delete:hover {
+table .delete:hover {
     background-color: #c82333;
 }
 

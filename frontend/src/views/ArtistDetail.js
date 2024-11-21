@@ -102,7 +102,7 @@ const ArtistDetail = () => {
                 <div id="home">
                     <Header />
                     <div className="artist-detail__content container-fluid" id="page_layout">
-                        <div className="artist-detail__header" style={{ backgroundImage: `url(${getArtistImage(artist.profile_url)})` }}>
+                        <div className="artist-detail__header" style={{ backgroundImage: `url(${getArtistImage(artist?.profile_url)})` }}>
                             <div className="artist-detail__verified">
                                 <i className="fas fa-check-circle"></i>
                                 <span style={{ color: "white" }}>Verified Artist</span>

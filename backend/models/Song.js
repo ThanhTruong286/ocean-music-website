@@ -14,6 +14,25 @@ class Song {
         this.artist = artist;
     }
 
+    // Hàm lấy bài hát theo userId
+    static getSongsByUserId(userId, callback) {
+        const query = `
+            SELECT songs.* 
+            FROM artists
+            JOIN artist_songs ON artists.artist_id = artist_songs.artist_id
+            JOIN songs ON artist_songs.song_id = songs.song_id
+            WHERE artists.user_id = ?
+        `;
+        
+        db.query(query, [userId], (err, results) => {
+            if (err) {
+                console.error('Database query error:', err);
+                return callback(err, null); // Trả về lỗi nếu có lỗi
+            }
+            callback(null, results); // Trả về kết quả
+        });
+    }
+
     static getRecommendedSongsByArtistIds(artistIds, callback) {
         const placeholders = artistIds.map(() => '?').join(',');
         const query = `
@@ -92,8 +111,8 @@ ORDER BY songs.play_count DESC;
                    CONCAT(
                        COALESCE(users.first_name, ''), 
                        ' ', 
-                       COALESCE(users.last_name, '')
-                   ) AS artist
+                       COALESCE(users.last_name, ''))
+                   AS artist
                    FROM songs 
                    JOIN artist_songs ON songs.song_id = artist_songs.song_id 
                    JOIN artists ON artist_songs.artist_id = artists.artist_id
@@ -122,7 +141,6 @@ ORDER BY songs.play_count DESC;
             callback(null, song);
         });
     }
-
 
     save(callback) {
         if (this.id) {

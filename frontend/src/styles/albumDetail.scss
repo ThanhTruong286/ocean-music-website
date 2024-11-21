@@ -161,3 +161,41 @@ $hover-color: #a02a2a;
     font-size: 1.2rem;
     color: #aaa;
 }
+.add-song-container {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}

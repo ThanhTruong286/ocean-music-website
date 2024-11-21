@@ -233,7 +233,7 @@ const PlaylistDetail = () => {
 
                                         <td>{new Date().toLocaleDateString()}</td>
                                         <td>{convertSecondsToMinutes(song.duration)}</td>
-                                        <td className="actions">
+                                        <td>
                                             <a href="#" className="delete" onClick={() => handleDeleteSong(song.songId)}>Xóa</a>
                                         </td>
                                     </tr>
