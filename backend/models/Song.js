@@ -14,6 +14,143 @@ class Song {
         this.artist = artist;
     }
 
+    static updateSong(songId, songData, callback) {
+        const {
+            title,
+            duration,
+            genreId,
+            releaseDate,
+            fileUrl,
+            coverImageUrl,
+            lyric
+        } = songData;
+
+        // Log input data
+        console.log("Input data for song update:", {
+            songId,
+            title,
+            duration,
+            genreId,
+            releaseDate,
+            fileUrl,
+            coverImageUrl,
+            lyric
+        });
+
+        // Ensure the fileUrl and coverImageUrl are either valid URLs or null
+        const safeFileUrl = fileUrl && typeof fileUrl === 'string' ? fileUrl : null;
+        const safeCoverImageUrl = coverImageUrl && typeof coverImageUrl === 'string' ? coverImageUrl : null;
+
+        // Log the sanitized fileUrl and coverImageUrl
+        console.log("Sanitized fileUrl:", safeFileUrl);
+        console.log("Sanitized coverImageUrl:", safeCoverImageUrl);
+
+        // SQL query to update song
+        const query = `
+    UPDATE songs
+    SET title = ?, duration = ?, genre_id = ?, release_date = ?, file_url = ?, cover_image_url = ?, lyric = ?
+    WHERE song_id = ?
+    `;
+
+        // Log the SQL query and parameters
+        console.log("Executing SQL query with parameters:", [title, duration, genreId, releaseDate, safeFileUrl, safeCoverImageUrl, lyric, songId]);
+
+        // Execute the query
+        db.query(query, [title, duration, genreId, releaseDate, safeFileUrl, safeCoverImageUrl, lyric, songId], (err, result) => {
+            if (err) {
+                console.error("Error updating song:", err);
+                return callback(err);  // Return the error to the callback
+            }
+
+            // Log the result of the query execution
+            console.log("Result of SQL query:", result);
+
+            // Check if any rows were affected (this confirms the song was updated)
+            if (result.affectedRows === 0) {
+                const notFoundError = new Error("Song not found");
+                console.error("Error: Song not found with songId:", songId);
+                return callback(notFoundError);  // Song not found, return an error
+            }
+
+            // Successfully updated the song, log and return updated data
+            console.log("Song successfully updated:", { songId, title, duration, genreId, releaseDate, fileUrl: safeFileUrl, coverImageUrl: safeCoverImageUrl, lyric });
+            callback(null, { songId, title, duration, genreId, releaseDate, fileUrl: safeFileUrl, coverImageUrl: safeCoverImageUrl, lyric });
+        });
+    }
+
+    static deleteFromArtistSongs(songId, callback) {
+        const query = `DELETE FROM artist_songs WHERE song_id = ?`;
+        db.query(query, [songId], callback);
+    }
+
+    static addSongWithArtist(songData, userId, callback) {
+        const {
+            title = "New Song", // Default title if not provided
+            duration,
+            genreId,
+            releaseDate,
+            fileUrl,
+            coverImageUrl,
+            lyric
+        } = songData;
+
+        // Step 1: Create the new song
+        const insertSongQuery = `
+            INSERT INTO songs (title, duration, genre_id, release_date, file_url, cover_image_url, lyric)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        db.query(insertSongQuery, [title, duration, genreId, releaseDate, fileUrl, coverImageUrl, lyric], (err, result) => {
+            if (err) {
+                console.error("Error saving song:", err);
+                return callback(err);
+            }
+
+            const newSongId = result.insertId;
+
+            // Step 2: Retrieve the artist ID associated with the user ID
+            const artistQuery = `SELECT artist_id FROM artists WHERE user_id = ? LIMIT 1`;
+
+            db.query(artistQuery, [userId], (artistErr, artistResults) => {
+                if (artistErr) {
+                    console.error("Error finding artist ID:", artistErr);
+                    return callback(artistErr);
+                }
+
+                if (artistResults.length === 0) {
+                    const notFoundError = new Error("Artist not found for the given userId");
+                    return callback(notFoundError);
+                }
+
+                const artistId = artistResults[0].artist_id;
+
+                // Step 3: Link the new song to the artist in the artist_songs table
+                const artistSongQuery = `INSERT INTO artist_songs (artist_id, song_id) VALUES (?, ?)`;
+
+                db.query(artistSongQuery, [artistId, newSongId], (artistSongErr) => {
+                    if (artistSongErr) {
+                        console.error("Error linking song with artist:", artistSongErr);
+                        return callback(artistSongErr);
+                    }
+
+                    // Step 4: Return the new song data
+                    callback(null, {
+                        songId: newSongId,
+                        title,
+                        duration,
+                        genreId,
+                        releaseDate,
+                        fileUrl,
+                        coverImageUrl,
+                        lyric,
+                        playCount: 0,
+                        artistId
+                    });
+                });
+            });
+        });
+    }
+
     // Hàm lấy bài hát theo userId
     static getSongsByUserId(userId, callback) {
         const query = `
@@ -23,7 +160,7 @@ class Song {
             JOIN songs ON artist_songs.song_id = songs.song_id
             WHERE artists.user_id = ?
         `;
-        
+
         db.query(query, [userId], (err, results) => {
             if (err) {
                 console.error('Database query error:', err);

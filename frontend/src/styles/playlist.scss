@@ -226,37 +226,41 @@ table .actions a {
 }
 
 /* "Nghe" link */
-table .actions .play {
+table .play {
     background-color: red;
     color: #fff;
 }
 
-table .actions .watch {
+table .watch {
     background-color: black;
     color: #fff;
 }
 
-table .actions .play:hover {
+table .play:hover {
     background-color: red;
 }
 
 /* "Sửa" link */
-table .actions .edit {
+table .edit {
     background-color: #007bff;
     color: #fff;
 }
 
-table .actions .edit:hover {
+table .edit:hover {
+    cursor: pointer;
     background-color: #0056b3;
 }
 
 /* "Xóa" link */
-table .delete {
+table .delete,
+.edit,
+.watch {
     background-color: #dc3545;
     color: #fff;
     text-decoration: none;
     padding: 5px 10px;
     border-radius: 10px;
+    margin: 0 5px;
 }
 
 table .delete:hover {

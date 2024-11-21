@@ -3,10 +3,11 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import 'swiper/css';
-import "../styles/albumDetail.scss";
-import { getOwnSong } from "../api/api";
+import { getOwnSong, createNewSong, deleteArtistSong } from "../api/api";
 import CryptoJS from 'crypto-js';
 import faker from "../assets/images/artists/faker.jpg";
+import Swal from 'sweetalert2';
+import EditSongForm from '../components/EditSongForm';
 
 // Load all images from the songs folder
 const images = require.context('../assets/images/albums', false, /\.(jpg|jpeg|png|gif)$/);
@@ -20,6 +21,8 @@ const ArtistSong = () => {
     const [songs, setSongs] = useState([]);  // Khởi tạo với mảng rỗng
     const [loading, setLoading] = useState(true);  // Thêm trạng thái loading
     const [currentPage, setCurrentPage] = useState(1);
+    const [isEditing, setIsEditing] = useState(false);
+    const [songToEdit, setSongToEdit] = useState(null);
     const itemsPerPage = 5;
 
     useEffect(() => {
@@ -46,20 +49,85 @@ const ArtistSong = () => {
         }
     };
 
-    // Xử lý các nút thêm, sửa, xóa
-    const handleAddSong = () => {
-        alert("Thêm bài hát mới!");
+    const handleAddSong = async () => {
+        try {
+            // Confirm action using SweetAlert2
+            const result = await Swal.fire({
+                title: 'Thêm bài hát mới?',
+                text: 'Bài hát sẽ được tạo với tiêu đề mặc định là "New Song". Bạn có muốn tiếp tục?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có, thêm bài hát!',
+                cancelButtonText: 'Hủy',
+            });
+
+            // If user confirmed
+            if (result.isConfirmed) {
+                // Call the API to create a new song
+                const newSong = await createNewSong();
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: `Đã thêm bài hát mới: "${newSong.title}"`,
+                    icon: 'success',
+                });
+
+                // Update the list of songs to include the newly added one
+                setSongs((prevSongs) => [newSong, ...prevSongs]);
+            }
+        } catch (error) {
+            console.error('Error adding new song:', error);
+            Swal.fire({
+                title: 'Thất bại!',
+                text: 'Đã xảy ra lỗi khi thêm bài hát. Vui lòng thử lại sau.',
+                icon: 'error',
+            });
+        }
     };
 
     const handleEditSong = (song) => {
-        alert(`Sửa bài hát: ${song.title}`);
+        setSongToEdit(song);
+        setIsEditing(true);
     };
 
-    const handleDeleteSong = (song) => {
-        if (window.confirm(`Bạn có chắc chắn muốn xóa bài hát: ${song.title}?`)) {
-            alert(`Xóa bài hát: ${song.title}`);
+    const handleDeleteSong = async (song) => {
+        try {
+            // Ask for confirmation before deleting
+            const result = await Swal.fire({
+                title: 'Bạn có chắc chắn?',
+                text: `Bạn có muốn xóa bài hát: "${song.title}"? Thao tác này không thể hoàn tác!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có, xóa nó!',
+                cancelButtonText: 'Hủy',
+            });
+
+            // If user confirms
+            if (result.isConfirmed) {
+                // Call the API to delete the song
+                await deleteArtistSong(song.song_id);
+
+                // Optimistically remove the song from the list
+                setSongs((prevSongs) => prevSongs.filter((s) => s.song_id !== song.song_id));
+
+                // Show success notification
+                Swal.fire({
+                    title: 'Đã xóa!',
+                    text: `Bài hát "${song.title}" đã được xóa thành công.`,
+                    icon: 'success',
+                });
+            }
+        } catch (error) {
+            console.error('Error deleting song:', error);
+
+            // Show error notification
+            Swal.fire({
+                title: 'Thất bại!',
+                text: 'Đã xảy ra lỗi khi xóa bài hát. Vui lòng thử lại sau.',
+                icon: 'error',
+            });
         }
     };
+
 
     // Hàm trả về hình ảnh album
     const albumImage = getAlbumsImage;
@@ -74,6 +142,16 @@ const ArtistSong = () => {
                     <Header />
                     <div className="container">
                         <div className="album-detail__table-container">
+                            {isEditing && (
+                                <EditSongForm
+                                    song={songToEdit}
+                                    onClose={() => setIsEditing(false)}
+                                    onSave={() => {
+                                        setIsEditing(false);
+                                        setSongToEdit(null);
+                                    }}
+                                />
+                            )}
                             {/* Nút thêm bài hát */}
                             <div className="add-song-container">
                                 <button className="btn btn-primary" onClick={handleAddSong}>

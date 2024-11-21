@@ -2,6 +2,78 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const updateSong = async (songId, songData) => {
+    try {
+        const accessToken = localStorage.getItem('userToken');
+        if (!accessToken) {
+            throw new Error("User is not authenticated.");
+        }
+
+        // Prepare the data to be sent as JSON
+        const songUpdateData = {
+            title: songData.title,
+            duration: songData.duration,
+            genreId: songData.genreId,
+            releaseDate: songData.releaseDate,
+            lyric: songData.lyric,
+            fileUrl: songData.fileUrl,  // If the file is included, just send the file name or URL
+            coverImageUrl: songData.coverImageUrl,  // Same for cover image
+        };
+
+        // Send the PUT request with JSON data
+        const response = await axios.put(`${API_URL}/song/${songId}`, songUpdateData, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',  // Send data as JSON
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error updating song:', error.response ? error.response.data : error.message);
+        throw new Error('Failed to update song');
+    }
+};
+
+export const deleteArtistSong = async (songId) => {
+    const accessToken = localStorage.getItem('userToken');
+    if (!accessToken) {
+        throw new Error("User is not authenticated.");
+    }
+
+    try {
+        // Correct usage of axios.delete with headers
+        const response = await axios.delete(`${API_URL}/song/${songId}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting song:", error.message);
+        throw new Error("Failed to delete the song.");
+    }
+};
+
+export const createNewSong = async () => {
+    const accessToken = localStorage.getItem('userToken');
+    if (!accessToken) {
+        throw new Error("error create new song");
+    }
+    try {
+        const response = await axios.post(`${API_URL}/song`, {}, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        return response.data;
+    } catch (e) {
+        throw new Error("error create new song", e);
+    }
+}
+
 export const getOwnSong = async () => {
     const accessToken = localStorage.getItem('userToken');
 
@@ -9,7 +81,7 @@ export const getOwnSong = async () => {
         throw new Error('No access token found');
     }
     try {
-        const response = await axios.get(`${API_URL}/song/own-song`, 
+        const response = await axios.get(`${API_URL}/song/own-song`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -210,11 +282,11 @@ export const updatePlaylist = async (playlistId, newPlaylist) => {
 
 export const deletePlaylist = async (playlistId) => {
     const accessToken = localStorage.getItem('userToken');
-    if(!accessToken) {
+    if (!accessToken) {
         throw new Error("access token not found")
     }
     try {
-        const response = await axios.delete(`${API_URL}/playlist/${playlistId}`,{
+        const response = await axios.delete(`${API_URL}/playlist/${playlistId}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`

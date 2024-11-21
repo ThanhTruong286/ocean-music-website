@@ -4,25 +4,6 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/help.scss';
 
-// CREATE TABLE tickets (
-//     ticket_id INT AUTO_INCREMENT PRIMARY KEY,
-//     user_id INT NOT NULL,
-//     subject VARCHAR(255) NOT NULL,
-//     description TEXT NOT NULL,
-//     status ENUM('Open', 'In Progress', 'Closed', 'Resolved') DEFAULT 'Open',
-//     priority ENUM('Low', 'Medium', 'High') DEFAULT 'Medium',
-//     assigned_to INT NULL,
-//     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-//     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-//     closed_at DATETIME NULL,
-//     resolved_at DATETIME NULL,
-//     attachment VARCHAR(255) NULL,
-//     customer_feedback TEXT NULL,
-//     ticket_type ENUM('Technical', 'Billing', 'General', 'Other') DEFAULT 'General',
-//     FOREIGN KEY (user_id) REFERENCES users(user_id), -- Giả sử bảng 'users' đã có
-//     FOREIGN KEY (assigned_to) REFERENCES employees(employee_id) -- Giả sử bảng 'employees' đã có
-// );
-
 const Help = () => {
 
     return (

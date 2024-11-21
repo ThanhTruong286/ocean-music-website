@@ -1,0 +1,81 @@
+// editSongForm.scss
+
+.edit-song-form {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1c1c1c; // Dark background for a sleek, modern feel
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.6em;
+        color: #f4f4f4;
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__label {
+        font-size: 1.1em;
+        color: #fff;
+        margin-bottom: 6px;
+    }
+
+    &__input {
+        padding: 12px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        background-color: #2c2c2c;
+        color: #fff;
+        font-size: 1.1em;
+        width: 100%;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__button {
+        padding: 12px 18px;
+        font-size: 1.1em;
+        color: #fff;
+        background-color: #e74c3c;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+
+        &:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        &--cancel {
+            background-color: #333;
+
+            &:hover {
+                background-color: #555;
+            }
+        }
+    }
+}

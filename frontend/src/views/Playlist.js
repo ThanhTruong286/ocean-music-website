@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import 'swiper/css';
 import "../styles/playlist.scss";
 import CryptoJS from 'crypto-js';
-import { addPlaylist, getAllUserPlaylist, deletePlaylist, updatePlaylist } from "../api/api"; // Giả sử bạn đã có API cho xóa và sửa
+import { addPlaylist, getAllUserPlaylist, deletePlaylist, updatePlaylist } from "../api/api";
 import Swal from 'sweetalert2';
 
 const encryptPlaylistId = (id) => {
@@ -21,9 +21,9 @@ const Playlist = () => {
     // Hàm thêm playlist mới
     const handleAddPlaylist = async () => {
         try {
-            const newPlaylist = await addPlaylist();
-            setPlaylists([...playlists, newPlaylist]);
-    
+            const newPlaylist = await addPlaylist();  // Call API to add playlist
+            setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]); // Add the new playlist to the state
+
             // Hiển thị thông báo thành công
             Swal.fire({
                 icon: 'success',
@@ -41,18 +41,14 @@ const Playlist = () => {
                 text: 'Không thể tạo playlist. Vui lòng thử lại.',
             });
         }
-    }
+    };
 
     // Hàm tải tất cả playlist của người dùng
     useEffect(() => {
         const loadPlaylist = async () => {
             try {
                 const data = await getAllUserPlaylist();  // Fetch data from the API
-
-                // If the data is an object, wrap it in an array
-                const playlists = Array.isArray(data) ? data : [data]; // Wrap in an array if it's not already
-                setUserPlaylists(playlists);  // Set playlists state
-
+                setUserPlaylists(data);  // Set playlists state
             } catch (error) {
                 setError("Không tìm thấy playlist");
             } finally {
@@ -78,7 +74,7 @@ const Playlist = () => {
             if (result.isConfirmed) {
                 deletePlaylist(playlistId)
                     .then(() => {
-                        setUserPlaylists(userPlaylist.filter((p) => p.id !== playlistId)); // Cập nhật danh sách playlist
+                        setUserPlaylists(prevPlaylists => prevPlaylists.filter((p) => p.id !== playlistId)); // Cập nhật danh sách playlist
                         // Hiển thị thông báo thành công
                         Swal.fire({
                             icon: 'success',
@@ -99,7 +95,7 @@ const Playlist = () => {
                     });
             }
         });
-    };  
+    };
 
     // Hàm sửa playlist
     const handleEdit = async (playlistId) => {
@@ -110,14 +106,14 @@ const Playlist = () => {
             inputPlaceholder: 'Tiêu đề mới',
             showCancelButton: true,
         });
-    
+
         if (newTitle) {
             try {
-                await updatePlaylist(playlistId, newTitle);
-                setUserPlaylists(userPlaylist.map(playlist =>
+                await updatePlaylist(playlistId, newTitle);  // API call to update playlist
+                setUserPlaylists(prevPlaylists => prevPlaylists.map(playlist =>
                     playlist.id === playlistId ? { ...playlist, title: newTitle } : playlist
                 ));
-    
+
                 // Hiển thị thông báo thành công
                 Swal.fire({
                     icon: 'success',
@@ -136,7 +132,7 @@ const Playlist = () => {
                 });
             }
         }
-    };    
+    };
 
     // Hàm nghe playlist (giả sử bạn có một cách để mở playlist)
     const handlePlay = (playlistId) => {
@@ -172,7 +168,6 @@ const Playlist = () => {
                                     ></i>
                                     <i className="fas fa-arrow-right" style={{ color: 'black' }}></i>
                                 </div>
-
                             </div>
                             <div className="filters">
                                 <button className="active">Danh Sách Playlists</button>
@@ -199,7 +194,7 @@ const Playlist = () => {
                                                     </td>
                                                     <td>{new Date().toLocaleDateString()}</td>
                                                     <td>{new Date().toLocaleTimeString()}</td>
-                                                    <td className="actions">
+                                                    <td>
                                                         {/* Các nút hành động với playlistId đã mã hóa */}
                                                         <a href={`/playlist/${encodedId}`} className="watch">Xem</a>
                                                         <a className="edit" onClick={() => handleEdit(playlist.id)}>Sửa</a>
@@ -214,7 +209,6 @@ const Playlist = () => {
                                         </tr>
                                     )}
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
