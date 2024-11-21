@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getUser } from "../api/api";
-import faker from "../assets/images/artists/faker.jpg";
 import "../styles/header.scss";
 
-// Load all images from the songs folder
-const images = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getProfileImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/profiles/${imageName}` : null;
 };
+
 
 const Header = () => {
     const [user, setUser] = useState(null);
@@ -111,7 +111,7 @@ const Header = () => {
         return null;
     };
 
-    const ProfileImage = user?.profile_url ? getProfileImage(user.profile_url) : faker;
+    const ProfileImage = user?.profile_url ? getProfileImage(user.profile_url) : null;
 
     return (
         <div id="header">
@@ -158,7 +158,7 @@ const Header = () => {
                             {accessToken ? (
                                 <div className="avatar-container" onClick={togglePopup} ref={avatarRef}>
                                     <img
-                                        src={user && user.profile_url ? ProfileImage : faker}
+                                        src={user && user.profile_url ? ProfileImage : null}
                                         alt="User-Profile"
                                         className="theme-color-default-img img-fluid avatar avatar-40 avatar-rounded"
                                         loading="lazy"

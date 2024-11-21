@@ -13,6 +13,7 @@ const roleRoutes = require('./routes/roleRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const db = require('./config/db'); // Kết nối DB
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -34,6 +35,8 @@ app.use(bodyParser.json()); // Để xử lý JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Để xử lý dữ liệu từ form
 // Middleware xử lý lỗi
 app.use(errorHandler);
+
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 
 // Sử dụng routes
 app.use('/api/auth', authRoutes); // Route cho xác thực

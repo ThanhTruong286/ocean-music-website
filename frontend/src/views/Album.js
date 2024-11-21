@@ -1,7 +1,6 @@
 import Header from "../components/Header";
 import '../styles/album.scss';
 import AlbumList from "../components/AlbumList";
-import faker from "../assets/images/artists/faker.jpg";
 import Sidebar from "../components/Sidebar";
 import ArtistList from "../components/ArtistList";
 import Footer from "../components/Footer";

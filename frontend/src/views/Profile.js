@@ -2,8 +2,6 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../styles/profile.scss";
-import faker from "../assets/images/artists/faker.jpg";
-import peanut from "../assets/images/artists/peanut.jpg";
 import { useEffect, useState } from "react";
 import { getUser } from "../api/api";
 
@@ -51,7 +49,7 @@ const Profile = () => {
                                         <div className="d-flex flex-wrap align-items-center justify-content-between">
                                             <div className="d-flex flex-wrap align-items-center">
                                                 <div className="profile-img position-relative me-3 mb-3 mb-lg-0 profile-logo profile-logo1">
-                                                    <img src={faker} alt="User-Profile" className="theme-color-default-img img-fluid rounded-pill avatar-100" loading="lazy" />
+                                                    <img src={null} alt="User-Profile" className="theme-color-default-img img-fluid rounded-pill avatar-100" loading="lazy" />
                                                 </div>
                                                 <div className="d-flex flex-wrap align-items-center mb-3 mb-sm-0">
                                                     <h4 id="fullname" className="me-2 h4">{user.first_name} {user.last_name} - <span>{user.username}</span></h4>
@@ -188,7 +186,7 @@ const Profile = () => {
                                             <div className="card-body">
                                                 <div className="text-center">
                                                     <div>
-                                                        <img src={peanut} alt="profile-img" className="rounded-pill avatar-130 img-fluid" loading="lazy" />
+                                                        <img src={null} alt="profile-img" className="rounded-pill avatar-130 img-fluid" loading="lazy" />
                                                     </div>
                                                     <div className="mt-3">
                                                         <h3 className="d-inline-block" id="fullname">WANG-HO - <span>Jungle</span></h3>
@@ -258,21 +256,21 @@ const Profile = () => {
                                     <div className="card-body">
                                         <ul className="list-inline m-0 p-0">
                                             <li className="d-flex mb-4 align-items-center active">
-                                                <img src={faker} alt="story-img" className="rounded-pill avatar-70 p-1 border bg-soft-light img-fluid" loading="lazy" />
+                                                <img src={null} alt="story-img" className="rounded-pill avatar-70 p-1 border bg-soft-light img-fluid" loading="lazy" />
                                                 <div className="ms-3">
                                                     <h5>User 1</h5>
                                                     <p className="mb-0">1 hour ago</p>
                                                 </div>
                                             </li>
                                             <li className="d-flex mb-4 align-items-center">
-                                                <img src={faker} alt="story-img" className="rounded-pill avatar-70 p-1 border img-fluid bg-soft-danger" loading="lazy" />
+                                                <img src={null} alt="story-img" className="rounded-pill avatar-70 p-1 border img-fluid bg-soft-danger" loading="lazy" />
                                                 <div className="ms-3">
                                                     <h5>User 2</h5>
                                                     <p className="mb-0">4 hour ago</p>
                                                 </div>
                                             </li>
                                             <li className="d-flex align-items-center">
-                                                <img src={faker} alt="story-img" className="rounded-pill avatar-70 p-1 border bg-soft-primary img-fluid" loading="lazy" />
+                                                <img src={null} alt="story-img" className="rounded-pill avatar-70 p-1 border bg-soft-primary img-fluid" loading="lazy" />
                                                 <div className="ms-3">
                                                     <h5>User 3</h5>
                                                     <p className="mb-0">9 hour ago</p>
@@ -290,7 +288,7 @@ const Profile = () => {
                                     <div className="card-body">
                                         <ul className="list-inline m-0 p-0">
                                             <li className="d-flex mb-4 align-items-center">
-                                                <div className="img-fluid bg-soft-info rounded-pill"><img src={faker} alt="story-img" className="rounded-pill avatar-40" loading="lazy" /></div>
+                                                <div className="img-fluid bg-soft-info rounded-pill"><img src={null} alt="story-img" className="rounded-pill avatar-40" loading="lazy" /></div>
                                                 <div className="ms-3 flex-grow-1">
                                                     <h6>Bessie Cooper</h6>
                                                     <p className="mb-0">1 mutual friends</p>

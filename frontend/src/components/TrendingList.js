@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import faker from "../assets/images/artists/faker.jpg";
 import { fetchingSongs } from "../api/api";
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import "../styles/trendingList.scss";
 
-// Load all images from the songs folder
-const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
+// URL backend
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getSongImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/songs/${imageName}` : null;
 };
 
 // Key for AES encryption (Keep this secret and do not hardcode in production)
@@ -32,6 +32,7 @@ const TrendingList = () => {
     useEffect(() => {
         const loadSongs = async () => {
             try {
+                // Gọi API để lấy danh sách bài hát
                 const data = await fetchingSongs();
                 setSongs(data);
             } catch (err) {
@@ -61,6 +62,7 @@ const TrendingList = () => {
                 loop={true}
             >
                 {songs.map((song) => {
+                    // Lấy URL hình ảnh từ backend
                     const songImage = getSongImage(song.coverImageUrl);
                     const encryptedId = encryptId(song.id);
 

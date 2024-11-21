@@ -6,7 +6,6 @@ import 'swiper/css';
 import "../styles/albumDetail.scss";
 import { useParams, useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
-import faker from "../assets/images/artists/faker.jpg";
 import Swal from 'sweetalert2';
 import { getAlbumById } from "../api/api";
 
@@ -17,13 +16,14 @@ const decryptId = (encryptedId) => {
     return bytes.toString(CryptoJS.enc.Utf8);
 };
 
-// Load all images from the songs folder
-const images = require.context('../assets/images/albums', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getAlbumsImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/albums/${imageName}` : null;
 };
+
 
 const AlbumDetail = () => {
     const albumId = useParams();

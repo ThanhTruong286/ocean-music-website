@@ -6,7 +6,6 @@ import ProfileModal from "../components/ProfileModal"; // Sửa lỗi ProfileMod
 import { fetchArtists } from "../api/api"; // Sửa lỗi fetchArtists
 import "../styles/settingProfile.scss"; // CSS liên quan đến profile
 
-
 const SettingProfile = () => {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);

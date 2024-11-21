@@ -3,23 +3,22 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/artist.scss';
-import faker from "../assets/images/artists/faker.jpg";
 import { useParams } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { getArtistById, getSongByArtist } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 
-// Load all images from the songs folder
-const songImages = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
+// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getSongImage = (imageName) => {
-    return songImages.keys().includes(`./${imageName}`) ? songImages(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/songs/${imageName}` : null;
 };
 
-const artistImages = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
-
 const getArtistImage = (imageName) => {
-    return artistImages.keys().includes(`./${imageName}`) ? artistImages(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/profiles/${imageName}` : null;
 };
 
 const SECRET_KEY = 'MIKASA';
@@ -41,7 +40,7 @@ const ArtistDetail = () => {
     const handleOnclickSong = (encryptedId) => {
         navigate(`/song-detail/${encryptedId}`);  // Chuyển hướng sang trang chi tiết
     }
-    
+
     const decryptId = (encryptedId) => {
         const decoded = decodeURIComponent(encryptedId);
         const bytes = CryptoJS.AES.decrypt(decoded, 'MIKASA');
@@ -129,9 +128,9 @@ const ArtistDetail = () => {
                                     const songEncryptId = encryptId(song.song_id);
                                     return (
                                         <div className="artist-detail__song" key={song.song_id}>
-                                            <img style={{borderRadius: "10px"}} alt={song.title} height="50" src={songImage} width="50" />
+                                            <img style={{ borderRadius: "10px" }} alt={song.title} height="50" src={songImage} width="50" />
                                             <div className="artist-detail__song-details">
-                                                <span style={{cursor: "pointer"}} onClick={() => handleOnclickSong(songEncryptId)} className="artist-detail__song-title">{song.title}</span>
+                                                <span style={{ cursor: "pointer" }} onClick={() => handleOnclickSong(songEncryptId)} className="artist-detail__song-title">{song.title}</span>
                                             </div>
                                         </div>
                                     );

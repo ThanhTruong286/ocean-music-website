@@ -30,32 +30,6 @@ const Footer = () => {
     };
 
     useEffect(() => {
-        const handleTrackUpdate = () => {
-            const updatedTrack = localStorage.getItem("currentTrack");
-            if (updatedTrack && updatedTrack !== currentTrack) {
-                setLoading(true);
-                setSong(null); // Reset song state
-                setError(false);
-                setIsPlaying(false); // Dừng phát nhạc
-
-                // Reload song data
-                setTimeout(() => {
-                    // Fake delay to ensure UI updates smoothly
-                    window.location.reload(); // Hoặc dùng cách bạn load lại dữ liệu
-                }, 100);
-            }
-        };
-
-        // Lắng nghe sự kiện khi track thay đổi
-        window.addEventListener("trackUpdated", handleTrackUpdate);
-
-        return () => {
-            window.removeEventListener("trackUpdated", handleTrackUpdate);
-        };
-    }, [currentTrack]);
-
-    // Tải thông tin bài hát từ API
-    useEffect(() => {
         const loadSong = async () => {
             const updatedTrack = localStorage.getItem("currentTrack");
             if (!updatedTrack) {
@@ -88,8 +62,6 @@ const Footer = () => {
         loadSong();
     }, [currentTrack]); // Lắng nghe sự thay đổi của currentTrack
 
-
-    // Cập nhật trạng thái khi phát/dừng nhạc
     const togglePlayPause = () => {
         if (audioRef.current) {
             if (isPlaying) {
@@ -102,7 +74,6 @@ const Footer = () => {
         }
     };
 
-    // Xử lý khi audio đang phát
     const handleTimeUpdate = () => {
         if (audioRef.current) {
             const current = audioRef.current.currentTime;
@@ -111,14 +82,12 @@ const Footer = () => {
         }
     };
 
-    // Xử lý khi audio đã tải xong metadata
     const handleLoadedMetadata = () => {
         if (audioRef.current) {
             setDuration(audioRef.current.duration);
         }
     };
 
-    // Xử lý thay đổi tiến trình bài hát
     const handleProgressChange = (e) => {
         const value = parseFloat(e.target.value);
         if (audioRef.current) {
@@ -128,7 +97,6 @@ const Footer = () => {
         }
     };
 
-    // Xử lý thay đổi âm lượng
     const handleVolumeChange = (e) => {
         const volumeValue = parseInt(e.target.value);
         if (audioRef.current) {
@@ -138,45 +106,28 @@ const Footer = () => {
         }
     };
 
-    // Khi bài hát kết thúc
     const handleEnded = () => {
         setIsPlaying(false);
         localStorage.setItem("audioIsPlaying", "false");
     };
 
-    // Định dạng thời gian hiển thị
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
         return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     };
 
-    const songImage = song?.coverImageUrl ? require(`../assets/images/songs/${song.coverImageUrl}`) : "";
+    // Thay đổi này sẽ lấy hình ảnh từ server thay vì từ thư mục local
+    const songImage = song?.coverImageUrl ? `http://localhost:5000/assets/images/songs/${song.coverImageUrl}` : "";
 
-    // Chuyển hướng đến trang chi tiết bài hát
+    // Thay đổi này sẽ lấy file âm thanh từ server thay vì từ thư mục local
+    const songAudio = song?.fileUrl ? `http://localhost:5000/assets/audios/${song.fileUrl}` : "";
+
     const handleOnclickSong = () => {
         if (currentTrack) {
             navigate(`/song-detail/${currentTrack}`);
         }
     };
-
-    useEffect(() => {
-        // Lắng nghe sự kiện chuyển trang để đảm bảo audio vẫn tiếp tục phát
-        const handleBeforeUnload = (event) => {
-            if (isPlaying) {
-                // Nếu audio đang phát, lưu lại trạng thái
-                localStorage.setItem("audioCurrentTime", audioRef.current.currentTime);
-                localStorage.setItem("audioIsPlaying", "true");
-            }
-        };
-
-        // Thêm sự kiện khi rời khỏi trang
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [isPlaying]);
 
     if (loading) return <div>Đang tải...</div>;
     if (error) return <div>Lỗi khi tải bài hát</div>;
@@ -194,12 +145,12 @@ const Footer = () => {
 
                 <audio
                     id="footer-audio"
-                    ref={audioRef}  // Tham chiếu tới phần tử audio
-                    src={song?.fileUrl ? require(`../assets/audios/${song.fileUrl}`) : ""}
+                    ref={audioRef}
+                    src={songAudio} // Lấy file từ server
                     onTimeUpdate={handleTimeUpdate}
                     onLoadedMetadata={handleLoadedMetadata}
                     onEnded={handleEnded}
-                    autoPlay={false}  // Không tự động phát nhạc
+                    autoPlay={false}
                 />
 
                 {/* Controls */}

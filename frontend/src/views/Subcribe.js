@@ -2,7 +2,6 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../styles/subcribe.scss";
-import logo from "../assets/images/logo.png";
 
 const Subcribe = () => {
 

@@ -1,4 +1,3 @@
-import faker from "../assets/images/artists/faker.jpg";
 import { fetchGenres } from '../api/api';
 import React, { useEffect, useState } from 'react';
 // Import Swiper React components

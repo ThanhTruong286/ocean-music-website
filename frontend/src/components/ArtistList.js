@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import faker from "../assets/images/artists/faker.jpg";
 import { fetchArtists } from '../api/api';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 
-// Hàm lấy hình ảnh của nghệ sĩ hoặc trả về ảnh mặc định
-const images = require.context('../assets/images/artists', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
+
+// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getArtistImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/artists/${imageName}` : null;
 };
 
 const SECRET_KEY = 'MIKASA';
@@ -34,7 +35,7 @@ const ArtistList = () => {
             try {
                 const data = await fetchArtists();
                 setArtists(data);
-                
+
             } catch (err) {
                 setError('Không thể tải danh sách nghệ sĩ');
             } finally {

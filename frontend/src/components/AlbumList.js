@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import faker from "../assets/images/artists/faker.jpg";
 import { getUser, getArtistAlbums } from "../api/api";
 import '../styles/album.scss';
 import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';  // Make sure CryptoJS is imported for encryption
 
-// Load all images from the songs folder
-const images = require.context('../assets/images/albums', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getAlbumsImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/albums/${imageName}` : null;
 };
 
 // Hàm mã hóa ID
@@ -147,7 +146,7 @@ const AlbumList = () => {
                         return (
                             <div key={album.album_id} className="album-item">
                                 <img
-                                    src={albumsImage || faker}
+                                    src={albumsImage || null}
                                     alt={album.title}
                                     className="album-image"
                                 />

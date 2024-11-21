@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Header from "../components/Header";
-import faker from "../assets/images/artists/faker.jpg";
 import ArtistList from "../components/ArtistList";
 import Sidebar from "../components/Sidebar";
 import RadioList from "../components/RadioList";

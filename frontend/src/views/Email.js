@@ -1,6 +1,5 @@
 // ResetPassword.js
 import React, { useState } from 'react';
-import { requestPasswordReset } from '../api/api';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/login.scss';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +21,7 @@ const EmailBackup = () => {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
             return;
         }
-        
+
         try {
             // Call API to request password reset
             const response = await SendEmail(email);

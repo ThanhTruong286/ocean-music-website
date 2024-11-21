@@ -4,17 +4,15 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import 'swiper/css';
 import { getOwnSong, createNewSong, deleteArtistSong } from "../api/api";
-import CryptoJS from 'crypto-js';
-import faker from "../assets/images/artists/faker.jpg";
 import Swal from 'sweetalert2';
 import EditSongForm from '../components/EditSongForm';
 
-// Load all images from the songs folder
-const images = require.context('../assets/images/albums', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getAlbumsImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/albums/${imageName}` : null;
 };
 
 const ArtistSong = () => {

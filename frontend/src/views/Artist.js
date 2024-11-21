@@ -4,16 +4,15 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/artist.scss';
 import { fetchArtists } from "../api/api"
-import faker from "../assets/images/artists/faker.jpg";
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 
-// Load all images from the songs folder
-const images = require.context('../assets/images/profiles', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getSongImage = (imageName) => {
-  return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+  // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+  return imageName ? `${API_URL}/assets/images/profiles/${imageName}` : null;
 };
 
 const SECRET_KEY = 'MIKASA';
@@ -46,7 +45,7 @@ const Artist = () => {
   }, []);
   const handleOnclickArtist = (encryptedId) => {
     navigate(`/artist/${encryptedId}`);
-}
+  }
 
   if (err) {
     return <div>{err}</div>;
@@ -94,8 +93,8 @@ const Artist = () => {
                     <img alt="Artist" height="200" src={artistImage} width="200" />
                     <div className="ocean-info">
                       <h3
-                      style={{ cursor: "pointer" }} 
-                      onClick={() => handleOnclickArtist(decryptId)}>{data.first_name} {data.last_name}</h3>
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleOnclickArtist(decryptId)}>{data.first_name} {data.last_name}</h3>
                       <p>{data.bio}</p>
                     </div>
                   </div>

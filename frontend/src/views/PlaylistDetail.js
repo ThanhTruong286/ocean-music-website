@@ -7,7 +7,6 @@ import "../styles/playlist.scss";
 import { getPlaylistById, deleteSongFromPlaylist, getRecommendSongByArtistIds } from '../api/api';
 import { useParams, useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
-import faker from "../assets/images/artists/faker.jpg";
 import Swal from 'sweetalert2';
 
 const SECRET_KEY = 'MIKASA';
@@ -18,12 +17,12 @@ const encryptId = (id) => {
     return encodeURIComponent(encrypted);
 };
 
-// Load tất cả hình ảnh từ thư mục songs
-const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
 // Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getSongImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/songs/${imageName}` : null;
 };
 
 const PlaylistDetail = () => {

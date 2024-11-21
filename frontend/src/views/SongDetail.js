@@ -2,7 +2,6 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../styles/songDetail.scss";
-import faker from "../assets/images/artists/faker.jpg";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CryptoJS from "crypto-js";
@@ -10,10 +9,12 @@ import AddToPlaylistPopup from "../components/PlaylistPopup";
 import { getAllUserPlaylist, getSong, addSongToPlaylist } from "../api/api";
 import Swal from "sweetalert2";
 
-const images = require.context('../assets/images/songs', false, /\.(jpg|jpeg|png|gif)$/);
+const API_URL = 'http://localhost:5000';
 
+// Hàm lấy hình ảnh của bài hát hoặc trả về ảnh mặc định
 const getSongImage = (imageName) => {
-    return images.keys().includes(`./${imageName}`) ? images(`./${imageName}`) : faker;
+    // Trả về URL hình ảnh từ backend nếu có, nếu không thì dùng ảnh fallback
+    return imageName ? `${API_URL}/assets/images/songs/${imageName}` : null;
 };
 
 const formatLyrics = (lyrics) => {
