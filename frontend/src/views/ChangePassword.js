@@ -21,10 +21,10 @@ const ChangePasswordView = () => {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
             return;
         }
-        
+
         try {
             // Gọi API thay đổi mật khẩu với captchaToken
-            const response = await ChangePassword(cpass, password, captchaToken);
+            const response = await ChangePassword(cpass, password);
             console.log('Change Password successful:', response);
             navigate('/login');
         } catch (error) {

@@ -5,10 +5,12 @@ const UserModel = require('../models/User');
 const nodemailer = require('nodemailer');
 
 exports.resetPassword = async (req, res) => {
-  const { newPassword, confirmPassword, resetToken } = req.body;
+  const { password, confirmPassword, resetToken, captchaToken } = req.body;
+
+  console.log(password, confirmPassword, resetToken);
 
   // Kiểm tra nếu mật khẩu mới và mật khẩu xác nhận khớp
-  if (newPassword !== confirmPassword) {
+  if (password !== confirmPassword) {
     return res.status(400).json({ message: "Mật khẩu xác nhận không khớp." });
   }
 
@@ -16,12 +18,13 @@ exports.resetPassword = async (req, res) => {
     // Tìm người dùng có `resetToken`
     UserModel.findByResetToken(resetToken, (err, user) => {
       if (err) {
+        console.error('Error finding user by reset token:', err);
         return res.status(500).json({ message: "Lỗi khi tìm người dùng" });
       }
 
-      // Log lỗi nếu không tìm thấy người dùng
+      // Kiểm tra nếu không tìm thấy người dùng
       if (!user) {
-        console.log("Không tìm thấy user với token");
+        console.log("Không tìm thấy user với token:", resetToken);
         return res.status(400).json({ message: "Token không hợp lệ hoặc đã hết hạn." });
       }
 
@@ -30,12 +33,12 @@ exports.resetPassword = async (req, res) => {
         return res.status(400).json({ message: "Token đã hết hạn." });
       }
 
-      // Log user để kiểm tra kết quả trả về
       console.log("User found: ", user);
 
       // Mã hóa mật khẩu mới
-      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+      bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
+          console.error('Error hashing password:', err);
           return res.status(500).json({ message: "Lỗi khi mã hóa mật khẩu." });
         }
 
@@ -50,6 +53,7 @@ exports.resetPassword = async (req, res) => {
             return res.status(500).json({ message: "Đã có lỗi xảy ra trong quá trình thay đổi mật khẩu." });
           }
 
+          console.log("Password updated successfully:", updateResults);
           return res.status(200).json({ message: "Mật khẩu đã được thay đổi thành công." });
         });
       });
@@ -129,7 +133,6 @@ exports.sendEmail = async (req, res) => {
     }
   });
 };
-
 
 // Hàm đăng ký người dùng
 exports.registerUser = async (req, res) => {
@@ -270,24 +273,18 @@ exports.logoutUser = (req, res) => {
 
 //Change Password
 exports.changePassword = async (req, res) => {
-  const { currentPassword, newPassword, userId } = req.body;
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user.userId;
+
+  console.log(userId);
 
   // Kiểm tra thông tin đầu vào
   if (!currentPassword || !newPassword) {
     return res.status(400).json({ message: 'Missing password' });
   }
 
-  // Parse userId từ JSON
-  let user;
   try {
-    const userParse = JSON.parse(userId);
-    user = userParse.userId; // Lấy userId
-  } catch (error) {
-    return res.status(400).json({ message: 'Invalid userId format' });
-  }
-
-  try {
-    UserModel.findById(user, async (err, foundUser) => {
+    UserModel.findById(userId, async (err, foundUser) => {
       if (err) {
         return res.status(500).json({ message: "Server error" });
       }
@@ -307,7 +304,6 @@ exports.changePassword = async (req, res) => {
       // Băm mật khẩu mới
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      console.log(foundUser);
       UserModel.update(foundUser.user_id, { password: hashedPassword }, (err) => {
         if (err) {
           return res.status(500).json({ message: "Server error" });

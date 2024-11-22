@@ -2,6 +2,34 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const ResetPassword = async (password, confirmPassword, resetToken, captchaToken) => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/reset-password`, {
+            password,
+            confirmPassword,
+            resetToken,
+            captchaToken
+        });
+
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response ? error.response.data.message : 'Không thể thay đổi mật khẩu');
+    }
+};
+
+export const SendEmail = async (email) => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/send-email`, {
+            email: email
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error sending email:', error.response ? error.response.data : error.message);
+        throw new Error('Có lỗi xảy ra khi gửi email.');
+    }
+};
+
 export const sendMessage = async (message) => {
     try {
         const accessToken = localStorage.getItem('userToken');
@@ -467,19 +495,20 @@ export const ChangePassword = async (currentPassword, newPassword) => {
 
     try {
         // Lấy user
-        const userId = localStorage.getItem('user');
+        const accessToken = localStorage.getItem('userToken');
 
-        if (!userId) {
-            throw new Error('User không hợp lệ. Vui lòng đăng nhập lại.');
+        if (!accessToken) {
+            throw new Error('access token not found');
         }
 
         // Gửi yêu cầu PUT để thay đổi mật khẩu
         const response = await axios.put(
             `${API_URL}/auth/change-password`,
-            { currentPassword, newPassword, userId }, // Không cần bao gồm userToken trong body
+            { currentPassword, newPassword }, // Không cần bao gồm userToken trong body
             {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
                 }
             }
         );

@@ -24,6 +24,8 @@ import AlbumDetail from "./AlbumDetail";
 import ArtistSong from './ArtistSong';
 import ChatBot from './ChatBot';
 import Help from "./Help";
+import ResetPassword from "./ResetPassword";
+import Email from "./Email"
 
 const App = () => {
   useEffect(() => {
@@ -45,6 +47,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/send-email" element={<Email />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/albums" element={<Album />} />
             <Route path="/albums/:id" element={<AlbumDetail />} />
             <Route path="/artist" element={<Artist />} />

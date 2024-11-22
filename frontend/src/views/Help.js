@@ -3,8 +3,11 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/help.scss';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Help = () => {
+
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -18,7 +21,9 @@ const Help = () => {
                         <div className="section">
                             <h2>Hỗ trợ Tài khoản Ocean</h2>
                             <ul>
-                                <li>Hỗ trợ khôi phục Mật khẩu</li>
+                                <li onClick={() => {
+                                    navigate('/send-email');
+                                }}>Hỗ trợ khôi phục Mật khẩu</li>
                                 <li>Hỗ trợ thay đổi Số điện thoại</li>
                                 <li>Hỗ trợ thay đổi nhanh Email/SĐT xác thực</li>
                                 <li>Hủy hỗ trợ thay đổi thông tin và mở khóa tài khoản</li>

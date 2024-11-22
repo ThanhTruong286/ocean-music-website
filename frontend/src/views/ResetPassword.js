@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ResetPassword } from '../api/api';
+import { ResetPassword } from '../api/api';  // Import API ResetPassword
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../styles/login.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';  // Import SweetAlert2
 
 const ResetPasswordView = () => {
     const [password, setPassword] = useState('');
@@ -22,29 +23,57 @@ const ResetPasswordView = () => {
         }
     }, [resetToken]);
 
+    // Hàm xử lý thay đổi CAPTCHA
     const handleCaptchaChange = (token) => {
         setCaptchaToken(token);
     };
 
+    // Hàm xử lý reset mật khẩu
     const handleResetPassword = async (e) => {
         e.preventDefault();
+
         if (!captchaToken) {
             setErrorMessage('Vui lòng xác nhận CAPTCHA.');
             return;
         }
+
         if (!resetToken) {
             setErrorMessage('Token không hợp lệ.');
             return;
         }
 
+        if (password !== cpass) {
+            setErrorMessage('Mật khẩu xác nhận không khớp.');
+            return;
+        }
+
         try {
-            // Gọi API thay đổi mật khẩu với resetToken, newPassword và confirmPassword
+            // Gọi API reset mật khẩu
             const response = await ResetPassword(password, cpass, resetToken, captchaToken);
-            console.log('Change Password successful:', response);
+            console.log('Reset Password successful:', response);
+
+            // Hiển thị thông báo thành công
+            Swal.fire({
+                icon: 'success',
+                title: 'Đặt lại mật khẩu thành công!',
+                text: 'Mật khẩu của bạn đã được thay đổi. Vui lòng đăng nhập lại.',
+                confirmButtonText: 'OK'
+            });
+
+            // Chuyển hướng đến trang đăng nhập
             navigate('/login');
         } catch (error) {
-            console.error('Change Password failed:', error);
-            setErrorMessage(error.message || 'Change Password Failed');
+            console.error('Reset Password failed:', error);
+
+            // Hiển thị thông báo lỗi
+            Swal.fire({
+                icon: 'error',
+                title: 'Đã có lỗi xảy ra!',
+                text: error.message || 'Không thể thay đổi mật khẩu.',
+                confirmButtonText: 'Thử lại'
+            });
+
+            setErrorMessage(error.message || 'Không thể thay đổi mật khẩu.');
         }
     };
 
@@ -53,42 +82,42 @@ const ResetPasswordView = () => {
             <div className="login-container">
                 <div className="login-left">
                     <img src={require('../assets/images/logo.png')} alt="Logo" className="logo" />
-                    <h2>Forgot Password</h2>
-                    <p>Make Your Password Stronger</p>
+                    <h2>Quên Mật Khẩu</h2>
+                    <p>Sử dụng mật khẩu mạnh vào bạn nhé !!!</p>
                     <form onSubmit={handleResetPassword}>
                         <div className="form-group">
-                            <label htmlFor="cpass">New Password</label>
+                            <label htmlFor="cpass">Mật khẩu mới</label>
                             <input
-                                type="text"
+                                type="password"
                                 id="cpass"
-                                placeholder="xxxx"
+                                placeholder="Nhập mật khẩu mới"
                                 value={cpass}
                                 onChange={(e) => setCPass(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="password">Confirm Password</label>
+                            <label htmlFor="password">Xác nhận mật khẩu</label>
                             <input
-                                type="text"
+                                type="password"
                                 id="password"
-                                placeholder="xxxx"
+                                placeholder="Xác nhận mật khẩu"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>
                         <ReCAPTCHA
-                            sitekey="6LdsR3AqAAAAAIGtNzZDDXM7TriFXWOc1XeOlTnq" // Đã thay bằng site key của bạn
+                            sitekey="6LdsR3AqAAAAAIGtNzZDDXM7TriFXWOc1XeOlTnq" // Thay bằng site key của bạn
                             onChange={handleCaptchaChange}
                         />
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="form-options">
-                            <a href="/login" className="forgot-password">Sign in</a>
+                            <a href="/login" className="forgot-password">Đăng nhập</a>
                         </div>
-                        <button type="submit" className="login-button">Submit</button>
+                        <button type="submit" className="login-button">Đồng ý</button>
                     </form>
-                    <p className="or-sign-in">Sign in with other accounts?</p>
+                    <p className="or-sign-in">Đăng nhập bằng tài khoản khác</p>
                     <div className="social-login">
                         <button className="social-button google">
                             <i className="fab fa-google"></i>
@@ -104,7 +133,7 @@ const ResetPasswordView = () => {
                         </button>
                     </div>
                     <p className="signup-text">
-                        Don’t have an account? <a href="/register">Click here to sign up.</a>
+                        Không có tài khoản ? <a href="/register">Đăng ký ở đây</a>
                     </p>
                 </div>
                 <div className="login-right">
