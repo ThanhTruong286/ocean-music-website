@@ -21,4 +21,6 @@ router.delete('/:id', TicketController.deleteTicket);
 // Lấy thông tin ticket theo ID
 router.get('/:id', TicketController.getTicketById);
 
+router.get('/user/:id', TicketController.getTicketsByUserId);
+
 module.exports = router;

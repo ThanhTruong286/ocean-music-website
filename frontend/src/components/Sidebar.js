@@ -58,6 +58,12 @@ const Sidebar = () => {
                                 </a>
                             </li>
                             <li className="nav-item">
+                                <a href="/user-ticket" className="nav-link collapsed">
+                                    <i className="fa-solid fa-question-circle"></i>
+                                    <span className="item-name">Theo Dõi Phiếu</span>
+                                </a>
+                            </li>
+                            <li className="nav-item">
                                 <a href="/chatbot" className="nav-link collapsed">
                                     <i className="fa-solid fa-question-circle"></i>
                                     <span className="item-name">Chat Bot</span>

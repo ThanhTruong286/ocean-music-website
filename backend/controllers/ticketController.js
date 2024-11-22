@@ -12,9 +12,9 @@ exports.getTickets = (req, res) => {
 
 // Lấy danh sách các ticket của một người dùng theo userId
 exports.getTicketsByUserId = (req, res) => {
-    const userId = req.user.userId; // Lấy userId từ request (giả sử đã có xác thực)
+    const userId = req.params.id;
 
-    TicketModel.findByUserId(userId, (err, tickets) => {
+    Ticket.findByUserId(userId, (err, tickets) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching tickets for user', error: err });
         }
@@ -75,7 +75,7 @@ exports.updateTicket = (req, res) => {
 exports.deleteTicket = (req, res) => {
     const ticketId = req.params.id;
 
-    TicketModel.deleteById(ticketId, (err, result) => {
+    Ticket.deleteById(ticketId, (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Error deleting ticket', error: err });
         }

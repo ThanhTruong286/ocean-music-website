@@ -46,7 +46,7 @@ exports.ZaloPayment = async (req, res) => {
         amount: amount,
         //khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
         //Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-        callback_url: 'https://b09d-1-53-27-130.ngrok-free.app/api/payment/zalopay/callback',
+        callback_url: 'https://41a6-1-53-27-130.ngrok-free.app/api/payment/zalopay/callback',
         description: `Lazada - Payment for the order #${transID}`,
         bank_code: '',
     };

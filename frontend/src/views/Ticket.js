@@ -63,10 +63,6 @@ const Ticket = () => {
                         <div className="customer-support-header">
                             <h1>TRUNG TÂM HỖ TRỢ KHÁCH HÀNG</h1>
                         </div>
-                        <div className="customer-support-search-bar">
-                            <input type="text" placeholder="Tìm kiếm nhanh" />
-                            <button><i className="fas fa-search"></i></button>
-                        </div>
                         <div className="customer-support-content">
                             <div className="customer-support-section">
                                 <h2>Liên hệ chúng tôi</h2>
@@ -106,7 +102,7 @@ const Ticket = () => {
                                         id="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
-                                        placeholder="Garena sẽ liên hệ với bạn qua Email này"
+                                        placeholder="T1 sẽ liên hệ với bạn qua Email này"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -116,7 +112,7 @@ const Ticket = () => {
                                         id="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
-                                        placeholder="Garena sẽ liên hệ với bạn qua số điện thoại này"
+                                        placeholder="T1 sẽ liên hệ với bạn qua số điện thoại này"
                                     />
                                 </div>
                                 <div className="form-group">

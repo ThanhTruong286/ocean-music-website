@@ -104,8 +104,8 @@ const Header = () => {
         if (user && user.role_id === 3) {
             return (
                 <li className="nav-item">
-                    <a className="nav-link" href="/dashboard" onClick={goToDashboard}>
-                        <span className="item-name">Dashboard</span>
+                    <a className="nav-link" href="/albums" onClick={goToDashboard}>
+                        <span className="item-name">Albums</span>
                     </a>
                 </li>
             );

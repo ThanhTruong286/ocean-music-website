@@ -16,6 +16,27 @@ class Ticket {
         this.updatedAt = updatedAt;
     }
 
+    static deleteById = (ticketId, callback) => {
+        const query = 'DELETE FROM tickets WHERE ticket_id = ?';
+    
+        db.query(query, [ticketId], (err, results) => {
+            if (err) {
+                return callback(err, null);
+            }
+            return callback(null, results);
+        });
+    };    
+
+    static findByUserId = (userId, callback) => {
+        const query = 'SELECT * FROM tickets WHERE user_id = ?';
+    
+        db.query(query, [userId], (err, results) => {
+            if (err) {
+                return callback(err, null);
+            }
+            return callback(null, results);
+        });
+    };
     // Phương thức để tạo mới ticket
     static createTicket(userId, subject, description, name, email, phone, username, status, priority, callback) {
         const query = `INSERT INTO tickets (user_id, subject, description, name, email, phone, username, status, priority, created_at, updated_at)

@@ -29,6 +29,7 @@ import Email from "./Email";
 import Dashboard from "./Dashboard";
 import Ticket from './Ticket';
 import { TopicProvider } from '../context/TopicContext';
+import UserTicket from "./UserTicket"
 
 const App = () => {
   useEffect(() => {
@@ -72,6 +73,7 @@ const App = () => {
             <Route path="/chatbot" element={<ChatBot />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/make-ticket" element={<Ticket />} />
+            <Route path="/user-ticket" element={<UserTicket />} />
           </Routes>
 
           {/* Footer luôn hiển thị và không bị render lại khi chuyển trang */}
