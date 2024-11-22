@@ -12,6 +12,7 @@ const albumRoutes = require('./routes/albumRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
 const db = require('./config/db'); // Kết nối DB
 const path = require('path');
 const chatbotRoutes = require('./routes/chatbotRoutes');
@@ -51,6 +52,7 @@ app.use('/api/role', roleRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/favorite', favoriteRoutes);
 app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/ticket', ticketRoutes);
 
 // Lắng nghe trên port
 app.listen(PORT, () => {

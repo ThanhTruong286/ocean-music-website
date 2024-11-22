@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getUser } from "../api/api";
 import "../styles/header.scss";
+import AdComponent from "./AdComponent";
 
 const API_URL = 'http://localhost:5000';
 
@@ -11,7 +12,6 @@ const getProfileImage = (imageName) => {
     return imageName ? `${API_URL}/assets/images/profiles/${imageName}` : null;
 };
 
-
 const Header = () => {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
@@ -19,14 +19,15 @@ const Header = () => {
     const popupRef = useRef(null);
     const avatarRef = useRef(null);
     const location = useLocation();
+    const [showAd, setShowAd] = useState(false);
     const navigate = useNavigate();
 
     const goToHome = () => {
         navigate('/');
     };
 
-    const goToAlbums = () => {
-        navigate('/albums');
+    const goToDashboard = () => {
+        navigate('/dashboard');
     };
 
     const goToSubscribe = () => {
@@ -85,6 +86,7 @@ const Header = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
     useEffect(() => {
         // Exclude the "Help" page from the token check
         if (location.pathname !== '/help') {
@@ -98,12 +100,12 @@ const Header = () => {
         }
     }, [location.pathname, navigate]);
 
-    const renderAlbumLink = () => {
+    const renderDashboard = () => {
         if (user && user.role_id === 3) {
             return (
                 <li className="nav-item">
-                    <a className="nav-link" href="/albums" onClick={goToAlbums}>
-                        <span className="item-name">Albums</span>
+                    <a className="nav-link" href="/dashboard" onClick={goToDashboard}>
+                        <span className="item-name">Dashboard</span>
                     </a>
                 </li>
             );
@@ -127,10 +129,11 @@ const Header = () => {
                                             <span className="item-name">Trang Chủ</span>
                                         </a>
                                     </li>
-                                    {renderAlbumLink()}
+                                    {renderDashboard()}
+                    
                                     <li className="nav-item">
                                         <a className="nav-link" href="/subcribe" onClick={goToSubscribe}>
-                                            <span className="item-name">Get Premium</span>
+                                            <span className="item-name">Gói trả phí</span>
                                         </a>
                                     </li>
                                     {/* Search Box */}
@@ -177,14 +180,15 @@ const Header = () => {
                                     )}
                                 </div>
                             ) : (
-                                <button className="btn btn-primary" onClick={() => navigate('/login')}>Login</button>
+                                <button className="btn btn-primary" onClick={() => navigate('/login')}>Đăng nhập</button>
                             )}
                         </div>
                     </div>
                 </nav>
             </div>
-        </div>
 
+            {user && user.is_vip === 0 && <AdComponent is_vip={user.is_vip} />}
+        </div>
     );
 };
 

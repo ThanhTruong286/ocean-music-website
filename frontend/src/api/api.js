@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const createTicket = async (ticketData) => {
+    const accessToken = localStorage.getItem('userToken');
+    try {
+        const response = await axios.post(`${API_URL}/ticket`, ticketData,{
+            headers: {
+                'Authorization': `Bearer ${accessToken}`, 
+                'Content-Type': 'application/json', 
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response ? error.response.data.message : 'Không thể gửi yêu cầu hỗ trợ');
+    }
+};
+
 export const ResetPassword = async (password, confirmPassword, resetToken, captchaToken) => {
     try {
         const response = await axios.post(`${API_URL}/auth/reset-password`, {

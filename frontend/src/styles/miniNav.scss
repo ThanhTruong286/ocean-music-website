@@ -1,0 +1,29 @@
+.mini-navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ffffff;  // Thay thế $card-bg bằng màu trắng
+    padding: 10px 20px;
+    border-radius: 8px;  // Thay thế $border-radius bằng giá trị cụ thể
+    margin-bottom: 20px;
+  
+    .mini-navbar-tab {
+      background: none;
+      border: none;
+      color: #333333;  // Thay thế $text-color bằng màu chữ tối
+      font-size: 16px;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 8px;  // Thay thế $border-radius bằng giá trị cụ thể
+      transition: background-color 0.3s;
+  
+      &.active {
+        background-color: #e74c3c;  // Thay thế $primary-color bằng màu đỏ (hoặc màu bạn muốn)
+        color: #fff;
+      }
+  
+      &:hover {
+        background-color: lighten(#e74c3c, 10%);  // Làm sáng màu đỏ khi hover
+      }
+    }
+  }
+  
