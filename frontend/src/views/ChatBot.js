@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { sendMessage } from '../api/api';
 import "../styles/chatbot.scss";
 import Header from "../components/Header";
@@ -8,6 +8,8 @@ import Footer from "../components/Footer";
 const ChatBot = () => {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState("");
+    const chatContainerRef = useRef(null);
+
     const handleSendMessage = async () => {
         if (!userInput.trim()) return;
 
@@ -43,6 +45,12 @@ const ChatBot = () => {
         // Xóa input sau khi gửi
         setUserInput("");
     };
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     return (
         <div>
             <aside className="sidebar sidebar-base" id="first-tour" data-toggle="main-sidebar">
@@ -61,7 +69,9 @@ const ChatBot = () => {
                                             key={index}
                                             className={`message ${msg.sender}`}
                                         >
-                                            {msg.text}
+                                            {msg.text.split('\n').map((line, i) => (
+                                                <p key={i}>{line}</p>
+                                            ))}
                                         </div>
                                     ))}
                                 </div>
@@ -82,7 +92,6 @@ const ChatBot = () => {
             <Footer />
         </div>
     );
-
 };
 
 export default ChatBot;

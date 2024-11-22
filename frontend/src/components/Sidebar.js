@@ -57,6 +57,12 @@ const Sidebar = () => {
                                     <span className="item-name">Hỗ Trợ</span>
                                 </a>
                             </li>
+                            <li className="nav-item">
+                                <a href="/chatbot" className="nav-link collapsed">
+                                    <i className="fa-solid fa-question-circle"></i>
+                                    <span className="item-name">Chat Bot</span>
+                                </a>
+                            </li>
                             {/* Cài Đặt */}
                             <li className="nav-item static-item mt-5">
                                 <a href="#" className="nav-link static-item disabled text-start">

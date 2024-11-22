@@ -1,46 +1,86 @@
-// help.scss hoặc một file SCSS thích hợp
 .chatbot-wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    /* Chiều cao toàn màn hình */
 }
 
 .chat-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    /* Bắt đầu từ đầu khung */
     padding: 10px;
     height: 80vh;
-    overflow-y: scroll;
+    /* Giới hạn chiều cao khung chat */
+    overflow-y: auto;
+    /* Cho phép cuộn dọc */
     border: 1px solid #ccc;
     background-color: #f9f9f9;
     border-radius: 10px;
     margin-bottom: 20px;
+    position: relative;
+
+    /* Thêm hiệu ứng cuộn tuỳ chọn */
+    scrollbar-width: thin;
+    /* Độ rộng thanh cuộn (Firefox) */
+    scrollbar-color: #ccc #f9f9f9;
+    /* Màu thanh cuộn (Firefox) */
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 8px;
+    /* Độ rộng thanh cuộn (Chrome/Safari) */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    /* Màu thanh cuộn */
+    border-radius: 4px;
+    /* Bo góc */
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+    /* Màu khi hover */
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+    /* Màu nền của track */
 }
 
 .messages {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
+    /* Đảm bảo tin nhắn không tràn */
 }
 
 .message {
     padding: 10px;
     border-radius: 8px;
     max-width: 80%;
+    /* Giới hạn độ rộng tin nhắn */
     word-wrap: break-word;
+    /* Ngắt từ để xuống dòng */
     font-size: 14px;
+    margin-bottom: 10px;
 }
 
 .message.user {
     align-self: flex-end;
+    /* Canh phải */
     background-color: red;
     color: white;
     margin-left: auto;
+    /* Đẩy sát về phải */
 }
 
 .message.bot {
     align-self: flex-start;
+    /* Canh trái */
     background-color: black;
     color: white;
 }
@@ -56,11 +96,13 @@
 }
 
 .input-container input {
-    width: 80%;
+    flex-grow: 1;
+    /* Cho phép input chiếm tối đa không gian */
     padding: 10px;
     font-size: 14px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    margin-right: 10px;
 }
 
 .input-container button {

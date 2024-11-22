@@ -191,7 +191,6 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-
 // LOGIN
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -269,7 +268,6 @@ exports.logoutUser = (req, res) => {
     return res.status(200).json({ message: 'Logout successful' });
   });
 };
-
 
 //Change Password
 exports.changePassword = async (req, res) => {
