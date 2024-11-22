@@ -14,6 +14,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const db = require('./config/db'); // Kết nối DB
 const path = require('path');
+const chatbotRoutes = require('./routes/chatbotRoutes');
 
 const app = express();
 app.use(cors());
@@ -49,6 +50,7 @@ app.use('/api/album', albumRoutes);
 app.use('/api/role', roleRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/favorite', favoriteRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Lắng nghe trên port
 app.listen(PORT, () => {

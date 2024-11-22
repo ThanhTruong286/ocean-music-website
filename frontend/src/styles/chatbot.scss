@@ -1,0 +1,78 @@
+// help.scss hoặc một file SCSS thích hợp
+.chatbot-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    height: 80vh;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 14px;
+}
+
+.message.user {
+    align-self: flex-end;
+    background-color: red;
+    color: white;
+    margin-left: auto;
+}
+
+.message.bot {
+    align-self: flex-start;
+    background-color: black;
+    color: white;
+}
+
+.input-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+}
+
+.input-container input {
+    width: 80%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.input-container button {
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-container button:hover {
+    background-color: #0056b3;
+}

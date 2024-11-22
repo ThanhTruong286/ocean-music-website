@@ -2,6 +2,37 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const sendMessage = async (message) => {
+    try {
+        const accessToken = localStorage.getItem('userToken');
+        if (!accessToken) {
+            throw new Error("User is not authenticated.");
+        }
+
+        // Dữ liệu tin nhắn gửi lên server
+        const messageData = {
+            message: message,
+        };
+
+        // Gửi yêu cầu POST đến API
+        const response = await axios.post(`${API_URL}/chatbot/chat`, messageData, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,  // Token để xác thực người dùng
+                'Content-Type': 'application/json',  // Đảm bảo rằng gửi dữ liệu dưới dạng JSON
+            },
+        });
+
+        // Log phản hồi để kiểm tra
+        console.log("Response from server:", response.data);
+
+        // Trả về reply từ server
+        return response.data.reply;
+    } catch (error) {
+        console.error('Error sending message:', error.response ? error.response.data : error.message);
+        throw new Error('Failed to send message');
+    }
+};
+
 export const updateSong = async (songId, songData) => {
     try {
         const accessToken = localStorage.getItem('userToken');

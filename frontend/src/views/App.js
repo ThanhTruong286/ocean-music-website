@@ -22,6 +22,7 @@ import Footer from '../components/Footer';
 import ArtistDetail from "./ArtistDetail";
 import AlbumDetail from "./AlbumDetail";
 import ArtistSong from './ArtistSong';
+import ChatBot from './ChatBot';
 import Help from "./Help";
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
             <Route path="/setting-profile" element={<SettingProfile />} />
             <Route path="/songs" element={<ArtistSong />} />
             <Route path="/help" element={<Help />} />
+            <Route path="/chatbot" element={<ChatBot />} />
           </Routes>
 
           {/* Footer luôn hiển thị và không bị render lại khi chuyển trang */}
