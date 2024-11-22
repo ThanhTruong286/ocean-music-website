@@ -61,14 +61,31 @@ const getWitResponse = async (message) => {
                 return 'Cảm ơn bạn đã ghé thăm, chúc bạn một ngày vui vẻ!';
             }
 
+            if (intent === 'reset_password') {
+                return `Nếu bạn quên mật khẩu, hãy làm theo các bước sau:
+                1. Truy cập trang localhost:3000/send-email trên hệ thống của chúng tôi.
+                2. Nhập email đã đăng ký.
+                3. Làm theo hướng dẫn gửi qua email để đặt lại mật khẩu.
+
+                Nếu bạn cần hỗ trợ thêm, vui lòng liên hệ đội ngũ hỗ trợ qua email caot43069@gmail.com hoặc hotline: 1900-1234.`;
+            }
+
             if (intent === 'get_song_info') {
-                // Tìm kiếm bài hát nổi tiếng của nghệ sĩ
-                const artistName = response.entities['artist_name:artist_name'] ? response.entities['artist_name:artist_name'][0].value : '';
+                const songName = response.entities['song_name:song_name']
+                    ? response.entities['song_name:song_name'][0].value
+                    : '';
+                const artistName = response.entities['artist_name:artist_name']
+                    ? response.entities['artist_name:artist_name'][0].value
+                    : '';
+
                 if (artistName) {
                     const googleResults = await searchOnGoogle(`bài hát nổi tiếng của ${artistName}`);
                     return googleResults;
+                } else if (songName) {
+                    const googleResults = await searchOnGoogle(`thông tin về bài hát ${songName}`);
+                    return googleResults;
                 } else {
-                    return 'Vui lòng cung cấp tên nghệ sĩ để tôi tìm bài hát nổi tiếng của họ.';
+                    return 'Vui lòng cung cấp tên nghệ sĩ hoặc bài hát để tôi tìm thông tin cho bạn.';
                 }
             }
 
