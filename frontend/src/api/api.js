@@ -2,6 +2,49 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
+export const deleteTicket = async (ticketId) => {
+    try {
+        // Gửi yêu cầu DELETE tới server
+        const response = await axios.delete(`${API_URL}/ticket/${ticketId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting ticket:', error);
+        throw error;
+    }
+};
+
+export const getUserTicket = async (userId) => {
+    try {
+        const accessToken = localStorage.getItem('userToken');
+
+        if (!accessToken) {
+            console.log("User ID không được tìm thấy trong localStorage.");
+            return;
+        }
+        const response = await axios.get(`${API_URL}/ticket/user/${userId}`)
+        if (response) {
+            return response.data;
+        }
+    } catch (e) {
+        throw new Error("Error get artist album");
+    }
+}
+
+export const createTicket = async (ticketData) => {
+    const accessToken = localStorage.getItem('userToken');
+    try {
+        const response = await axios.post(`${API_URL}/ticket`, ticketData,{
+            headers: {
+                'Authorization': `Bearer ${accessToken}`, 
+                'Content-Type': 'application/json', 
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response ? error.response.data.message : 'Không thể gửi yêu cầu hỗ trợ');
+    }
+};
+
 export const ResetPassword = async (password, confirmPassword, resetToken, captchaToken) => {
     try {
         const response = await axios.post(`${API_URL}/auth/reset-password`, {

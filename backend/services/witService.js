@@ -113,6 +113,23 @@ const getWitResponse = async (message) => {
                 }
             }
 
+            if (intent === "teacher") {
+                const teacherName = response.entities['teacher_name:teacher_name']
+                    ? response.entities['teacher_name:teacher_name'][0].value
+                    : '';
+            
+                const responses = [
+                    "Là người truyền cảm hứng, không nhớ sao?",
+                    "Người nổi tiếng nhất khu vực TDC, phải không nào?",
+                    "Đấy chính là giáo viên yêu thích của mọi người đấy!",
+                    "Ảnh chính là cây đại thụ của ngành, ai mà không biết!",
+                    "Người hướng dẫn mà ai cũng kính nể trong trường!",
+                ];
+            
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                return randomResponse;
+            }            
+
             return 'Xin lỗi, tôi không hiểu câu hỏi của bạn.';
         }
 

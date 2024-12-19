@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import '../styles/help.scss';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useTopic } from '../context/TopicContext';
 
 const Help = () => {
-
+    const { setTopic } = useTopic();
     const navigate = useNavigate();
 
     return (
@@ -22,12 +23,29 @@ const Help = () => {
                             <h2>Hỗ trợ Tài khoản Ocean</h2>
                             <ul>
                                 <li onClick={() => {
-                                    navigate('/send-email');
+                                    setTopic('Hỗ trợ khôi phục Mật khẩu');  // Cập nhật chủ đề
+                                    navigate('/make-ticket');  // Điều hướng sang trang make-ticket
                                 }}>Hỗ trợ khôi phục Mật khẩu</li>
-                                <li>Hỗ trợ thay đổi Số điện thoại</li>
-                                <li>Hỗ trợ thay đổi nhanh Email/SĐT xác thực</li>
-                                <li>Hủy hỗ trợ thay đổi thông tin và mở khóa tài khoản</li>
-                                <li>Hỗ trợ xóa tài khoản</li>
+
+                                <li onClick={() => {
+                                    setTopic('Hỗ trợ thay đổi Số điện thoại');
+                                    navigate('/make-ticket');
+                                }}>Hỗ trợ thay đổi Số điện thoại</li>
+
+                                <li onClick={() => {
+                                    setTopic('Hỗ trợ thay đổi nhanh Email/SĐT xác thực');
+                                    navigate('/make-ticket');
+                                }}>Hỗ trợ thay đổi nhanh Email/SĐT xác thực</li>
+
+                                <li onClick={() => {
+                                    setTopic('Hủy hỗ trợ thay đổi thông tin và mở khóa tài khoản');
+                                    navigate('/make-ticket');
+                                }}>Hủy hỗ trợ thay đổi thông tin và mở khóa tài khoản</li>
+
+                                <li onClick={() => {
+                                    setTopic('Hỗ trợ xóa tài khoản');
+                                    navigate('/make-ticket');
+                                }}>Hỗ trợ xóa tài khoản</li>
                             </ul>
                         </div>
                         <div className="section">
